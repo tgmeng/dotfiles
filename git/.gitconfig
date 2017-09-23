@@ -1,3 +1,6 @@
+[user]
+	name = tgmeng
+	email = tgmeng@163.com
 [core]
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes
