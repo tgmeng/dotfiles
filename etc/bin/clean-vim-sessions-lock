@@ -1,0 +1,2 @@
+VIM_SESSIONS=~/.vim/sessions
+rm -iv "${VIM_SESSIONS}"/*.lock

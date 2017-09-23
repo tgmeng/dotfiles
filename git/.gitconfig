@@ -1,0 +1,5 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	attributesfile = ~/.gitattributes
+[diff "image"]
+	command = ~/bin/git-imgdiff
