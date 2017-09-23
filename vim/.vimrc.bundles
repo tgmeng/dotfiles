@@ -1,0 +1,73 @@
+set nocompatible
+
+let s:dotvim = '.vim'
+
+if has('win32')
+    let s:dotvim = 'vimfiles'
+endif
+
+let s:bundle_path = '~/' . s:dotvim . '/bundle'
+
+call plug#begin(s:bundle_path)
+
+Plug 'tpope/vim-sensible'
+
+" Plug 'Raimondi/delimitMate'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
+Plug 'jiangmiao/auto-pairs'
+Plug 'jlanzarotta/bufexplorer'
+" Plug 'majutsushi/tagbar'
+Plug 'vim-scripts/matchit.zip'
+Plug 'vim-scripts/matchparenpp'
+Plug 'mattn/emmet-vim'
+" Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'mbbill/undotree'
+
+" Search
+Plug 'mileszs/ack.vim'
+Plug 'rking/ag.vim'
+
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+" Plug 'sessionman.vim'
+" Plug 'sjl/gundo.vim'
+" Plug 'taglist.vim'
+Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tgmeng/lazy-vim-snippets'
+Plug 'tommcdo/vim-exchange'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'vim-airline/vim-airline'
+
+" Syntax
+Plug 'tgmeng/ftl-vim-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'digitaltoad/vim-pug'
+
+" session manage
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
+
+" Complete
+" Plug 'Valloric/YouCompleteMe'
+" Plug 'ternjs/tern_for_vim'
+
+" snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" ColorSchemes
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai'
+
+call plug#end()
