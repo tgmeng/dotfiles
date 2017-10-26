@@ -4,5 +4,6 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes
+	editor = /usr/bin/vim
 [diff "image"]
 	command = ~/bin/git-imgdiff
