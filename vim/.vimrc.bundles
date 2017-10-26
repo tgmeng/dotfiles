@@ -12,7 +12,7 @@ call plug#begin(s:bundle_path)
 
 Plug 'tpope/vim-sensible'
 
-" Plug 'Raimondi/delimitMate'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
@@ -20,23 +20,20 @@ Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jlanzarotta/bufexplorer'
-" Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/matchit.zip'
 Plug 'vim-scripts/matchparenpp'
 Plug 'mattn/emmet-vim'
-" Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'mbbill/undotree'
 
 " Search
 Plug 'mileszs/ack.vim'
-Plug 'rking/ag.vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
-" Plug 'sessionman.vim'
 " Plug 'sjl/gundo.vim'
-" Plug 'taglist.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tgmeng/lazy-vim-snippets'
@@ -57,10 +54,6 @@ Plug 'digitaltoad/vim-pug'
 " session manage
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-
-" Complete
-" Plug 'Valloric/YouCompleteMe'
-" Plug 'ternjs/tern_for_vim'
 
 " snippets
 Plug 'SirVer/ultisnips'

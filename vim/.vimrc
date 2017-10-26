@@ -52,10 +52,6 @@ nmap <leader>w :w!<cr>
 " Reload
 nmap <F5> :e!<cr>
 
-" :W sudo saves the file 
-" (useful for handling the permission-denied error)
-command! W w !sudo tee % > /dev/null
-
 " Session
 " Path is relative to the session file
 " set sessionoptions-=curdir
@@ -65,6 +61,11 @@ set sessionoptions+=slash
 set sessionoptions+=unix
 
 set mouse=a
+
+if has("mac") || has("macunix")
+    set macmeta
+endif
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM user interface {{{1
@@ -208,8 +209,11 @@ set ffs=unix,dos,mac
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin related settings {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Tags
-let g:tagbar_ctags_bin = 'D:\tools\ctags58\ctags.exe'
+
+" ag
+if executable('ag')
+    let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
 
 " ctrlp custon ignore
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
@@ -219,11 +223,6 @@ let g:ctrlp_working_path_mode = 'w'
 let g:UltiSnipsExpandTrigger="<tab>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-
-" YCM
-let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
-
 
 " NERDTree
 augroup NERDTree
@@ -290,18 +289,13 @@ let g:gitgutter_map_keys = 0
 "       \ })
 
 " Yankstack
-" let g:yankstack_map_keys = 0
-" nmap <leader>o <Plug>yankstack_substitute_older_paste
-" nmap <leader>O <Plug>yankstack_substitute_newer_paste
+let g:yankstack_map_keys = 0
+nmap <leader>o <Plug>yankstack_substitute_older_paste
+nmap <leader>O <Plug>yankstack_substitute_newer_paste
 
 " Vim-session
 let g:session_autoload = 'no'
 let g:session_autosave = 'prompt'
-
-" augroup HardMode
-"     autocmd!
-"     autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
-" augroup END
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -356,9 +350,8 @@ noremap k gk
 noremap gj j
 noremap gk k
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+" Map <Space> to / (search)
 map <space> /
-map <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 " map <silent> <leader><cr> :noh<cr>
@@ -431,8 +424,8 @@ endtry
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f', '')<CR>
-vnoremap <silent> # :call VisualSelection('b', '')<CR>
+xnoremap * :<C-u>call <SID>VisualSelection('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VisualSelection('?')<CR>?<C-R>=@/<CR><CR>
 
 " copy and paste
 vnoremap <leader>d "+d
@@ -449,15 +442,11 @@ map 0 ^
 " Redraw & clear highlight
 nnoremap <M-l> :nohl<CR><C-L>
 
-" copy and paste
+" Copy and paste
 nnoremap <leader>d "+d
 nnoremap <leader>y "+y
 nnoremap <leader>p "+]p
 nnoremap <leader>P "+[p
-
-" Vimrc
-nnoremap <leader>emv :tabedit $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " JS-Beautify
 map <leader>f :%!js-beautify -j -q -B -f -
@@ -471,13 +460,6 @@ vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 if has('win32')
     " On windows start a explorer and select current file
     nnoremap <F11> :<C-U>!start explorer /select,%:p<CR>
-endif
-
-if has("mac") || has("macunix")
-    nmap <D-j> <M-j>
-    nmap <D-k> <M-k>
-    vmap <D-j> <M-j>
-    vmap <D-k> <M-k>
 endif
 
 " Insert mode, <C-W> & <C-U> undo
@@ -516,58 +498,15 @@ nnoremap <leader>sr :SyntasticReset<CR>
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 
-" ------------------------------------------------------------
-" Ag searching and cope displaying
-"    requires ag.vim - it's much better than vimgrep/grep
-" When you press gv you Ag after the selected text
-" vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
-
-" Open Ag and put the cursor in the right position
-" map <leader>g :Ag 
 map <leader>g :Ack
-
-" When you press <leader>r you can search and replace the selected text
-" vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
-
-" Do :help cope if you are unsure what cope is. It's super useful!
-"
-" When you search with Ag, display your results in cope by doing:
-"   <leader>cc
-"
-" To go to the next search result do:
-"   <leader>n
-"
-" To go to the previous search results do:
-"   <leader>p
-"
-" map <leader>cc :botright cope<cr>
-" map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
-" map <leader>n :cn<cr>
-" map <leader>p :cp<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Misc {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-" noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-" Quickly open a buffer for scribble
-" map <leader>q :e ~/buffer<cr>
-
-" Quickly open a markdown buffer for scribble
-" map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
 map <leader>PP :setlocal paste!<cr>
-
-" Edit host
-if has("win16") || has("win32")
-    nmap <leader>eh :tabedit C:/Windows/System32/drivers/etc/hosts<cr>
-endif
-
-" :LogMessage
-command! -nargs=+ -complete=command LogMessage call LogMessage(<q-args>)``
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -579,25 +518,11 @@ function! CmdLine(str)
     unmenu Foo
 endfunction 
 
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("Ag \"" . l:pattern . "\" " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
+function! s:VisualSelection(cmdtype)
+  let temp = @"
+  normal! vgv"sy
+  let @/ = '\V' . substitute(escape(@", a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @" = temp
 endfunction
 
 " Don't close window, when deleting a buffer
@@ -621,11 +546,6 @@ function! <SID>BufcloseCloseIt()
     endif
 endfunction
 
-" Make VIM remember position in file after reopen
-" if has("autocmd")
-"   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
-
 " mkdirp if path not exist when saving file
 function! s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
@@ -636,6 +556,8 @@ function! s:MkNonExDir(file, buf)
     endif
 endfunction
 
+" :LogMessage
+command! -nargs=+ -complete=command LogMessage call LogMessage(<q-args>)``
 " Put command result to a new tab
 function! LogMessage(cmd)
     redir => message
