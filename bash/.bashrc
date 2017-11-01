@@ -43,16 +43,15 @@ NC="\033[m"               # Color Reset
 ALERT=${BWHITE}${ON_RED} # Bold White on red background
 
 # Hello Message
-echo -e "${BCYAN}This is BASH ${BRED}${BASH_VERSION%.*}${BCYAN}\
-- DISPLAY on ${BRED}$DISPLAY${NC}\n"
+echo -e "${BCYAN}This is BASH ${BRED}${BASH_VERSION%.*}${NC}"
 date
 
 user=`whoami`
 
 if [ "${user}" == "root" ]; then
-	export PS1="[${RED}\h ${BLUE}\W${NC}]# "
+	export PS1="\[${RED}\]\h \[${BLUE}\]\W\[${NC}\] \$ "
 else
-	export PS1="[${GREEN}\u@\h ${BLUE}\W${NC}]\$ "
+	export PS1="\[${GREEN}\]\u@\h \[${BLUE}\]\W\[${NC}\] \$ "
 fi
 
 # alias
