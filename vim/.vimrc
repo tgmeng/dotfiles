@@ -297,6 +297,7 @@ nmap <leader>O <Plug>yankstack_substitute_newer_paste
 let g:session_autoload = 'no'
 let g:session_autosave = 'prompt'
 
+let g:ctrlp_show_hidden = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo {{{1
