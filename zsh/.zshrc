@@ -1,5 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$PATH
+export PATH=$HOME/.jenv/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/tgmeng/.oh-my-zsh
@@ -89,5 +90,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+eval "$(jenv init -)"
 
 autoload -U compinit && compinit
