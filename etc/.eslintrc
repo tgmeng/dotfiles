@@ -1,0 +1,9 @@
+{
+  root: true,
+  extends: [
+    "standard",
+    "standard-react"
+  ],
+  rules: {}
+}
+
