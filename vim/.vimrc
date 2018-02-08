@@ -482,6 +482,7 @@ xnoremap & :&&<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin related mappings {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " NERDTree plugin
 nnoremap <leader>nn :NERDTreeToggle<cr>
 nnoremap <leader>nb :NERDTreeFromBookmark 
