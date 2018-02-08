@@ -5,5 +5,7 @@
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes
 	editor = /usr/bin/vim
+[commit]
+    template = ~/.gitmessage
 [diff "image"]
 	command = ~/bin/git-imgdiff
