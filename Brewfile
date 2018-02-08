@@ -24,6 +24,7 @@ brew "gnu-tar"
 brew "gnutls"
 
 brew "mas"
+brew "macvim", args: ["with-override-system-vim", "with-python3"]
 brew "the_silver_searcher"
 brew "ack"
 brew "tree"
@@ -44,14 +45,10 @@ brew "go"
 
 # Apps
 cask "iterm2"
-cask "macvim"
 cask "gitup"
 cask "beyond-compare"
 cask "dash"
 cask "licecap"
-cask "sizeup"
-cask "gas-mask"
-cask "bettertouchtool"
 cask "google-chrome"
 cask "tunnelblick"
 
@@ -68,7 +65,7 @@ mas "Manico", id: 724472954
 mas "Xee³", id: 639764244
 mas "Gapplin", id: 768053424
 mas "iHosts", id: 1102004240
-mas "iPaste", id: 1056935452
+mas "Paste", id: 967805235
 mas "Commander One", id: 1035236694
 
 mas "Bear", id: 1091189122
@@ -81,6 +78,4 @@ mas "WeChat", id: 836500024
 mas "Numbers", id: 409203825
 mas "Keynote", id: 409183694
 mas "Pages", id: 409201541
-mas "iMovie", id: 408981434
-mas "GarageBand", id: 682658836
 mas "Xcode", id: 497799835
