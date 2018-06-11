@@ -73,6 +73,7 @@ if has("mac") || has("macunix")
     set macmeta
 endif
 
+set shell=/usr/local/bin/zsh
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM user interface {{{1
