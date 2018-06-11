@@ -59,6 +59,13 @@ nmap <F5> :e!<cr>
 " Unix / & \n
 set sessionoptions+=slash
 set sessionoptions+=unix
+set sessionoptions-=help
+set sessionoptions-=buffers
+set sessionoptions-=buffers
+
+let g:session_persist_font = 0
+let g:session_persist_colors = 0
+let g:session_command_aliases = 1
 
 set mouse=a
 
