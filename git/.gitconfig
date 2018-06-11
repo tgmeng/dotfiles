@@ -9,3 +9,13 @@
     template = ~/.gitmessage
 [diff "image"]
 	command = ~/bin/git-imgdiff
+[diff]
+	tool = bc3
+[difftool "bc3"]
+	trustExitCode = true
+[merge]
+	tool = bc3
+[mergetool "bc3"]
+	trustExitCode = true
+[mergetool]
+	bc3 = trustExitCode
