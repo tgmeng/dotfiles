@@ -52,7 +52,7 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git history osx zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git autojump history osx zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,6 +84,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias ezsh="mvim ~/.zshrc"
 
 # Aliases
 
@@ -94,3 +95,11 @@ source $ZSH/oh-my-zsh.sh
 eval "$(jenv init -)"
 
 autoload -U compinit && compinit
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+[[ -f /Users/tgmeng/GitProjects/too-lazy-todo/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /Users/tgmeng/GitProjects/too-lazy-todo/node_modules/tabtab/.completions/electron-forge.zsh
