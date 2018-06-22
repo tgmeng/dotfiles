@@ -35,7 +35,6 @@ Plug 'scrooloose/syntastic'
 " Plug 'sjl/gundo.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'tgmeng/lazy-vim-snippets'
 Plug 'tommcdo/vim-exchange'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -55,6 +54,7 @@ Plug 'xolox/vim-session'
 " snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'tgmeng/lazy-vim-snippets'
 
 " ColorSchemes
 Plug 'altercation/vim-colors-solarized'
