@@ -75,6 +75,7 @@ endif
 
 set shell=/usr/local/bin/zsh
 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM user interface {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -213,99 +214,6 @@ set ffs=unix,dos,mac
 """"""""""""""""""""""""""""""
 " Format the status line below
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin related settings {{{1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" ag
-if executable('ag')
-    let g:ackprg = 'ag --nogroup --nocolor --column'
-endif
-
-" ctrlp custon ignore
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
-let g:ctrlp_working_path_mode = 'w'
-
-" UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-" NERDTree
-augroup NERDTree
-    autocmd! 
-    " open a NERDTree automatically when vim starts up
-    " autocmd vimenter * NERDTree
-
-    " open a NERDTree automatically when vim starts up if no files were specified
-    " autocmd StdinReadPre * let s:std_in=1
-    " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-    " close vim if the only window left open is a NERDTree
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
-
-" NERDCommenter
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-" Add your own custom formats or override the defaults
-" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Emmet
-let g:user_emmet_leader_key = '<C-E>'
-
-" Syntastic
-let g:syntastic_mode_map = {'mode': 'passive'}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Vim-javascript
-let g:javascript_enable_domhtmlcss = 1
-let g:javascript_ignore_javaScriptdoc = 1
-
-" Vim-jsx
-let g:jsx_ext_required = 0
-
-" Auto-pairs
-let g:AutoPairsMapSpace = 0
-
-" Git-Gutter
-let g:gitgutter_map_keys = 0
-
-" Vim-expand-region
-" Extend the global default (NOTE: Remove comments in dictionary before sourcing)
-" call expand_region#custom_text_objects({
-"       \ "\/\\n\\n\<CR>": 1, " Motions are supported as well. Here's a search motion that finds a blank line
-"       \ 'a]' :1, " Support nesting of 'around' brackets
-"       \ 'ab' :1, " Support nesting of 'around' parentheses
-"       \ 'aB' :1, " Support nesting of 'around' braces
-"       \ 'ii' :0, " 'inside indent'. Available through https://github.com/kana/vim-textobj-indent
-"       \ 'ai' :0, " 'around indent'. Available through https://github.com/kana/vim-textobj-indent
-"       \ })
-
-" Yankstack
-let g:yankstack_map_keys = 0
-nmap <leader>o <Plug>yankstack_substitute_older_paste
-nmap <leader>O <Plug>yankstack_substitute_newer_paste
-
-" Vim-session
-let g:session_autoload = 'no'
-let g:session_autosave = 'prompt'
-
-let g:ctrlp_show_hidden = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Files, backups and undo {{{1
@@ -485,6 +393,95 @@ map <leader>et :tabedit %%
 " & saves last flag
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin related settings {{{1
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" ag
+if executable('ag')
+    let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+
+" ctrlp custon ignore
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
+let g:ctrlp_working_path_mode = 'w'
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
+" NERDTree
+augroup NERDTree
+    autocmd! 
+    " open a NERDTree automatically when vim starts up
+    " autocmd vimenter * NERDTree
+
+    " open a NERDTree automatically when vim starts up if no files were specified
+    " autocmd StdinReadPre * let s:std_in=1
+    " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+    " close vim if the only window left open is a NERDTree
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+augroup END
+
+" NERDCommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+" Add your own custom formats or override the defaults
+" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Emmet
+let g:user_emmet_leader_key = '<C-E>'
+
+" Syntastic
+let g:syntastic_mode_map = {'mode': 'passive'}
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Vim-javascript
+let g:javascript_enable_domhtmlcss = 1
+let g:javascript_ignore_javaScriptdoc = 1
+
+" Vim-jsx
+let g:jsx_ext_required = 0
+
+" Auto-pairs
+let g:AutoPairsMapSpace = 0
+
+" Git-Gutter
+let g:gitgutter_map_keys = 0
+
+" Vim-expand-region
+" Extend the global default (NOTE: Remove comments in dictionary before sourcing)
+" call expand_region#custom_text_objects({
+"       \ "\/\\n\\n\<CR>": 1, " Motions are supported as well. Here's a search motion that finds a blank line
+"       \ 'a]' :1, " Support nesting of 'around' brackets
+"       \ 'ab' :1, " Support nesting of 'around' parentheses
+"       \ 'aB' :1, " Support nesting of 'around' braces
+"       \ 'ii' :0, " 'inside indent'. Available through https://github.com/kana/vim-textobj-indent
+"       \ 'ai' :0, " 'around indent'. Available through https://github.com/kana/vim-textobj-indent
+"       \ })
+
+" Vim-session
+let g:session_autoload = 'no'
+let g:session_autosave = 'prompt'
+
+let g:ctrlp_show_hidden = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
