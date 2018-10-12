@@ -45,8 +45,8 @@ hotkey.bind(hyperScreen, 'X', function() moveWindowOneScreen('next') end)
 hotkey.bind(hyperScreen, 'Z', function() moveWindowOneScreen('previous') end)
 
 -- Move mouse between monitors --
--- hotkey.bind(hyperMouse, '2', function() moveMouseOneScreen('next') end)
--- hotkey.bind(hyperMouse, '1', function() moveMouseOneScreen('previous') end)
+hotkey.bind(hyperMouse, '2', function() moveMouseOneScreen('next') end)
+hotkey.bind(hyperMouse, '1', function() moveMouseOneScreen('previous') end)
 
 -------------
 --   API   --
