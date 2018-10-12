@@ -244,12 +244,6 @@ augroup SetFiletypeAs
     autocmd BufNewFile,BufReadPost *.md set filetype=markdown
     " .ftl to HTML
     autocmd BufNewFile,BufReadPost *.ftl set filetype=html.ftl
-    " .rgl to HTML
-    autocmd BufNewFile,BufReadPost *.rgl set filetype=html
-    " .mcss to CSS
-    autocmd BufNewFile,BufReadPost *.mcss set filetype=css
-    " .vue
-    autocmd BufRead,BufNewFile *.vue set filetype=vue.javascript.html.css syntax=html
 augroup END
 
 augroup Other

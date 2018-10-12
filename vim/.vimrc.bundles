@@ -22,9 +22,10 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/matchit.zip'
-Plug 'vim-scripts/matchparenpp'
+" Plug 'vim-scripts/matchparenpp'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
+Plug 'tpope/vim-fugitive'
 
 " Search
 Plug 'mileszs/ack.vim'
