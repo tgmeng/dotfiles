@@ -1,3 +1,5 @@
+export TERM="xterm-256color"
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$PATH
 export PATH=$HOME/.jenv/bin:$PATH
@@ -7,8 +9,38 @@ export ZSH=/Users/tgmeng/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
+# Powerline
+if [ -x "$(command -v powerline-daemon)" ]; then
+    powerline-daemon -q
+    PL9K_SCRIPT=/usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+    [ -f $PL9K_SCRIPT ] && . "$PL9K_SCRIPT"
+
+    POWERLEVEL9K_MODE='nerdfont-complete'
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
+    POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{069}$%f "
+
+    POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir_writable dir vcs)
+    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history)
+
+    POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+    POWERLEVEL9K_SHORTEN_DELIMITER=""
+    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+
+    POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='silver'
+    # POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='silver'
+    # POWERLEVEL9K_DIR_HOME_FOREGROUND='silver'
+    # POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND='silver'
+
+    ZSH_THEME="powerlevel9k/powerlevel9k"
+else
+    ZSH_THEME="robbyrussell"
+fi
+
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,7 +84,7 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git autojump history osx zsh-completions zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git autojump history osx zsh-completions zsh-autosuggestions zsh-syntax-highlighting git-flow-avh)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,9 +116,10 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ezsh="mvim ~/.zshrc"
 
-# Aliases
+alias kce='eval `keychain --eval id_rsa`'
+
+alias zshconfig="mvim ~/.zshrc"
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
