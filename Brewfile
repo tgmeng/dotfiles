@@ -10,9 +10,6 @@ tap "caskroom/versions"
 brew "zsh"
 brew "bash"
 
-cask "xquartz"
-cask "java" unless system "/usr/libexec/java_home --failfast"
-
 # GNU Tools
 brew "findutils"
 brew "coreutils"
@@ -33,24 +30,23 @@ brew "rename"
 brew "tig"
 brew "stow"
 brew "tmux"
-brew "maven"
 brew "fzf"
-brew "syncthing"
-brew "cmake"
-brew "imagemagick"
 brew "jenv"
-
-brew "node"
-brew "go"
+brew "diff-so-fancy"
+brew "bat"
+brew "fd"
+brew "fzf"
+brew "jq"
+brew "tig"
+brew "tldr"
+brew "tree"
 
 # Apps
 cask "iterm2"
 cask "gitup"
 cask "beyond-compare"
 cask "dash"
-cask "licecap"
 cask "google-chrome"
-cask "tunnelblick"
 
 # Quicklook
 cask "qlcolorcode"
@@ -62,17 +58,31 @@ cask "qlimagesize"
 
 # Mac App Store apps
 mas "Manico", id: 724472954
+
 mas "Xee³", id: 639764244
 mas "Gapplin", id: 768053424
+mas "The Unarchiver", id: 425424353
 mas "iHosts", id: 1102004240
 mas "Paste", id: 967805235
-mas "Commander One", id: 1035236694
+mas "Jietu", id: 1059334054
+mas "Unsplash Wallpapers", id: 1284863847
 
 mas "Bear", id: 1091189122
 mas "Evernote", id: 406056744
+mas "XMind ZEN", id: 1327661892
+
 mas "NeteaseMusic", id: 944848654
 mas "MailMaster", id: 1233593954
-mas "QQMusic", id: 595615424
+
+mas "Quiver", id: 866773894
+mas "SnippetsLab", id: 1006087419
+mas "iHash", id: 763902043
+mas "Expressions", id: 913158085
+mas "Jayson", id: 1189824719
+
+mas "Fantastical 2", id: 975937182
+mas "TickTick", id: 966085870
+
 mas "WeChat", id: 836500024
 
 mas "Numbers", id: 409203825
