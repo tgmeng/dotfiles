@@ -121,6 +121,10 @@ alias kce='eval `keychain --eval id_rsa`'
 
 alias zshconfig="mvim ~/.zshrc"
 
+# Set Git language to English
+# alias git='LANG=en_GB git'
+alias git='LANG=en_US git'
+
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
