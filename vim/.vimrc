@@ -70,7 +70,7 @@ let g:session_command_aliases = 1
 set mouse=a
 
 if has("mac") || has("macunix")
-    set macmeta
+    silent! set macmeta
 endif
 
 set shell=/usr/local/bin/zsh
