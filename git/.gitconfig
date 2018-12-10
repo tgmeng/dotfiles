@@ -4,13 +4,16 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes
-	editor = /usr/bin/vim
+	editor = /usr/local/bin/vim
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [commit]
     template = ~/.gitmessage
 [diff "image"]
 	command = ~/bin/git-imgdiff
 [diff]
 	tool = bc3
+[difftool]
+	prompt = false
 [difftool "bc3"]
 	trustExitCode = true
 [merge]
@@ -19,3 +22,18 @@
 	trustExitCode = true
 [mergetool]
 	bc3 = trustExitCode
+	prompt = false
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
