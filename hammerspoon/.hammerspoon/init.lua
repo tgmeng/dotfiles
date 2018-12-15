@@ -3,6 +3,7 @@ local window = require 'hs.window'
 local geometry = require 'hs.geometry'
 local drawing = require 'hs.drawing'
 local mouse = require 'hs.mouse'
+local keycodes = require 'hs.keycodes'
 local spaces = require 'hs._asm.undocumented.spaces'
 
 window.animationDuration = 0
@@ -45,8 +46,25 @@ hotkey.bind(hyperScreen, 'X', function() moveWindowOneScreen('next') end)
 hotkey.bind(hyperScreen, 'Z', function() moveWindowOneScreen('previous') end)
 
 -- Move mouse between monitors --
-hotkey.bind(hyperMouse, '2', function() moveMouseOneScreen('next') end)
-hotkey.bind(hyperMouse, '1', function() moveMouseOneScreen('previous') end)
+local mouseBinds = {
+    hotkey.bind(hyperMouse, '2', function() moveMouseOneScreen('next') end),
+    hotkey.bind(hyperMouse, '1', function() moveMouseOneScreen('previous') end)
+}
+local enabled = true
+hotkey.bind(hyperMouse, keycodes.map['escape'], function()
+    enabled = not enabled
+    for _, hkObj in ipairs(mouseBinds) do
+        if enabled then hkObj:enable()
+        else hkObj:disable()
+        end
+    end
+
+    local msg = nil
+    if enabled then msg = 'Move mouse enabled'
+    else msg = 'Move mouse disabled'
+    end
+    hs.alert.show(msg)
+end)
 
 -------------
 --   API   --
