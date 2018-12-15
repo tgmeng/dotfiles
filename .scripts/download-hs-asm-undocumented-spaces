@@ -1,0 +1,9 @@
+FILE='spaces'
+
+if [[ ! -d $FILE ]]; then
+    echo "git cloning to $FILE..."
+    git clone https://github.com/asmagill/hs._asm.undocumented.spaces "$FILE"
+fi
+make -C "$FILE" install
+
+trap 'rm -rf "$FILE"' EXIT
