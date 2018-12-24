@@ -32,6 +32,7 @@ Plug 'mileszs/ack.vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/syntastic'
 " Plug 'sjl/gundo.vim'
 Plug 'terryma/vim-expand-region'
