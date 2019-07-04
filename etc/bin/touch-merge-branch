@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+current_branch=$(git symbolic-ref --short HEAD)
+merge_branch=merge/$(date +"%Y%m%d")
+
+log() {
+    echo "🤖 "$@
+}
+
+if ! git ls-remote --heads --tags origin | grep -q "$merge_branch"
+then
+    log "当前: \"$current_branch\""
+
+    week=$(date +"%u")
+
+    if [ "$week" = "1" ]
+    then
+        from=master
+    else
+        from=merge/$(gdate --date="yesterday" +"%Y%m%d")
+        if ! git show-ref --quiet refs/heads/$from
+        then
+            from=master
+        fi
+    fi
+
+    log "从 \"$from\" 创建: \"$merge_branch\""
+    git checkout $from
+    git checkout -b $merge_branch
+
+    log "推送: \"$merge_branch\""
+    git push --set-upstream origin $merge_branch --no-verify
+
+    log "切换回: \"$current_branch\"!"
+    git checkout $current_branch
+else
+    log "已存在 \"$merge_branch\""
+fi

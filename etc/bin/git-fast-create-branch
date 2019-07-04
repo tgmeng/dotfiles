@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+branch_name="$1_"$(date +%Y%m%d)
+echo "🤖 将创建 \"$branch_name\""
+git checkout -b $branch_name
+git push --set-upstream origin $branch_name --no-verify
