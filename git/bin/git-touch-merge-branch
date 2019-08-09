@@ -35,4 +35,5 @@ then
     git checkout $current_branch
 else
     log "已存在 \"$merge_branch\""
+    git checkout $merge_branch
 fi
