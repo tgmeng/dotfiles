@@ -34,6 +34,8 @@ export LANG=en_US.UTF-8
 
 source ~/.zsh/aliases.zsh
 
+[ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
+
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

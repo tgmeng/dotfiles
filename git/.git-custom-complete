@@ -1,0 +1,13 @@
+
+_git_delete_local_and_remote_branch ()
+{
+  # you can return anything here for the autocompletion for example all the branches
+  __gitcomp_nl "$(__git_refs)"
+}
+
+_git_rm_submodule ()
+{
+  submodules=$(git config --file .gitmodules --get-regexp path | awk '{ print $2 }')
+  # you can return anything here for the autocompletion for example all the branches
+  __gitcomp_nl "$submodules"
+}
