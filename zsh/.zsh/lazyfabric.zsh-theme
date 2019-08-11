@@ -1,14 +1,6 @@
 # Powered By https://github.com/denysdovhan/spaceship-prompt
 
 # ------------------------------------------------------------------------------
-# Icon
-# ------------------------------------------------------------------------------
-
-local icon_nl=$emoji[rightwards_arrow_with_hook]
-local icon_node=$(echo -e '\uf898')
-local icon_branch=$(echo -e '\uf418')
-
-# ------------------------------------------------------------------------------
 # Git
 # ------------------------------------------------------------------------------
 
@@ -164,16 +156,23 @@ function lf_check_node_version() {
 }
 
 # ------------------------------------------------------------------------------
+# Icon
+# ------------------------------------------------------------------------------
+
+local icon_node=$(echo -e '\uf898')
+local icon_branch=$(echo -e '\uf418')
+
+# ------------------------------------------------------------------------------
 # Prompt
 # ------------------------------------------------------------------------------
 
 local ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
+local nl="%{$fg[green]%}❯%{$fg[reset_color]%}"
 
 PROMPT='
 $ret_status \
 %{$fg[cyan]%}%~%{$reset_color%} \
-❯ \
 $(lf_git_prompt_info) \
 $(lf_check_node_version) \
 $(lf_jobs)
-$icon_nl '
+$nl '
