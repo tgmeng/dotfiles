@@ -8,7 +8,6 @@ local icon_nl=$emoji[rightwards_arrow_with_hook]
 local icon_node=$(echo -e '\uf898')
 local icon_branch=$(echo -e '\uf418')
 
-
 # ------------------------------------------------------------------------------
 # Git
 # ------------------------------------------------------------------------------
@@ -22,8 +21,8 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$reset_color%}"
 function lf_git_prompt_info() {
   local ref
   if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
-    ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
-    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
+    ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
+      ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
     echo "${ZSH_THEME_GIT_PROMPT_PREFIX}${ref#refs/heads/}$(lf_git_status)${ZSH_THEME_GIT_PROMPT_SUFFIX}"
   fi
 }
@@ -46,36 +45,36 @@ LF_GIT_STATUS_DIVERGED="${LF_GIT_STATUS_DIVERGED="⇕"}"
 function lf_git_status() {
   local INDEX git_status=""
 
-  INDEX=$(command git status --porcelain -b 2> /dev/null)
+  INDEX=$(command git status --porcelain -b 2>/dev/null)
 
   # Check for untracked files
-  if $(echo "$INDEX" | command grep -E '^\?\? ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep -E '^\?\? ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_UNTRACKED$git_status"
   fi
 
   # Check for staged files
-  if $(echo "$INDEX" | command grep '^A[ MDAU] ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^A[ MDAU] ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_ADDED$git_status"
-  elif $(echo "$INDEX" | command grep '^M[ MD] ' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^M[ MD] ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_ADDED$git_status"
-  elif $(echo "$INDEX" | command grep '^UA' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^UA' &>/dev/null); then
     git_status="$LF_GIT_STATUS_ADDED$git_status"
   fi
 
   # Check for modified files
-  if $(echo "$INDEX" | command grep '^[ MARC]M ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^[ MARC]M ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_MODIFIED$git_status"
   fi
 
   # Check for renamed files
-  if $(echo "$INDEX" | command grep '^R[ MD] ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^R[ MD] ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_RENAMED$git_status"
   fi
 
   # Check for deleted files
-  if $(echo "$INDEX" | command grep '^[MARCDU ]D ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^[MARCDU ]D ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_DELETED$git_status"
-  elif $(echo "$INDEX" | command grep '^D[ UM] ' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^D[ UM] ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_DELETED$git_status"
   fi
 
@@ -85,25 +84,25 @@ function lf_git_status() {
   fi
 
   # Check for unmerged files
-  if $(echo "$INDEX" | command grep '^U[UDA] ' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^U[UDA] ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_UNMERGED$git_status"
-  elif $(echo "$INDEX" | command grep '^AA ' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^AA ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_UNMERGED$git_status"
-  elif $(echo "$INDEX" | command grep '^DD ' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^DD ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_UNMERGED$git_status"
-  elif $(echo "$INDEX" | command grep '^[DA]U ' &> /dev/null); then
+  elif $(echo "$INDEX" | command grep '^[DA]U ' &>/dev/null); then
     git_status="$LF_GIT_STATUS_UNMERGED$git_status"
   fi
 
   # Check whether branch is ahead
   local is_ahead=false
-  if $(echo "$INDEX" | command grep '^## [^ ]\+ .*ahead' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^## [^ ]\+ .*ahead' &>/dev/null); then
     is_ahead=true
   fi
 
   # Check whether branch is behind
   local is_behind=false
-  if $(echo "$INDEX" | command grep '^## [^ ]\+ .*behind' &> /dev/null); then
+  if $(echo "$INDEX" | command grep '^## [^ ]\+ .*behind' &>/dev/null); then
     is_behind=true
   fi
 
@@ -138,7 +137,7 @@ LF_JOBS_AMOUNT_THRESHOLD="${LF_JOBS_AMOUNT_THRESHOLD=1}"
 lf_jobs() {
   [[ $LF_JOBS_SHOW == false ]] && return
 
-  local jobs_amount=$( jobs -d | awk '!/pwd/' | wc -l | tr -d " ")
+  local jobs_amount=$(jobs -d | awk '!/pwd/' | wc -l | tr -d " ")
 
   [[ $jobs_amount -gt 0 ]] || return
 
@@ -157,11 +156,11 @@ lf_jobs() {
 # ------------------------------------------------------------------------------
 # Node
 # ------------------------------------------------------------------------------
-function lf_check_node_version () {
-    if [[ -f package.json ]] then;
-        local version=$(node --version)
-        echo "%{$fg[white]%}[%{$fg[green]%}${icon_node} ${version}%{$fg[white]%}]%{$reset_color%}"
-    fi
+function lf_check_node_version() {
+  if [[ -f package.json ]]; then
+    local version=$(node --version)
+    echo "%{$fg[white]%}[%{$fg[green]%}${icon_node} ${version}%{$fg[white]%}]%{$reset_color%}"
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -173,8 +172,8 @@ local ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
 PROMPT='
 $ret_status \
 %{$fg[cyan]%}%~%{$reset_color%} \
+❯ \
 $(lf_git_prompt_info) \
 $(lf_check_node_version) \
 $(lf_jobs)
 $icon_nl '
-
