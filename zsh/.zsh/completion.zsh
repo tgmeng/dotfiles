@@ -12,6 +12,8 @@ setopt always_to_end
 
 # use menu like selection mode.
 zstyle ':completion:*:*:*:*:*' menu select
+# tab completion not using dir_colors
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
 zmodload -i zsh/complist
 
