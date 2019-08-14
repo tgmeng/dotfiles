@@ -1,89 +1,107 @@
 # Powered By https://github.com/denysdovhan/spaceship-prompt
 
 # ------------------------------------------------------------------------------
+# Color
+# ------------------------------------------------------------------------------
+
+typeset -gA lf_prompt_colors
+lf_prompt_colors=(
+  dir $fg[cyan]
+  symbol $fg[green]
+  node:border $fg[white]
+  node:icon_version $fg[green]
+  git:icon $fg[blue]
+  git:border $fg[blue]
+  git:untracked $fg[white]
+  git:added $fg[green]
+  git:modified $fg[blue]
+  git:renamed $fg[blue]
+  git:deleted $fg[red]
+  git:stashed $fg[yellow]
+  git:unmerged $fg[red]
+  jobs $fg[green]
+)
+
+# ------------------------------------------------------------------------------
 # Git
 # ------------------------------------------------------------------------------
 
 # Git Prompt
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[blue]%}[%{$icon_branch%}%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[blue]%}]%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$reset_color%}"
+typeset -g lf_git_prompt_icon=$(echo -e '\uf418')
+typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$lf_prompt_colors[git:icon]%}%{$lf_git_prompt_icon%}%{$reset_color%} "
+typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
 
-function lf_git_prompt_info() {
+lf_git_prompt_info() {
   local ref
-  if [[ "$(command git config --get oh-my-zsh.hide-status 2>/dev/null)" != "1" ]]; then
-    ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
-      ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
-    echo "${ZSH_THEME_GIT_PROMPT_PREFIX}${ref#refs/heads/}$(lf_git_status)${ZSH_THEME_GIT_PROMPT_SUFFIX}"
-  fi
+  ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
+    ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
+  echo "${lf_git_prompt_prefix}${ref#refs/heads/}$(lf_git_status)${lf_git_prompt_suffix}"
 }
 
 # Git status
-LF_GIT_STATUS_SHOW="${LF_GIT_STATUS_SHOW=true}"
-LF_GIT_STATUS_PREFIX="${LF_GIT_STATUS_PREFIX=" "}"
-LF_GIT_STATUS_SUFFIX="${LF_GIT_STATUS_SUFFIX="$reset_color"}"
-LF_GIT_STATUS_UNTRACKED="${LF_GIT_STATUS_UNTRACKED="%{$fg[white]%}?"}"
-LF_GIT_STATUS_ADDED="${LF_GIT_STATUS_ADDED="%{$fg[green]%}+"}"
-LF_GIT_STATUS_MODIFIED="${LF_GIT_STATUS_MODIFIED="%{$fg[blue]%}!"}"
-LF_GIT_STATUS_RENAMED="${LF_GIT_STATUS_RENAMED="%{$fg[blue]»"}"
-LF_GIT_STATUS_DELETED="${LF_GIT_STATUS_DELETED="%{$fg[red]%}✘"}"
-LF_GIT_STATUS_STASHED="${LF_GIT_STATUS_STASHED="%{$fg[yellow]%}$"}"
-LF_GIT_STATUS_UNMERGED="${LF_GIT_STATUS_UNMERGED="%{$fg[red]%}="}"
-LF_GIT_STATUS_AHEAD="${LF_GIT_STATUS_AHEAD="⇡"}"
-LF_GIT_STATUS_BEHIND="${LF_GIT_STATUS_BEHIND="⇣"}"
-LF_GIT_STATUS_DIVERGED="${LF_GIT_STATUS_DIVERGED="⇕"}"
+typeset -g lf_git_status_prefix=" "
+typeset -g lf_git_status_suffix="$reset_color"
+typeset -g lf_git_status_untracked="%{$lf_prompt_colors[git:untracked]%}?"
+typeset -g lf_git_status_added="%{$lf_prompt_colors[git:added]%}+"
+typeset -g lf_git_status_modified="%{$lf_prompt_colors[git:modified]%}!"
+typeset -g lf_git_status_renamed="%{$lf_prompt_colors[git:renamed]%}»"
+typeset -g lf_git_status_deleted="%{$lf_prompt_colors[git:deleted]%}✘"
+typeset -g lf_git_status_stashed="%{$lf_prompt_colors[git:stashed]%}$"
+typeset -g lf_git_status_unmerged="%{$lf_prompt_colors[git:unmerged]%}="
+typeset -g lf_git_status_ahead="⇡"
+typeset -g lf_git_status_behind="⇣"
+typeset -g lf_git_status_diverged="⇕"
 
-function lf_git_status() {
+lf_git_status() {
   local INDEX git_status=""
 
   INDEX=$(command git status --porcelain -b 2>/dev/null)
 
   # Check for untracked files
   if $(echo "$INDEX" | command grep -E '^\?\? ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_UNTRACKED$git_status"
+    git_status="$lf_git_status_untracked$git_status"
   fi
 
   # Check for staged files
   if $(echo "$INDEX" | command grep '^A[ MDAU] ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_ADDED$git_status"
+    git_status="$lf_git_status_added$git_status"
   elif $(echo "$INDEX" | command grep '^M[ MD] ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_ADDED$git_status"
+    git_status="$lf_git_status_added$git_status"
   elif $(echo "$INDEX" | command grep '^UA' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_ADDED$git_status"
+    git_status="$lf_git_status_added$git_status"
   fi
 
   # Check for modified files
   if $(echo "$INDEX" | command grep '^[ MARC]M ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_MODIFIED$git_status"
+    git_status="$lf_git_status_modified$git_status"
   fi
 
   # Check for renamed files
   if $(echo "$INDEX" | command grep '^R[ MD] ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_RENAMED$git_status"
+    git_status="$lf_git_status_renamed$git_status"
   fi
 
   # Check for deleted files
   if $(echo "$INDEX" | command grep '^[MARCDU ]D ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_DELETED$git_status"
+    git_status="$lf_git_status_deleted$git_status"
   elif $(echo "$INDEX" | command grep '^D[ UM] ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_DELETED$git_status"
+    git_status="$lf_git_status_deleted$git_status"
   fi
 
   # Check for stashes
   if $(command git rev-parse --verify refs/stash >/dev/null 2>&1); then
-    git_status="$LF_GIT_STATUS_STASHED$git_status"
+    git_status="$lf_git_status_stashed$git_status"
   fi
 
   # Check for unmerged files
   if $(echo "$INDEX" | command grep '^U[UDA] ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_UNMERGED$git_status"
+    git_status="$lf_git_status_unmerged$git_status"
   elif $(echo "$INDEX" | command grep '^AA ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_UNMERGED$git_status"
+    git_status="$lf_git_status_unmerged$git_status"
   elif $(echo "$INDEX" | command grep '^DD ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_UNMERGED$git_status"
+    git_status="$lf_git_status_unmerged$git_status"
   elif $(echo "$INDEX" | command grep '^[DA]U ' &>/dev/null); then
-    git_status="$LF_GIT_STATUS_UNMERGED$git_status"
+    git_status="$lf_git_status_unmerged$git_status"
   fi
 
   # Check whether branch is ahead
@@ -100,15 +118,15 @@ function lf_git_status() {
 
   # Check wheather branch has diverged
   if [[ "$is_ahead" == true && "$is_behind" == true ]]; then
-    git_status="$LF_GIT_STATUS_DIVERGED$git_status"
+    git_status="$lf_git_status_diverged$git_status"
   else
-    [[ "$is_ahead" == true ]] && git_status="${LF_GIT_STATUS_AHEAD}$git_status"
-    [[ "$is_behind" == true ]] && git_status="${LF_GIT_STATUS_BEHIND}$git_status"
+    [[ "$is_ahead" == true ]] && git_status="${lf_git_status_ahead}$git_status"
+    [[ "$is_behind" == true ]] && git_status="${lf_git_status_behind}$git_status"
   fi
 
   if [[ -n $git_status ]]; then
     # Status prefixes are colorized
-    echo "${LF_GIT_STATUS_PREFIX}${git_status}${LF_GIT_STATUS_SUFFIX}"
+    echo "${lf_git_status_prefix}${git_status}${lf_git_status_suffix}"
   fi
 }
 
@@ -116,63 +134,130 @@ function lf_git_status() {
 # Background jobs
 # ------------------------------------------------------------------------------
 
-LF_JOBS_SHOW="${LF_JOBS_SHOW=true}"
-LF_JOBS_PREFIX="${LF_JOBS_PREFIX=""}"
-LF_JOBS_SUFFIX="${LF_JOBS_SUFFIX=" "}"
-LF_JOBS_SYMBOL="${LF_JOBS_SYMBOL="✦"}"
-LF_JOBS_COLOR="${LF_JOBS_COLOR="%{$fg[green]%}"}"
-LF_JOBS_AMOUNT_PREFIX="${LF_JOBS_AMOUNT_PREFIX=""}"
-LF_JOBS_AMOUNT_SUFFIX="${LF_JOBS_AMOUNT_SUFFIX=""}"
-LF_JOBS_AMOUNT_THRESHOLD="${LF_JOBS_AMOUNT_THRESHOLD=1}"
+typeset -g lf_jobs_show="${lf_jobs_show=true}"
+typeset -g lf_jobs_prefix="${lf_jobs_prefix=""}"
+typeset -g lf_jobs_suffix="${lf_jobs_suffix=" "}"
+typeset -g lf_jobs_symbol="${lf_jobs_symbol="✦"}"
+typeset -g lf_jobs_color="${lf_jobs_color="%{$lf_prompt_colors[jobs]%}"}"
+typeset -g lf_jobs_amount_prefix="${lf_jobs_amount_prefix=""}"
+typeset -g lf_jobs_amount_suffix="${lf_jobs_amount_suffix=""}"
+typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
 # Show icon if there's a working jobs in the background
 lf_jobs() {
-  [[ $LF_JOBS_SHOW == false ]] && return
+  [[ $lf_jobs_show == false ]] && return
 
   local jobs_amount=$(jobs -d | awk '!/pwd/' | wc -l | tr -d " ")
 
   [[ $jobs_amount -gt 0 ]] || return
 
-  if [[ $jobs_amount -le $LF_JOBS_AMOUNT_THRESHOLD ]]; then
+  if [[ $jobs_amount -le $lf_jobs_amount_threshold ]]; then
     jobs_amount=''
-    LF_JOBS_AMOUNT_PREFIX=''
-    LF_JOBS_AMOUNT_SUFFIX=''
+    lf_jobs_amount_prefix=''
+    lf_jobs_amount_suffix=''
   fi
 
-  echo "$LF_JOBS_COLOR" \
-    "$LF_JOBS_PREFIX" \
-    "${LF_JOBS_SYMBOL}${LF_JOBS_AMOUNT_PREFIX}${jobs_amount}${LF_JOBS_AMOUNT_SUFFIX}" \
-    "$LF_JOBS_SUFFIX"
+  echo "$lf_jobs_color" \
+    "$lf_jobs_prefix" \
+    "${lf_jobs_symbol}${lf_jobs_amount_prefix}${jobs_amount}${lf_jobs_amount_suffix}" \
+    "$lf_jobs_suffix"
 }
 
 # ------------------------------------------------------------------------------
 # Node
 # ------------------------------------------------------------------------------
-function lf_check_node_version() {
+
+typeset -g lf_node_icon=$(echo -e '\uf898')
+
+lf_check_node_version() {
   if [[ -f package.json ]]; then
     local version=$(node --version)
-    echo "%{$fg[white]%}[%{$fg[green]%}${icon_node} ${version}%{$fg[white]%}]%{$reset_color%}"
+    echo "%{$lf_prompt_colors[node:border]%}[%{$lf_prompt_colors[node:icon_version]%}${lf_node_icon} ${version}%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
   fi
 }
 
 # ------------------------------------------------------------------------------
-# Icon
+# Async
 # ------------------------------------------------------------------------------
 
-local icon_node=$(echo -e '\uf898')
-local icon_branch=$(echo -e '\uf418')
+typeset -g lf_prompt_async_init=0
+
+lf_prompt_async_callback() {
+  local job=$1 code=$2 output=$3 exec_time=$4 next_pending=$6
+
+  case $job in
+  \[async])
+    # Code is 1 for corrupted worker output and 2 for dead worker.
+    if [[ $code -eq 2 ]]; then
+      # Our worker died unexpectedly.
+      lf_prompt_async_init=0
+    fi
+    ;;
+  lf_git_prompt_info)
+    lf_prompt_git_status="$output"
+    ;;
+  lf_check_node_version)
+    lf_prompt_node_status="$output"
+    ;;
+  esac
+
+  lf_prompt_render
+  lf_prompt_reset
+}
+
+lf_prompt_async_tasks() {
+  # init the async worker
+  ((!${lf_prompt_async_init:-0})) && {
+    async_start_worker "lf_prompt" -n
+    async_register_callback "lf_prompt" lf_prompt_async_callback
+    lf_prompt_async_init=1
+  }
+
+  # update the current working directory of the async worker
+  async_worker_eval "lf_prompt" builtin cd -q $PWD
+
+  async_job "lf_prompt" lf_git_prompt_info
+  async_job "lf_prompt" lf_check_node_version
+}
 
 # ------------------------------------------------------------------------------
 # Prompt
 # ------------------------------------------------------------------------------
 
-local ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
-local nl="%{$fg[green]%}❯%{$fg[reset_color]%}"
+typeset -g lf_prompt_ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
+typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
+typeset -g lf_prompt_git_status=""
+typeset -g lf_prompt_node_status=""
 
-PROMPT='
-$ret_status \
-%{$fg[cyan]%}%~%{$reset_color%} \
-$(lf_git_prompt_info) \
-$(lf_check_node_version) \
-$(lf_jobs)
-$nl '
+lf_prompt_precmd() {
+  lf_prompt_git_status=""
+  lf_prompt_node_status=""
+
+  lf_prompt_async_tasks
+}
+
+lf_prompt_reset() {
+  zle && zle .reset-prompt
+}
+
+lf_prompt_render() {
+  PROMPT='
+$lf_prompt_ret_status \
+%{$lf_prompt_colors[dir]%}%~%{$reset_color%} \
+$lf_prompt_git_status \
+$lf_prompt_node_status \
+$lf_jobs
+$lf_prompt_symbol '
+}
+
+lf_prompt_init() {
+  zmodload zsh/zle
+
+  autoload -Uz add-zsh-hook
+
+  add-zsh-hook precmd lf_prompt_precmd
+
+  lf_prompt_render
+}
+
+lf_prompt_init
