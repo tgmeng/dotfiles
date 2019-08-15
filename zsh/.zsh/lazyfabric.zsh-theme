@@ -31,11 +31,16 @@ typeset -g lf_git_prompt_icon=$(echo -e '\uf418')
 typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$lf_prompt_colors[git:icon]%}%{$lf_git_prompt_icon%}%{$reset_color%} "
 typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
 
-lf_git_prompt_info() {
+lf_git_prompt_info_async() {
   local ref
   ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
     ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
-  echo "${lf_git_prompt_prefix}${ref#refs/heads/}$(lf_git_status)${lf_git_prompt_suffix}"
+
+  typeset -A info 
+  info[pwd]=$PWD
+  info[data]="${lf_git_prompt_prefix}${ref#refs/heads/}$(lf_git_status)${lf_git_prompt_suffix}"
+
+  print -r - ${(@kvq)info}
 }
 
 # Git status
@@ -169,11 +174,18 @@ lf_jobs() {
 
 typeset -g lf_node_icon=$(echo -e '\uf898')
 
-lf_check_node_version() {
+lf_check_node_version_async() {
+  setopt local_options no_sh_word_split
+
+  typeset -A info
+  info[pwd]=$PWD
+
   if [[ -f package.json ]]; then
     local version=$(node --version)
-    echo "%{$lf_prompt_colors[node:border]%}[%{$lf_prompt_colors[node:icon_version]%}${lf_node_icon} ${version}%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
+    info[data]="%{$lf_prompt_colors[node:border]%}[%{$lf_prompt_colors[node:icon_version]%}${lf_node_icon} ${version}%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
   fi
+
+  print -r - ${(@kvq)info}
 }
 
 # ------------------------------------------------------------------------------
@@ -183,26 +195,43 @@ lf_check_node_version() {
 typeset -g lf_prompt_async_init=0
 
 lf_prompt_async_callback() {
+  setopt local_options no_sh_word_split
+
   local job=$1 code=$2 output=$3 exec_time=$4 next_pending=$6
+
+  local do_render=0
+
+  local -A info
+  if [[ -n $output ]]; then
+    info=("${(Q@)${(z)output}}")
+  fi
+
+  if [[ $info[pwd] != $PWD ]]; then
+    return
+  fi
 
   case $job in
   \[async])
-    # Code is 1 for corrupted worker output and 2 for dead worker.
+    # code is 1 for corrupted worker output and 2 for dead worker
     if [[ $code -eq 2 ]]; then
-      # Our worker died unexpectedly.
+      # worker died unexpectedly
       lf_prompt_async_init=0
     fi
     ;;
-  lf_git_prompt_info)
-    lf_prompt_git_status="$output"
+  lf_git_prompt_info_async)
+    lf_prompt_git_status="$info[data]"
+    do_render=1
     ;;
-  lf_check_node_version)
-    lf_prompt_node_status="$output"
+  lf_check_node_version_async)
+    lf_prompt_node_status="$info[data]"
+    do_render=1
     ;;
   esac
 
-  lf_prompt_render
-  lf_prompt_reset
+  if ((do_render)); then
+    lf_prompt_render
+    lf_prompt_reset
+  fi
 }
 
 lf_prompt_async_tasks() {
@@ -216,8 +245,8 @@ lf_prompt_async_tasks() {
   # update the current working directory of the async worker
   async_worker_eval "lf_prompt" builtin cd -q $PWD
 
-  async_job "lf_prompt" lf_git_prompt_info
-  async_job "lf_prompt" lf_check_node_version
+  async_job "lf_prompt" lf_git_prompt_info_async
+  async_job "lf_prompt" lf_check_node_version_async
 }
 
 # ------------------------------------------------------------------------------
