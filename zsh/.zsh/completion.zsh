@@ -15,6 +15,13 @@ zstyle ':completion:*:*:*:*:*' menu select
 # tab completion not using dir_colors
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
+# case insensitive (all), partial-word and substring completion
+# zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+# case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+# case insensitive and hyphen insensitive
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+
 zmodload -i zsh/complist
 
 # autoload completion
