@@ -11,4 +11,4 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
 
-zplug load --verbose
+zplug load
