@@ -31,3 +31,5 @@ alias kce='eval `keychain --eval id_rsa`'
 alias zshrc='mvim ~/.zshrc'
 
 alias c='code .'
+alias f='fork .'
+alias o='open .'
