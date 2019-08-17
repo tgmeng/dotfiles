@@ -283,6 +283,7 @@ lf_prompt_render() {
     ${(j. .)prompt_statuses}
     $prompt_newline
     $lf_prompt_symbol 
+    ' '
   )
 
   PROMPT=${(j..)prompt_parts}
