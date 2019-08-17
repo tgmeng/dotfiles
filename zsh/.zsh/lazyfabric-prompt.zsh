@@ -1,5 +1,3 @@
-# Powered By https://github.com/denysdovhan/spaceship-prompt
-
 # ------------------------------------------------------------------------------
 # Color
 # ------------------------------------------------------------------------------
@@ -230,7 +228,6 @@ lf_prompt_async_callback() {
 
   if ((do_render)); then
     lf_prompt_render
-    lf_prompt_reset
   fi
 }
 
@@ -253,6 +250,7 @@ lf_prompt_async_tasks() {
 # Prompt
 # ------------------------------------------------------------------------------
 
+typeset -g lf_prompt_last=""
 typeset -g lf_prompt_ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
 typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
 typeset -g lf_prompt_git_status=""
@@ -270,13 +268,32 @@ lf_prompt_reset() {
 }
 
 lf_prompt_render() {
-  PROMPT='
-$lf_prompt_ret_status \
-%{$lf_prompt_colors[dir]%}%~%{$reset_color%} \
-$lf_prompt_git_status \
-$lf_prompt_node_status \
-$lf_jobs
-$lf_prompt_symbol '
+  local -a prompt_statuses=(
+    $lf_prompt_ret_status
+    %{$lf_prompt_colors[dir]%}%~%{$reset_color%}
+    $lf_prompt_git_status
+    $lf_prompt_node_status
+    $lf_jobs
+  )
+
+  local prompt_newline=$'\n%{\r%}'
+
+  local -a prompt_parts=(
+    $prompt_newline
+    ${(j. .)prompt_statuses}
+    $prompt_newline
+    $lf_prompt_symbol 
+  )
+
+  PROMPT=${(j..)prompt_parts}
+
+  local expanded_prompt="${(S%%)PROMPT}"
+
+  if [[ $lf_prompt_last != $expanded_prompt ]]; then
+    lf_prompt_reset
+  fi
+
+  lf_prompt_last=$expanded_prompt
 }
 
 lf_prompt_init() {

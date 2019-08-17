@@ -28,7 +28,7 @@ source ~/.zsh/aliases.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/completion.zsh
 
-source ~/.zsh/lazyfabric.zsh-theme
+source ~/.zsh/lazyfabric-prompt.zsh
 
 [ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
 
