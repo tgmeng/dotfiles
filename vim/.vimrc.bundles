@@ -12,54 +12,58 @@ call plug#begin(s:bundle_path)
 
 Plug 'tpope/vim-sensible'
 
-Plug 'editorconfig/editorconfig-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/matchit.zip'
-" Plug 'vim-scripts/matchparenpp'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
-Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/matchit.zip'
+Plug 'vim-scripts/matchparenpp'
 
-" Search
 Plug 'mileszs/ack.vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/syntastic'
+
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
 " Plug 'sjl/gundo.vim'
+
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
+
 Plug 'tommcdo/vim-exchange'
+
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+
 Plug 'vim-airline/vim-airline'
 
 " Syntax
 Plug 'sheerun/vim-polyglot'
 Plug 'tgmeng/ftl-vim-syntax'
 
-" session manage
+" Session manage
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
 
-" snippets
+" Snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'tgmeng/lazy-vim-snippets'
 
 " ColorSchemes
-Plug 'altercation/vim-colors-solarized'
 Plug 'tomasr/molokai'
 
 call plug#end()
