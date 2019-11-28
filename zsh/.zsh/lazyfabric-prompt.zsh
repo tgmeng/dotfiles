@@ -137,33 +137,21 @@ lf_git_status() {
 # Background jobs
 # ------------------------------------------------------------------------------
 
-typeset -g lf_jobs_show="${lf_jobs_show=true}"
-typeset -g lf_jobs_prefix="${lf_jobs_prefix=""}"
-typeset -g lf_jobs_suffix="${lf_jobs_suffix=" "}"
 typeset -g lf_jobs_symbol="${lf_jobs_symbol="✦"}"
 typeset -g lf_jobs_color="${lf_jobs_color="%{$lf_prompt_colors[jobs]%}"}"
-typeset -g lf_jobs_amount_prefix="${lf_jobs_amount_prefix=""}"
-typeset -g lf_jobs_amount_suffix="${lf_jobs_amount_suffix=""}"
 typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
 # Show icon if there's a working jobs in the background
 lf_jobs() {
-  [[ $lf_jobs_show == false ]] && return
-
   local jobs_amount=$(jobs -d | awk '!/pwd/' | wc -l | tr -d " ")
 
   [[ $jobs_amount -gt 0 ]] || return
 
   if [[ $jobs_amount -le $lf_jobs_amount_threshold ]]; then
     jobs_amount=''
-    lf_jobs_amount_prefix=''
-    lf_jobs_amount_suffix=''
   fi
 
-  echo "$lf_jobs_color" \
-    "$lf_jobs_prefix" \
-    "${lf_jobs_symbol}${lf_jobs_amount_prefix}${jobs_amount}${lf_jobs_amount_suffix}" \
-    "$lf_jobs_suffix"
+  echo "${lf_jobs_color}${lf_jobs_symbol}${jobs_amount}"
 }
 
 # ------------------------------------------------------------------------------
@@ -273,7 +261,7 @@ lf_prompt_render() {
     %{$lf_prompt_colors[dir]%}%~%{$reset_color%}
     $lf_prompt_git_status
     $lf_prompt_node_status
-    $lf_jobs
+    `lf_jobs`
   )
 
   local prompt_newline=$'\n%{\r%}'
