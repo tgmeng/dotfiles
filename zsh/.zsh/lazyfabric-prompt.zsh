@@ -5,9 +5,7 @@
 typeset -gA lf_prompt_colors
 lf_prompt_colors=(
   dir $fg[cyan]
-  symbol $fg[green]
-  node:border $fg[white]
-  node:icon_version $fg[green]
+  symbol $fg[blue]
   git:icon $fg[blue]
   git:border $fg[blue]
   git:untracked $fg[white]
@@ -17,7 +15,7 @@ lf_prompt_colors=(
   git:deleted $fg[red]
   git:stashed $fg[yellow]
   git:unmerged $fg[red]
-  jobs $fg[green]
+  jobs $fg[white]
 )
 
 # ------------------------------------------------------------------------------
@@ -28,8 +26,9 @@ lf_prompt_colors=(
 typeset -g lf_git_prompt_icon=$(echo -e '\uf418')
 typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$lf_prompt_colors[git:icon]%}%{$lf_git_prompt_icon%}%{$reset_color%} "
 typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
+typeset -g lf_git_prompt_loading="${lf_git_prompt_prefix}⏳ loading${lf_git_prompt_suffix}"
 
-lf_git_prompt_info_async() {
+lf_git_status_async() {
   local ref
   ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
     ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
@@ -42,8 +41,6 @@ lf_git_prompt_info_async() {
 }
 
 # Git status
-typeset -g lf_git_status_prefix=" "
-typeset -g lf_git_status_suffix="$reset_color"
 typeset -g lf_git_status_untracked="%{$lf_prompt_colors[git:untracked]%}?"
 typeset -g lf_git_status_added="%{$lf_prompt_colors[git:added]%}+"
 typeset -g lf_git_status_modified="%{$lf_prompt_colors[git:modified]%}!"
@@ -129,7 +126,7 @@ lf_git_status() {
 
   if [[ -n $git_status ]]; then
     # Status prefixes are colorized
-    echo "${lf_git_status_prefix}${git_status}${lf_git_status_suffix}"
+    echo "${git_status}${reset_color}"
   fi
 }
 
@@ -137,8 +134,8 @@ lf_git_status() {
 # Background jobs
 # ------------------------------------------------------------------------------
 
-typeset -g lf_jobs_symbol="${lf_jobs_symbol="✦"}"
-typeset -g lf_jobs_color="${lf_jobs_color="%{$lf_prompt_colors[jobs]%}"}"
+typeset -g lf_jobs_symbol="$emoji[clock_face_ten_oclock]"
+typeset -g lf_jobs_color="%{$lf_prompt_colors[jobs]%}"
 typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
 # Show icon if there's a working jobs in the background
@@ -149,29 +146,11 @@ lf_jobs() {
 
   if [[ $jobs_amount -le $lf_jobs_amount_threshold ]]; then
     jobs_amount=''
+  else
+    jobs_amount=" $jobs_amount"
   fi
 
-  echo "${lf_jobs_color}${lf_jobs_symbol}${jobs_amount}"
-}
-
-# ------------------------------------------------------------------------------
-# Node
-# ------------------------------------------------------------------------------
-
-typeset -g lf_node_icon=$(echo -e '\uf898')
-
-lf_check_node_version_async() {
-  setopt local_options no_sh_word_split
-
-  typeset -A info
-  info[pwd]=$PWD
-
-  if [[ -f package.json ]]; then
-    local version=$(node --version)
-    info[data]="%{$lf_prompt_colors[node:border]%}[%{$lf_prompt_colors[node:icon_version]%}${lf_node_icon} ${version}%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
-  fi
-
-  print -r - ${(@kvq)info}
+  echo "${lf_jobs_color}[${lf_jobs_symbol}${jobs_amount}]"
 }
 
 # ------------------------------------------------------------------------------
@@ -179,6 +158,7 @@ lf_check_node_version_async() {
 # ------------------------------------------------------------------------------
 
 typeset -g lf_prompt_async_init=0
+typeset -g lf_prompt_async_render_flag=0
 
 lf_prompt_async_callback() {
   setopt local_options no_sh_word_split
@@ -192,7 +172,7 @@ lf_prompt_async_callback() {
     info=("${(Q@)${(z)output}}")
   fi
 
-  if [[ $info[pwd] != $PWD ]]; then
+  if [[ $info[pwd] && $info[pwd] != $PWD ]]; then
     return
   fi
 
@@ -204,24 +184,25 @@ lf_prompt_async_callback() {
       lf_prompt_async_init=0
     fi
     ;;
-  lf_git_prompt_info_async)
+  lf_git_status_async)
     lf_prompt_git_status="$info[data]"
-    do_render=1
-    ;;
-  lf_check_node_version_async)
-    lf_prompt_node_status="$info[data]"
     do_render=1
     ;;
   esac
 
-  if ((do_render)); then
-    lf_prompt_render
-  fi
+
+	if (( next_pending )); then
+		(( do_render )) && lf_prompt_async_render_flag=1
+		return
+	fi
+
+	[[ ${lf_prompt_async_render_flag} = 1 || ${do_render} = 1 ]] && lf_prompt_render
+	lf_prompt_async_render_flag=0
 }
 
 lf_prompt_async_tasks() {
   # init the async worker
-  ((!${lf_prompt_async_init:-0})) && {
+  ((!${lf_prompt_async_init})) && {
     async_start_worker "lf_prompt" -n
     async_register_callback "lf_prompt" lf_prompt_async_callback
     lf_prompt_async_init=1
@@ -230,8 +211,12 @@ lf_prompt_async_tasks() {
   # update the current working directory of the async worker
   async_worker_eval "lf_prompt" builtin cd -q $PWD
 
-  async_job "lf_prompt" lf_git_prompt_info_async
-  async_job "lf_prompt" lf_check_node_version_async
+  lf_prompt_git_status=""
+  if git rev-parse --git-dir &> /dev/null
+  then
+    lf_prompt_git_status="$lf_git_prompt_loading"
+    async_job "lf_prompt" lf_git_status_async
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -242,13 +227,11 @@ typeset -g lf_prompt_last=""
 typeset -g lf_prompt_ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
 typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
 typeset -g lf_prompt_git_status=""
-typeset -g lf_prompt_node_status=""
 
 lf_prompt_precmd() {
-  lf_prompt_git_status=""
-  lf_prompt_node_status=""
-
   lf_prompt_async_tasks
+
+  lf_prompt_render
 }
 
 lf_prompt_reset() {
@@ -260,7 +243,6 @@ lf_prompt_render() {
     $lf_prompt_ret_status
     %{$lf_prompt_colors[dir]%}%~%{$reset_color%}
     $lf_prompt_git_status
-    $lf_prompt_node_status
     `lf_jobs`
   )
 
@@ -291,8 +273,6 @@ lf_prompt_init() {
   autoload -Uz add-zsh-hook
 
   add-zsh-hook precmd lf_prompt_precmd
-
-  lf_prompt_render
 }
 
 lf_prompt_init
