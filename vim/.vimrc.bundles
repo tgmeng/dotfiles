@@ -13,7 +13,6 @@ call plug#begin(s:bundle_path)
 Plug 'tpope/vim-sensible'
 
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ervandew/supertab'
@@ -23,15 +22,17 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
-Plug 'vim-scripts/matchit.zip'
-Plug 'vim-scripts/matchparenpp'
+Plug 'andymass/vim-matchup'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'Yggdroot/indentLine'
+
+" Plug 'justinmk/vim-sneak'
+" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 Plug 'mileszs/ack.vim'
 
-Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-
+Plug 'preservim/nerdcommenter'
+Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " Plug 'sjl/gundo.vim'

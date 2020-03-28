@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MY VIMRC
+" LAZYFABRIC VIMRC
 " Based On: 
 "       ambix/vimrc
 "
@@ -10,12 +10,11 @@
 "           - Text, tab and indent related
 "           - Colors and Fonts
 "           - Status line
-"       Plugin related settings
 "       Files, backups and undo
 "       Moving around, tabs, windows and buffers
 "       Visual mode related
 "       Editing mappings
-"       Plugin related mappings
+"       Plugin related settings
 "       Misc
 "       Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -359,9 +358,6 @@ nnoremap <leader>y "+y
 nnoremap <leader>p "+]p
 nnoremap <leader>P "+[p
 
-" JS-Beautify
-map <leader>f :%!js-beautify -j -q -B -f -
-
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
@@ -393,14 +389,12 @@ xnoremap & :&&<CR>
 " Plugin related settings {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" ag
+" vim-ack
 if executable('ag')
     let g:ackprg = 'ag --nogroup --nocolor --column'
 endif
 
-" ctrlp custon ignore
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store'
-let g:ctrlp_working_path_mode = 'w'
+map <leader>g :Ack
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -410,8 +404,6 @@ let g:UltiSnipsEditSplit="vertical"
 " NERDTree
 augroup NERDTree
     autocmd! 
-    " open a NERDTree automatically when vim starts up
-    " autocmd vimenter * NERDTree
 
     " open a NERDTree automatically when vim starts up if no files were specified
     autocmd StdinReadPre * let s:std_in=1
@@ -420,8 +412,6 @@ augroup NERDTree
     " close vim if the only window left open is a NERDTree
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 augroup END
-
-let NERDTreeShowHidden=1
 
 " NERDCommenter
 " Add spaces after comment delimiters by default
@@ -442,18 +432,11 @@ let g:NERDTrimTrailingWhitespace = 1
 " Emmet
 let g:user_emmet_leader_key = '<C-E>'
 
-" Syntastic
-let g:syntastic_mode_map = {'mode': 'passive'}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Vim-javascript
+" vim-javascript
 let g:javascript_enable_domhtmlcss = 1
 let g:javascript_ignore_javaScriptdoc = 1
 
-" Vim-jsx
+" vim-jsx
 let g:jsx_ext_required = 0
 
 " Auto-pairs
@@ -462,7 +445,10 @@ let g:AutoPairsMapSpace = 0
 " Git-Gutter
 let g:gitgutter_map_keys = 0
 
-" Vim-expand-region
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+
+" vim-expand-region
 " Extend the global default (NOTE: Remove comments in dictionary before sourcing)
 " call expand_region#custom_text_objects({
 "       \ "\/\\n\\n\<CR>": 1, " Motions are supported as well. Here's a search motion that finds a blank line
@@ -473,35 +459,42 @@ let g:gitgutter_map_keys = 0
 "       \ 'ai' :0, " 'around indent'. Available through https://github.com/kana/vim-textobj-indent
 "       \ })
 
-" Vim-session
+" vim-session
 let g:session_autoload = 'no'
 let g:session_autosave = 'prompt'
 
-let g:ctrlp_show_hidden = 1
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin related mappings {{{1
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>so :OpenSession!<CR>
+nnoremap <leader>ss :SaveSession<CR>
 
 " NERDTree plugin
 nnoremap <leader>nn :NERDTreeToggle<cr>
 nnoremap <leader>nb :NERDTreeFromBookmark 
 nnoremap <leader>nf :NERDTreeFind<cr>
 
-" Vim-session plugin
-nnoremap <leader>so :OpenSession!<CR>
-nnoremap <leader>ss :SaveSession<CR>
+" LeaderF
+let g:Lf_ShortcutF = '<C-P>'
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
 
-" Syntastic
-nnoremap <leader>sc :SyntasticCheck<CR>
-nnoremap <leader>sr :SyntasticReset<CR>
+noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
-" Git-Gutter
-nmap ]h <Plug>GitGutterNextHunk
-nmap [h <Plug>GitGutterPrevHunk
+" noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
+" noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+" search visually selected text literally
+" xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+" noremap go :<C-U>Leaderf! rg --recall<CR>
 
-map <leader>g :Ack
+" should use `Leaderf gtags --update` first
+" let g:Lf_GtagsAutoGenerate = 0
+" let g:Lf_Gtagslabel = 'native-pygments'
+" noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+" noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+" noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+" noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+" noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
