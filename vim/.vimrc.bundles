@@ -15,25 +15,28 @@ Plug 'tpope/vim-sensible'
 Plug 'airblade/vim-gitgutter'
 Plug 'easymotion/vim-easymotion'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
 Plug 'jlanzarotta/bufexplorer'
-Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
 Plug 'andymass/vim-matchup'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'Yggdroot/indentLine'
 
+" Plug 'majutsushi/tagbar'
+" Plug 'ervandew/supertab'
 " Plug 'justinmk/vim-sneak'
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'mileszs/ack.vim'
 
 Plug 'preservim/nerdcommenter'
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " Plug 'sjl/gundo.vim'
 
@@ -53,7 +56,6 @@ Plug 'vim-airline/vim-airline'
 
 " Syntax
 Plug 'sheerun/vim-polyglot'
-Plug 'tgmeng/ftl-vim-syntax'
 
 " Session manage
 Plug 'xolox/vim-misc'
@@ -66,5 +68,8 @@ Plug 'tgmeng/lazy-vim-snippets'
 
 " ColorSchemes
 Plug 'tomasr/molokai'
+
+" Font
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()

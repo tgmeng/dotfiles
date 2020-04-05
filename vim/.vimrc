@@ -177,8 +177,6 @@ set wrap "Wrap lines
 " Colors and Fonts {{{2
 """"""""""""""""""""""""""""""
 try
-    " colorscheme desert
-    " colorscheme solarized
     colorscheme molokai
 catch
 endtry
@@ -199,7 +197,7 @@ if has("gui_running")
     if has('win32')
         set guifont=Consolas:h10.5
     elseif has('gui_macvim')
-        set guifont=Monaco:h12
+        set guifont=Hack\ Nerd\ Font:h12
     else
         set guifont=Monospace\ 12
     endif
@@ -389,6 +387,25 @@ xnoremap & :&&<CR>
 " Plugin related settings {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Coc.nvim
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+" Use <Tab> and <S-Tab> to navigate the completion list
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use <cr> to confirm completion
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
 " vim-ack
 if executable('ag')
     let g:ackprg = 'ag --nogroup --nocolor --column'
@@ -397,21 +414,16 @@ endif
 map <leader>g :Ack
 
 " UltiSnips
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<leader><tab>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
 " NERDTree
-augroup NERDTree
-    autocmd! 
+let NERDTreeShowHidden=1
 
-    " open a NERDTree automatically when vim starts up if no files were specified
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-    " close vim if the only window left open is a NERDTree
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-augroup END
+nnoremap <leader>nn :NERDTreeToggle<cr>
+nnoremap <leader>nb :NERDTreeFromBookmark 
+nnoremap <leader>nf :NERDTreeFind<cr>
 
 " NERDCommenter
 " Add spaces after comment delimiters by default
@@ -465,11 +477,6 @@ let g:session_autosave = 'prompt'
 
 nnoremap <leader>so :OpenSession!<CR>
 nnoremap <leader>ss :SaveSession<CR>
-
-" NERDTree plugin
-nnoremap <leader>nn :NERDTreeToggle<cr>
-nnoremap <leader>nb :NERDTreeFromBookmark 
-nnoremap <leader>nf :NERDTreeFind<cr>
 
 " LeaderF
 let g:Lf_ShortcutF = '<C-P>'
