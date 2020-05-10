@@ -33,3 +33,8 @@ alias zshrc='mvim ~/.zshrc'
 alias c='code .'
 alias f='fork .'
 alias o='open .'
+
+# postgres
+alias pg-start="pg_ctl -D /usr/local/var/postgres start"
+alias pg-stop="pg_ctl -D /usr/local/var/postgres stop"
+alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
