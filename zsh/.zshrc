@@ -22,6 +22,10 @@ setopt prompt_subst
 # zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
 source ~/.zsh/plug.zsh
 source ~/.zsh/key-bindings.zsh
 source ~/.zsh/aliases.zsh
@@ -36,8 +40,3 @@ source ~/.zsh/lazyfabric-prompt.zsh
 
 eval "$(jenv init -)"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-source ~/.zsh/zsh-auto-nvm-use.zsh
