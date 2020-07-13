@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-current_branch=$(git symbolic-ref --short HEAD)
 merge_branch=merge/$(date +"%Y%m%d")
 
 log() {
@@ -9,8 +8,6 @@ log() {
 
 if ! git ls-remote --heads --tags origin | grep -q "$merge_branch"
 then
-    log "当前: \"$current_branch\""
-
     week=$(date +"%u")
 
     if [ "$week" = "1" ]
@@ -30,9 +27,6 @@ then
 
     log "推送: \"$merge_branch\""
     git push --set-upstream origin $merge_branch --no-verify
-
-    log "切换回: \"$current_branch\"!"
-    git checkout $current_branch
 else
     log "已存在 \"$merge_branch\""
     git checkout $merge_branch
