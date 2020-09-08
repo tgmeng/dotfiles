@@ -7,8 +7,8 @@ alias rm='rm -i'
 
 # Colorize output, make ls human readable and classify...
 if [[ $(uname) == Darwin ]]; then
-    alias dircolors='gdircolors'
-    alias ls='gls --color=auto -hF'
+  alias dircolors='gdircolors'
+  alias ls='gls --color=auto -hF'
 fi
 
 alias l='ls -lFh'   #size, show type, human readable
@@ -30,9 +30,13 @@ alias kce='eval `keychain --eval id_rsa`'
 
 alias zshrc='mvim ~/.zshrc'
 
-alias c='code .'
-alias f='fork .'
-alias o='open .'
+alias c='code'
+alias f='fork'
+alias o='open'
+alias y='yarn'
+alias m='make'
+alias t='tig'
+alias v='mvim'
 
 # postgres
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"
