@@ -29,5 +29,6 @@ then
     git push --set-upstream origin $merge_branch --no-verify
 else
     log "已存在 \"$merge_branch\""
+    git pull $merge_branch
     git checkout $merge_branch
 fi
