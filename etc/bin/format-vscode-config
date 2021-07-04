@@ -1,0 +1,26 @@
+#! /usr/bin/env node
+
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const { execSync } = require("child_process");
+
+const settingPath = path.join(
+  os.homedir(),
+  "./Library/Application Support/Code/User/settings.json"
+);
+
+const file = fs.readFileSync(settingPath);
+
+const setting = JSON.parse(file);
+
+const formattedSetting = Object.keys(setting)
+  .sort()
+  .reduce((output, key) => {
+    output[key] = setting[key];
+    return output;
+  }, {});
+
+fs.writeFileSync(settingPath, JSON.stringify(formattedSetting, null, 2));
+
+execSync(`npx prettier '${settingPath}'`);
