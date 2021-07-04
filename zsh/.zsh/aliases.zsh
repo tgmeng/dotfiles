@@ -31,12 +31,16 @@ alias kce='eval `keychain --eval id_rsa`'
 alias zshrc='mvim ~/.zshrc'
 
 alias c='code'
+alias cc='code .'
 alias f='fork'
 alias o='open'
+alias oo='open .'
 alias y='yarn'
 alias m='make'
 alias t='tig'
 alias v='mvim'
+
+alias gbc="git branch | sed -n '/\* /s///p'"
 
 # postgres
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"
