@@ -144,7 +144,8 @@ set tm=500
 set foldcolumn=1
 
 " set line number 
-set number
+set number relativenumber
+
 " Highlight current line
 set cursorline
 " set cursorcolumn

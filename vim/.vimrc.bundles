@@ -23,6 +23,7 @@ Plug 'mbbill/undotree'
 Plug 'andymass/vim-matchup'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'Yggdroot/indentLine'
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
 " Plug 'majutsushi/tagbar'
 " Plug 'ervandew/supertab'
