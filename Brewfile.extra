@@ -1,0 +1,22 @@
+# Brew
+## Tools
+brew "mycli"
+brew "pgcli"
+
+## Dev
+brew "cmake"
+
+## DB
+brew "postgresql"
+brew "mysql"
+brew "sqlite"
+
+## Lang
+brew "elixir"
+brew "go"
+brew "lua"
+brew "nginx"
+
+# BrewCask
+
+# Mas

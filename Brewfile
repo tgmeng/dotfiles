@@ -7,10 +7,14 @@ tap "homebrew/cask-cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 
+brew "mas"
+
+# Brew
+## Shell
 brew "zsh"
 brew "bash"
 
-# GNU Tools
+## GNU Tools
 brew "findutils"
 brew "coreutils"
 brew "gawk"
@@ -21,37 +25,48 @@ brew "gnu-tar"
 brew "gnutls"
 brew "global"
 
-brew "mas"
-brew "macvim", args: ["with-override-system-vim", "with-python3"]
-brew "the_silver_searcher"
+## Base
+brew "git"
+brew "tree"
+brew "grep"
+brew "tree"
+brew "tmux"
+
+## Extra Base
+brew "git-extras"
+brew "autojump"
+brew "fd"
 brew "ack"
 brew "the_silver_searcher"
 brew "ripgrep"
-brew "tree"
-brew "grep"
 brew "rename"
 brew "tig"
 brew "stow"
-brew "tmux"
 brew "fzf"
-brew "jenv"
 brew "diff-so-fancy"
 brew "bat"
 brew "fd"
 brew "fzf"
 brew "jq"
-brew "tig"
 brew "tldr"
-brew "tree"
+brew "macvim"
 
-# Apps
+## Font
+brew "font-hack-nerd-font"
+brew "font-source-code-pro"
+
+# BrewCask
+cask "google-chrome"
+cask "bettertouchtool"
+
+## Dev
 cask "iterm2"
-cask "gitup"
+cask "charles"
+cask "db-browser-for-sqlite"
 cask "beyond-compare"
 cask "dash"
-cask "google-chrome"
 
-# Quicklook
+## Quicklook
 cask "qlcolorcode"
 cask "qlmarkdown"
 cask "quicklook-json"
@@ -59,7 +74,7 @@ cask "quicklook-csv"
 cask "qlstephen"
 cask "qlimagesize"
 
-# Mac App Store apps
+# Mas
 mas "iHash", id 763902043
 mas "QQ", id 451108668
 mas "XMind", id 1327661892
