@@ -1,9 +1,7 @@
 # Taps
 tap "homebrew/core"
 tap "homebrew/bundle"
-tap "homebrew/science"
 tap "homebrew/services"
-tap "homebrew/cask-cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 
