@@ -54,15 +54,26 @@ brew "font-hack-nerd-font"
 brew "font-source-code-pro"
 
 # BrewCask
+cask "alfred"
 cask "google-chrome"
 cask "bettertouchtool"
+cask "hammerspoon"
+cask "mounty"
 
 ## Dev
 cask "iterm2"
+cask "visual-studio-code"
+cask "typora"
+cask "macdown"
 cask "charles"
 cask "db-browser-for-sqlite"
 cask "beyond-compare"
 cask "dash"
+cask "fork"
+cask "sublime-text"
+
+## Fun
+cask "movist-pro"
 
 ## Quicklook
 cask "qlcolorcode"
