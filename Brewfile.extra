@@ -2,6 +2,7 @@
 ## Tools
 brew "mycli"
 brew "pgcli"
+brew "jenv"
 
 ## Dev
 brew "cmake"
@@ -14,9 +15,10 @@ brew "sqlite"
 ## Lang
 brew "elixir"
 brew "go"
-brew "lua"
 brew "nginx"
+brew "lua"
 
 # BrewCask
 
 # Mas
+mas "企业微信", id 1189898970

@@ -71,6 +71,7 @@ cask "beyond-compare"
 cask "dash"
 cask "fork"
 cask "sublime-text"
+cask "sublime-merge"
 
 ## Fun
 cask "movist-pro"
@@ -82,6 +83,9 @@ cask "quicklook-json"
 cask "quicklook-csv"
 cask "qlstephen"
 cask "qlimagesize"
+
+## ScreenSaver
+cask "brooklyn"
 
 # Mas
 mas "iHash", id: 763902043
@@ -107,7 +111,6 @@ mas "Xee³", id: 639764244
 mas "Expressions", id: 913158085
 mas "欧路词典", id: 434350458
 mas "Gapplin", id: 768053424
-mas "App Icon Gear", id: 989646576
 mas "Boop", id: 1518425043
 mas "Pages 文稿", id: 409201541
 mas "Jayson", id: 1189824719
