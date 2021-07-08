@@ -6,7 +6,6 @@ export LANG=en_US.UTF-8
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$PATH
-export PATH=$HOME/.jenv/bin:$PATH
 
 autoload -U colors && colors
 
@@ -37,6 +36,4 @@ source ~/.zsh/lazyfabric-prompt.zsh
 [ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-eval "$(jenv init -)"
 
