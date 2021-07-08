@@ -23,8 +23,7 @@ lf_prompt_colors=(
 # ------------------------------------------------------------------------------
 
 # Git Prompt
-typeset -g lf_git_prompt_icon=$(echo -e '\uf418')
-typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$lf_prompt_colors[git:icon]%}%{$lf_git_prompt_icon%}%{$reset_color%} "
+typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$reset_color%}"
 typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
 typeset -g lf_git_prompt_loading="${lf_git_prompt_prefix}⏳ loading${lf_git_prompt_suffix}"
 
