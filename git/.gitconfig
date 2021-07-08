@@ -4,7 +4,6 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	attributesfile = ~/.gitattributes
-	editor = /usr/local/bin/vim
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [commit]
     template = ~/.gitmessage
