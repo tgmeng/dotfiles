@@ -58,10 +58,6 @@ Plug 'vim-airline/vim-airline'
 " Syntax
 Plug 'sheerun/vim-polyglot'
 
-" Session manage
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
-
 " Snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
