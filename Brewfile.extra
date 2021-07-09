@@ -18,6 +18,10 @@ brew "go"
 brew "nginx"
 brew "lua"
 
+## OTP(One-Time-Password)
+brew "gnupg"
+brew "oath-toolkit"
+
 # BrewCask
 
 # Mas
