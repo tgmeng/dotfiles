@@ -25,7 +25,7 @@ lf_prompt_colors=(
 # Git Prompt
 typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$reset_color%}"
 typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
-typeset -g lf_git_prompt_loading="${lf_git_prompt_prefix}⏳ loading${lf_git_prompt_suffix}"
+typeset -g lf_git_prompt_loading="${lf_git_prompt_prefix}$emoji[hourglass_with_flowing_sand]${lf_git_prompt_suffix}"
 
 lf_git_status_async() {
   local ref
@@ -223,7 +223,7 @@ lf_prompt_async_tasks() {
 # ------------------------------------------------------------------------------
 
 typeset -g lf_prompt_last=""
-typeset -g lf_prompt_ret_status="%(?:$emoji[smiling_face_with_sunglasses]:$emoji[dizzy_face])"
+typeset -g lf_prompt_ret_status="%(?:$emoji[white_heavy_check_mark]:$emoji[cross_mark])"
 typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
 typeset -g lf_prompt_git_status=""
 
