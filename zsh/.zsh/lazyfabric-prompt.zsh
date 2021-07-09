@@ -153,7 +153,7 @@ typeset -g lf_jobs_color="%{$lf_prompt_colors[jobs]%}"
 typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
 # Show icon if there's a working jobs in the background
-lf_jobs() {
+lf_jobs_get() {
   local jobs_amount=$(jobs -d | awk '!/pwd/' | wc -l | tr -d " ")
 
   [[ $jobs_amount -gt 0 ]] || return
@@ -175,21 +175,12 @@ lf_node_render_prompt() {
   echo "%{$lf_prompt_colors[node:border]%}[node:%{$reset_color%}$@%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
 }
 
-lf_check_node_version_async() {
-  setopt local_options no_sh_word_split
-
-  typeset -A info
-  info[pwd]=$PWD
-
+lf_node_get_version() {
   if [[ -f package.json ]]; then
-    local version=$(node --version)
-    info[data]=$(lf_node_render_prompt "$version")
+    local version=$(node -v)
+    echo $(lf_node_render_prompt "$version")
   fi
-
-  print -r - ${(@kvq)info}
 }
-
-lf_node_prompt_loading=$(lf_node_render_prompt ${lf_prompt_icons[loading]})
 
 # ------------------------------------------------------------------------------
 # Async
@@ -258,9 +249,6 @@ lf_prompt_async_tasks() {
     lf_prompt_git_status="$lf_git_prompt_loading"
     async_job "lf_prompt" lf_git_status_async
   fi
-
-  lf_prompt_node_status=${lf_node_prompt_loading}
-  async_job "lf_prompt" lf_check_node_version_async
 }
 
 # ------------------------------------------------------------------------------
@@ -271,7 +259,6 @@ typeset -g lf_prompt_last=""
 typeset -g lf_prompt_ret_status="%(?:$emoji[white_heavy_check_mark]:$emoji[cross_mark])"
 typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
 typeset -g lf_prompt_git_status=""
-typeset -g lf_prompt_node_status=""
 
 lf_prompt_precmd() {
   lf_prompt_async_tasks
@@ -288,8 +275,8 @@ lf_prompt_render() {
     $lf_prompt_ret_status
     %{$lf_prompt_colors[dir]%}%~%{$reset_color%}
     $lf_prompt_git_status
-    $lf_prompt_node_status
-    $(lf_jobs)
+    $(lf_node_get_version)
+    $(lf_jobs_get)
   )
 
   local prompt_newline=$'\n%{\r%}'
