@@ -28,8 +28,6 @@ alias -- -='cd -'
 
 alias kce='eval `keychain --eval id_rsa`'
 
-alias zshrc='mvim ~/.zshrc'
-
 alias c='code'
 alias cc='code .'
 alias f='fork'
@@ -46,3 +44,7 @@ alias gbc="git branch | sed -n '/\* /s///p'"
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop"
 alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
+
+# os
+alias pbc="pbcopy"
+alias pbp="pbpaste"
