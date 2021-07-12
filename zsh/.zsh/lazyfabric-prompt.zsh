@@ -217,10 +217,6 @@ lf_prompt_async_callback() {
     lf_prompt_git_status="$info[data]"
     do_render=1
     ;;
-  lf_check_node_version_async)
-    lf_prompt_node_status="$info[data]"
-    do_render=1
-    ;;
   esac
 
 	if (( next_pending )); then
