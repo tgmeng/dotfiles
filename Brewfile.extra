@@ -3,6 +3,7 @@
 brew "mycli"
 brew "pgcli"
 brew "jenv"
+brew "noti"
 
 ## Dev
 brew "cmake"
@@ -23,6 +24,7 @@ brew "gnupg"
 brew "oath-toolkit"
 
 # BrewCask
+cask "docker"
 
 # Mas
 mas "企业微信", id 1189898970

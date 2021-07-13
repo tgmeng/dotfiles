@@ -10,7 +10,7 @@ lf_prompt_colors=(
   git:border $fg[blue]
   git:untracked $fg[white]
   git:added $fg[green]
-  git:modified $fg[blue]
+  git:modified $fg[yellow]
   git:renamed $fg[blue]
   git:deleted $fg[red]
   git:stashed $fg[yellow]
