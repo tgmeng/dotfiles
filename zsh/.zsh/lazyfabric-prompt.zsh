@@ -5,7 +5,6 @@
 typeset -gA lf_prompt_colors
 lf_prompt_colors=(
   dir $fg[cyan]
-  symbol $fg[blue]
   git:icon $fg[blue]
   git:border $fg[blue]
   git:untracked $fg[white]
@@ -16,17 +15,10 @@ lf_prompt_colors=(
   git:stashed $fg[yellow]
   git:unmerged $fg[red]
   node:border $fg[green]
+  success $fg[green]
+  error $fg[red]
   jobs $fg[white]
 )
-
-# ------------------------------------------------------------------------------
-# Color
-# ------------------------------------------------------------------------------
-typeset -gA lf_prompt_icons
-lf_prompt_icons=(
-  loading $emoji[hourglass_with_flowing_sand]
-)
-
 
 # ------------------------------------------------------------------------------
 # Git
@@ -52,7 +44,7 @@ lf_git_status_async() {
   print -r - ${(@kvq)info}
 }
 
-typeset -g lf_git_prompt_loading=$(lf_git_render_prompt "$emoji[hourglass_with_flowing_sand]")
+typeset -g lf_git_prompt_loading=$(lf_git_render_prompt "-")
 
 # Git status
 typeset -g lf_git_status_untracked="%{$lf_prompt_colors[git:untracked]%}?"
@@ -148,7 +140,7 @@ lf_git_status() {
 # Background jobs
 # ------------------------------------------------------------------------------
 
-typeset -g lf_jobs_symbol="$emoji[clock_face_ten_oclock]"
+typeset -g lf_jobs_symbol="%%"
 typeset -g lf_jobs_color="%{$lf_prompt_colors[jobs]%}"
 typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
@@ -252,8 +244,7 @@ lf_prompt_async_tasks() {
 # ------------------------------------------------------------------------------
 
 typeset -g lf_prompt_last=""
-typeset -g lf_prompt_ret_status="%(?:$emoji[white_heavy_check_mark]:$emoji[cross_mark])"
-typeset -g lf_prompt_symbol="%{$lf_prompt_colors[symbol]%}❯%{$reset_color%}"
+typeset -g lf_prompt_symbol="%(?:%{$lf_prompt_colors[success]%}>%{$reset_color%}:%{$lf_prompt_colors[error]%}>%{$reset_color%})"
 typeset -g lf_prompt_git_status=""
 
 lf_prompt_precmd() {
@@ -268,7 +259,6 @@ lf_prompt_reset() {
 
 lf_prompt_render() {
   local -a prompt_statuses=(
-    $lf_prompt_ret_status
     %{$lf_prompt_colors[dir]%}%~%{$reset_color%}
     $lf_prompt_git_status
     $(lf_node_get_version)

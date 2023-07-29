@@ -4,6 +4,8 @@ brew "mycli"
 brew "pgcli"
 brew "jenv"
 brew "noti"
+brew "imagemagick"
+brew "ffmpeg"
 
 ## Dev
 brew "cmake"

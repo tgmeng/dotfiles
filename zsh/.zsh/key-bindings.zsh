@@ -1,6 +1,6 @@
 # key-binding
 
-bindkey -e
+bindkey -v
 
 # ctrl-w
 my-backward-delete-word() {

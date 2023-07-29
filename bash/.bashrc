@@ -49,9 +49,9 @@ date
 user=`whoami`
 
 if [ "${user}" == "root" ]; then
-	export PS1="\[${RED}\]\h \[${BLUE}\]\W\[${NC}\] ❯ "
+	export PS1="\[${RED}\]\h \[${BLUE}\]\W\[${NC}\] > "
 else
-	export PS1="\[${GREEN}\]\u@\h \[${BLUE}\]\W\[${NC}\] ❯ "
+	export PS1="\[${GREEN}\]\u@\h \[${BLUE}\]\W\[${NC}\] > "
 fi
 
 # alias

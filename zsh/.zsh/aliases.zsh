@@ -8,13 +8,13 @@ alias rm='rm -i'
 # Colorize output, make ls human readable and classify...
 if [[ $(uname) == Darwin ]]; then
   alias dircolors='gdircolors'
-  alias ls='gls --color=auto -hF'
+  alias ls='exa --color=automatic -F'
 fi
 
-alias l='ls -lFh'   #size, show type, human readable
-alias la='ls -lAFh' #long list, show almost all, show type, human readable
-alias lr='ls -tRFh' #sorted by date, recursive, show type, human readable
-alias lt='ls -ltFh' #long list, sorted by date, show type, human readable
+alias l='exa -lF'              #size, show type, human readable
+alias la='exa -laF'            #long list, show almost all, show type, human readable
+alias lr='exa -RF --sort date' #sorted by date, recursive, show type, human readable
+alias lt='exa -lF --sort date' #long list, sorted by date, show type, human readable
 
 # Colorize output and some exclusions
 alias grep="grep --color=auto --exclude-dir={.git,.svn,node_modules}"
@@ -34,11 +34,17 @@ alias f='fork'
 alias o='open'
 alias oo='open .'
 alias y='yarn'
-alias m='make'
+alias mk='make'
 alias t='tig'
 alias v='mvim'
+alias p='pnpm'
+alias px='pnpx'
+
+alias mkd='make dev'
+alias mke='make electron'
 
 alias gbc="git branch | sed -n '/\* /s///p'"
+alias gref="git reflog"
 
 # postgres
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"

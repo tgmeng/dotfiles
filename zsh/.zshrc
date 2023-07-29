@@ -6,6 +6,8 @@ export LANG=en_US.UTF-8
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$PATH
+export PATH=$PATH:~/.yarn/bin
+export PATH="$PNPM_HOME:$PATH"
 
 autoload -U colors && colors
 
@@ -37,3 +39,4 @@ source ~/.zsh/lazyfabric-prompt.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+eval "$(zoxide init zsh --cmd j)"

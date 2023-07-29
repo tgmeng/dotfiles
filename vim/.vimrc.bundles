@@ -30,8 +30,6 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'
 " Plug 'justinmk/vim-sneak'
 " Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 Plug 'mileszs/ack.vim'
 
 Plug 'preservim/nerdcommenter'
@@ -61,7 +59,6 @@ Plug 'sheerun/vim-polyglot'
 " Snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'tgmeng/lazy-vim-snippets'
 
 " ColorSchemes
 Plug 'tomasr/molokai'

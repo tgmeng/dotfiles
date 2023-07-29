@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
 branch="$1"
-git branch --delete "$branch"
+git branch --delete --force "$branch"
 git push --delete origin "$branch"
 

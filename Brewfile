@@ -32,7 +32,6 @@ brew "tmux"
 
 ## Extra Base
 brew "git-extras"
-brew "autojump"
 brew "fd"
 brew "ack"
 brew "the_silver_searcher"
@@ -59,6 +58,7 @@ cask "google-chrome"
 cask "bettertouchtool"
 cask "hammerspoon"
 cask "mounty"
+cask "appcleaner"
 
 ## Dev
 cask "iterm2"
