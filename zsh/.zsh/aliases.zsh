@@ -8,13 +8,13 @@ alias rm='rm -i'
 # Colorize output, make ls human readable and classify...
 if [[ $(uname) == Darwin ]]; then
   alias dircolors='gdircolors'
-  alias ls='exa --color=automatic -F'
+  alias ls='eza --color=automatic -F'
 fi
 
-alias l='exa -lF'              #size, show type, human readable
-alias la='exa -laF'            #long list, show almost all, show type, human readable
-alias lr='exa -RF --sort date' #sorted by date, recursive, show type, human readable
-alias lt='exa -lF --sort date' #long list, sorted by date, show type, human readable
+alias l='eza -lF'              #size, show type, human readable
+alias la='eza -laF'            #long list, show almost all, show type, human readable
+alias lr='eza -RF --sort date' #sorted by date, recursive, show type, human readable
+alias lt='eza -lF --sort date' #long list, sorted by date, show type, human readable
 
 # Colorize output and some exclusions
 alias grep="grep --color=auto --exclude-dir={.git,.svn,node_modules}"
@@ -42,9 +42,15 @@ alias px='pnpx'
 
 alias mkd='make dev'
 alias mke='make electron'
+alias mkr='make rebuild'
+alias mki='make install'
+alias mkwd='make web_dev'
+alias rma='rm -rf *'
+alias rmf='rm -rf'
 
 alias gbc="git branch | sed -n '/\* /s///p'"
-alias gref="git reflog"
+alias gh="git reflog --format='%C(auto)%h %<|(20)%gd %D'"
+alias gch="git rev-parse HEAD"
 
 # postgres
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"
@@ -54,3 +60,9 @@ alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
 # MacOS
 alias pbc="pbcopy"
 alias pbp="pbpaste"
+
+alias fq="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
+
+function lk {
+  cd "$(walk "$@")"
+}

@@ -1,7 +1,35 @@
 require './manage-window'
 require './manage-mouse'
 require './quickly-switch-app'
-require './auto-switch-input-source'
+
+local AutoSwitchInputSource = require './auto-switch-input-source'
+
+--[[
+  ShowBundleId
+--]]
+local ShowAppBundleId = require './show-app-bundle-id'
+local showAppBundleId = ShowAppBundleId:new()
+showAppBundleId:start()
+
+
+--[[
+  AutoSwitchInputSource
+--]]
+local chinese = 'com.sogou.inputmethod.sogou.pinyin'
+local english = 'com.apple.keylayout.ABC'
+local autoSwitchInputSource = AutoSwitchInputSource:new(
+  {
+    ['com.tencent.xinWeChat'] = chinese,
+    ['com.electron.lark'] = chinese,
+
+    ['com.googlecode.iterm2'] = english,
+    ['com.DanPristupov.Fork'] = english,
+    ['com.microsoft.VSCode'] = english,
+    ['com.kapeli.dashdoc'] = english,
+    ['org.vim.MacVim'] = english
+  }
+)
+autoSwitchInputSource:start()
 
 hs.alert.show('Config is loaded')
 

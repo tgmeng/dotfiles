@@ -1,91 +1,104 @@
 -------------
 --   API   --
 -------------
-local hyperKey = {'alt'}
+local hyperKey = { 'alt' }
 local hotKeyToAppDict = {
-    ['Q'] = 'com.google.Chrome',
-    ['W'] = 'com.googlecode.iterm2',
-    ['E'] = 'com.microsoft.VSCode',
-    ['R'] = 'com.apple.iCal',
-    ['T'] = 'com.culturedcode.ThingsMac',
+  ['Q'] = 'com.google.Chrome',
+  ['W'] = 'com.googlecode.iterm2',
+  ['E'] = 'com.microsoft.VSCode',
+  ['R'] = 'com.apple.iCal',
+  ['T'] = 'com.apple.Safari',
+  ['I'] = 'com.apple.ScreenContinuity',
+  ['P'] = 'com.proxyman.NSProxy',
 
-    ['A'] = 'com.apple.Safari',
-    ['S'] = 'com.DanPristupov.Fork',
-    ['D'] = 'com.kapeli.dashdoc',
-    ['G'] = 'com.binarynights.ForkLift-3',
+  ['A'] = 'com.culturedcode.ThingsMac',
+  ['S'] = 'com.DanPristupov.Fork',
+  ['D'] = 'com.kapeli.dashdoc',
+  ['G'] = 'com.binarynights.ForkLift',
+  ['J'] = 'net.shinystone.OKJSON',
+  ['K'] = 'com.vladbadea.csveditor',
 
-    ['Z'] = 'com.youzan.zanproxy',
-    ['X'] = 'com.electron.lark',
-    ['C'] = 'com.coderforart.MWeb3',
-    ['V'] = 'com.tencent.xinWeChat'
+  ['Z'] = 'com.youzan.zanproxy',
+  ['X'] = 'com.electron.lark',
+  -- ['C'] = 'com.coderforart.MWeb3',
+  ['C'] = 'md.obsidian',
+  ['V'] = 'com.tencent.xinWeChat',
+  ['N'] = 'com.apple.Notes',
+  ['M'] = 'com.ideasoncanvas.mindnode.macos',
+
+  ['`'] = 'com.apple.Stickies'
 }
+
+local logger = hs.logger.new('quickly-switch-app', 'info')
 
 local bindings = {}
 local isEnabled = true
 
 local function switchApp(targetBundleId)
-    local app = hs.application.frontmostApplication()
-    if app:bundleID() == targetBundleId then
-        app:hide()
-    else
-        hs.application.launchOrFocusByBundleID(targetBundleId)
-    end
+  local app = hs.application.frontmostApplication()
+  if app:bundleID() == targetBundleId then
+    app:hide()
+  else
+    hs.application.launchOrFocusByBundleID(targetBundleId)
+  end
 end
 
 local alertId
-local lastPressedAltTime = 0
-local isPressingAlt = false
+local lastPressedAltTime
 local interval = hs.eventtap.doubleClickInterval() / 3 * 1000000000
 local function toggleEventHandler(event)
-    local flags = event:getFlags()
+  local flags = event:getFlags()
 
-    if not isPressingAlt then
-        if flags:containExactly(hyperKey) then
-            isPressingAlt = true
+  if not flags:containExactly(hyperKey) then
+    return
+  end
 
-            local currentTime = hs.timer.absoluteTime()
-            if (currentTime - lastPressedAltTime <= interval) then
-                isEnabled = not isEnabled
+  local lastTime = lastPressedAltTime or 0
+  local currentTime = hs.timer.absoluteTime()
+  lastPressedAltTime = currentTime
 
-                for _, hkObj in ipairs(bindings) do
-                    if isEnabled then
-                        hkObj:enable()
-                    else
-                        hkObj:disable()
-                    end
-                end
+  if (currentTime - lastTime > interval) then
+    return
+  end
 
-                if isEnabled then
-                    msg = 'enabled'
-                else
-                    msg = 'disabled'
-                end
+  isEnabled = not isEnabled
 
-                if alertId then
-                    hs.alert.closeSpecific(alertId)
-                end
-                alertId = hs.alert.show(string.format('Quickly Switch App is %s', msg))
-
-                lastPressedAltTime = 0
-            else
-                lastPressedAltTime = currentTime
-            end
-        end
+  for _, hkObj in ipairs(bindings) do
+    if isEnabled then
+      hkObj:enable()
     else
-        if flags:containExactly({}) then
-            isPressingAlt = false
-        end
+      hkObj:disable()
     end
+  end
+
+  if isEnabled then
+    msg = 'enabled'
+  else
+    msg = 'disabled'
+  end
+
+  if alertId then
+    hs.alert.closeSpecific(alertId)
+  end
+  alertId = hs.alert.show(string.format('Quickly Switch App is %s', msg))
+
+  lastPressedAltTime = nil
 end
 
 local function init()
-    for key, bundleId in pairs(hotKeyToAppDict) do
-        local binding = hs.hotkey.bind(hyperKey, key, function()
-            switchApp(bundleId)
-        end)
-        table.insert(bindings, binding)
-    end
+  for key, bundleId in pairs(hotKeyToAppDict) do
+    local binding = hs.hotkey.bind(hyperKey, key, function()
+      switchApp(bundleId)
+    end)
+    table.insert(bindings, binding)
+  end
+end
 
+--------------
+-- 防止误触 --
+--------------
+local function keyEventHandler(event)
+  lastPressedAltTime = nil
 end
 
 --------------
@@ -94,6 +107,11 @@ end
 
 init()
 
-toggleEventListener = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, toggleEventHandler)
+toggleEventListener = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, toggleEventHandler)
 toggleEventListener:start()
 
+keyDownListener = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, keyEventHandler)
+keyDownListener:start()
+
+keyUpListener = hs.eventtap.new({ hs.eventtap.event.types.keyUp }, keyEventHandler)
+keyUpListener:start()

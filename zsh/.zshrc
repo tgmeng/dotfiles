@@ -9,6 +9,9 @@ export PATH=$HOME/bin:$PATH
 export PATH=$PATH:~/.yarn/bin
 export PATH="$PNPM_HOME:$PATH"
 
+export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+export FZF_ALT_C_OPTS="--walker-skip .git,node_modules --preview 'tree -C {}'"
+
 autoload -U colors && colors
 
 # http://zsh.sourceforge.net/Doc/Release/Options.html
@@ -28,12 +31,17 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 source ~/.zsh/plug.zsh
+source ~/.zsh/plugins/init.zsh
 source ~/.zsh/key-bindings.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/completion.zsh
 
-source ~/.zsh/lazyfabric-prompt.zsh
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+  ##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
+  source ~/.zsh/lazyfabric-prompt.zsh
+  ##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
+fi
 
 [ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
 

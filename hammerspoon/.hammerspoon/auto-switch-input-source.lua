@@ -1,34 +1,46 @@
-local chinese = 'com.sogou.inputmethod.sogou.pinyin'
-local english = 'com.apple.keylayout.ABC'
+local AutoSwitchInputSource = {};
 
-local appToIme = {
-    ['com.tencent.xinWeChat'] = chinese,
-    ['com.electron.lark'] = chinese,
-
-    ['com.googlecode.iterm2'] = english,
-    ['com.DanPristupov.Fork'] = english,
-    ['com.microsoft.VSCode'] = english,
-    ['com.kapeli.dashdoc'] = english,
-    ['org.vim.MacVim'] = english
-}
-
-local function tryToSwitchInputSource()
-    local app = hs.window.frontmostWindow():application()
-    local sourceId = appToIme[app:bundleID()]
-    if sourceId then
-        local currentSourceId = hs.keycodes.currentSourceID()
-        if not (currentSourceId == sourceId) then
-            hs.keycodes.currentSourceID(sourceId)
-        end
-    end
+function AutoSwitchInputSource:new(config)
+  local obj = {
+    appWatcher = nil,
+    config = config
+  }
+  setmetatable(obj, self)
+  self.__index = self
+  return obj
 end
 
--- Handle cursor focus and application's screen manage.
-local function activatedAppHandler(appName, eventType, appObject)
+function AutoSwitchInputSource:tryToSwitchInputSourceByFrontMost()
+  local app = hs.window.frontmostWindow():application()
+
+  if app == nil then
+    return
+  end
+
+  local sourceId = self.config[app:bundleID()]
+  if sourceId then
+    local currentSourceId = hs.keycodes.currentSourceID()
+    if not (currentSourceId == sourceId) then
+      hs.keycodes.currentSourceID(sourceId)
+    end
+  end
+end
+
+function AutoSwitchInputSource:start()
+  self:stop();
+  self.appWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
     if (eventType == hs.application.watcher.activated) then
-        tryToSwitchInputSource()
+      self:tryToSwitchInputSourceByFrontMost()
     end
+  end)
+  self.appWatcher:start()
 end
 
-appWatcher = hs.application.watcher.new(activatedAppHandler)
-appWatcher:start()
+function AutoSwitchInputSource:stop()
+  if self.appWatcher then
+    self.appWatcher:stop()
+    self.appWatcher = nil
+  end
+end
+
+return AutoSwitchInputSource;

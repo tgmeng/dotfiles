@@ -13,6 +13,5 @@ zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "softmoth/zsh-vim-mode", from:"github"
 zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
-zplug "tgmeng/zsh-auto-nvm-use", from:"github", use:"zsh-auto-nvm-use.zsh"
 
 zplug load
