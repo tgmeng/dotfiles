@@ -13,14 +13,13 @@ local hotKeyToAppDict = {
 
   ['A'] = 'com.culturedcode.ThingsMac',
   ['S'] = 'com.DanPristupov.Fork',
-  ['D'] = 'com.kapeli.dashdoc',
-  ['G'] = 'com.binarynights.ForkLift',
+  ['D'] = 'com.binarynights.ForkLift',
+  ['G'] = 'com.kapeli.dashdoc',
   ['J'] = 'net.shinystone.OKJSON',
   ['K'] = 'com.vladbadea.csveditor',
 
   ['Z'] = 'com.youzan.zanproxy',
   ['X'] = 'com.electron.lark',
-  -- ['C'] = 'com.coderforart.MWeb3',
   ['C'] = 'md.obsidian',
   ['V'] = 'com.tencent.xinWeChat',
   ['N'] = 'com.apple.Notes',
@@ -45,7 +44,8 @@ end
 
 local alertId
 local lastPressedAltTime
-local interval = hs.eventtap.doubleClickInterval() / 3 * 1000000000
+local interval = 250000000 -- 使用 0.25 秒间隔 (250ms)，单位为纳秒 (1000000000 纳秒 = 1 秒)
+
 local function toggleEventHandler(event)
   local flags = event:getFlags()
 
@@ -53,36 +53,32 @@ local function toggleEventHandler(event)
     return
   end
 
-  local lastTime = lastPressedAltTime or 0
   local currentTime = hs.timer.absoluteTime()
-  lastPressedAltTime = currentTime
 
-  if (currentTime - lastTime > interval) then
-    return
-  end
 
-  isEnabled = not isEnabled
+  -- 如果是第一次按下或者两次按键的时间间隔大于设定的 interval，则重置时间
+  if lastPressedAltTime and (currentTime - lastPressedAltTime <= interval) then
+    isEnabled = not isEnabled
 
-  for _, hkObj in ipairs(bindings) do
-    if isEnabled then
-      hkObj:enable()
-    else
-      hkObj:disable()
+    for _, hkObj in ipairs(bindings) do
+      if isEnabled then
+        hkObj:enable()
+      else
+        hkObj:disable()
+      end
     end
+
+    local msg = isEnabled and 'enabled' or 'disabled'
+
+    if alertId then
+      hs.alert.closeSpecific(alertId)
+    end
+
+    alertId = hs.alert.show(string.format('Quickly Switch App is %s', msg))
   end
 
-  if isEnabled then
-    msg = 'enabled'
-  else
-    msg = 'disabled'
-  end
-
-  if alertId then
-    hs.alert.closeSpecific(alertId)
-  end
-  alertId = hs.alert.show(string.format('Quickly Switch App is %s', msg))
-
-  lastPressedAltTime = nil
+  -- 无论如何，都要重置 lastPressedAltTime
+  lastPressedAltTime = currentTime
 end
 
 local function init()
@@ -94,12 +90,6 @@ local function init()
   end
 end
 
---------------
--- 防止误触 --
---------------
-local function keyEventHandler(event)
-  lastPressedAltTime = nil
-end
 
 --------------
 -- Bindings --
@@ -109,9 +99,3 @@ init()
 
 toggleEventListener = hs.eventtap.new({ hs.eventtap.event.types.flagsChanged }, toggleEventHandler)
 toggleEventListener:start()
-
-keyDownListener = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, keyEventHandler)
-keyDownListener:start()
-
-keyUpListener = hs.eventtap.new({ hs.eventtap.event.types.keyUp }, keyEventHandler)
-keyUpListener:start()
