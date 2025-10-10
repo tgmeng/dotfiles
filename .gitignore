@@ -1,3 +1,4 @@
 .DS_Store
 vim/.vim/bundle
 vim/.vim/sessions
+zsh/.zsh/secret.zsh

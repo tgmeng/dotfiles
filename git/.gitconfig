@@ -1,69 +1,65 @@
 [user]
-	name = tgmeng
-	email = tgmeng@163.com
+  name = tgmeng
+  email = tgmeng@163.com
 
 [core]
-	excludesfile = ~/.gitignore_global
-	attributesfile = ~/.gitattributes
+  attributesfile = ~/.gitattributes
   pager = delta
 
 [interactive]
   diffFilter = delta --color-only
 
 [commit]
-    template = ~/.gitmessage
+  template = ~/.gitmessage
 
 [diff]
-	tool = bc3
+  tool = bc3
   colorMoved = default
 
-[diff "image"]
-  command = ~/bin/git-imgdiff
-
 [difftool]
-	prompt = false
+  prompt = false
 
 [difftool "bc3"]
-	trustExitCode = true
+  trustExitCode = true
 
 [difftool "difftastic"]
   cmd = difft "$LOCAL" "$REMOTE"
 
 [merge]
-	tool = bc3
+  tool = bc3
   conflictstyle = diff3
 
 [mergetool "bc3"]
-	trustExitCode = true
+  trustExitCode = true
 
 [mergetool]
-	bc3 = trustExitCode
-	prompt = false
+  bc3 = trustExitCode
+  prompt = false
 
 [delta]
     navigate = true # use n and N to move between diff sections
-    ; side-by-side = true
-    ; light = false # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+    # side-by-side = true
+    # light = false # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
 
 [color]
-	ui = true
+  ui = true
 
 [color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 
 [color "diff"]
-	meta = yellow
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
+  meta = yellow
+  frag = magenta bold
+  commit = yellow bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
 
 [credential]
-	helper = osxkeychain
+  helper = osxkeychain
 
 [filter "lfs"]
   clean = git-lfs clean -- %f
@@ -71,3 +67,56 @@
   process = git-lfs filter-process
   required = true
 
+# 下面是优化
+# @see https://blog.gitbutler.com/how-git-core-devs-configure-git/
+
+# clearly makes git better
+
+[column]
+  ui = auto
+[branch]
+  sort = -committerdate
+[tag]
+  sort = version:refname
+[init]
+  defaultBranch = main
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+[push]
+  default = simple
+  autoSetupRemote = true
+  followTags = true
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
+
+# why the hell not?
+
+[help]
+  autocorrect = prompt
+[commit]
+  verbose = true
+[rerere]
+  enabled = true
+  autoupdate = true
+[core]
+  excludesfile = ~/.gitignore
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+
+# a matter of taste (uncomment if you dare)
+
+[core]
+  # fsmonitor = true
+  # untrackedCache = true
+[merge]
+  # (just 'diff3' if git version < 2.3)
+  # conflictstyle = zdiff3 
+[pull]
+  # rebase = true

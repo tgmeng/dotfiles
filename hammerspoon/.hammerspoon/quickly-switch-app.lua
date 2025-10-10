@@ -5,7 +5,7 @@ local hyperKey = { 'alt' }
 local hotKeyToAppDict = {
   ['Q'] = 'com.google.Chrome',
   ['W'] = 'com.googlecode.iterm2',
-  ['E'] = 'com.microsoft.VSCode',
+  ['E'] = 'com.todesktop.230313mzl4w4u92',
   ['R'] = 'com.apple.iCal',
   ['T'] = 'com.apple.Safari',
   ['I'] = 'com.apple.ScreenContinuity',
@@ -43,21 +43,46 @@ local function switchApp(targetBundleId)
 end
 
 local alertId
-local lastPressedAltTime
-local interval = 250000000 -- 使用 0.25 秒间隔 (250ms)，单位为纳秒 (1000000000 纳秒 = 1 秒)
+local lastPressedAltTime = 0
+local interval = 0.2 * 1e9
+
+-- Correctly checks if ONLY the hyper key(s) are pressed.
+local function isHyperKeyOnly(flags)
+  -- Create a lookup table from the hyperKey array for faster checking.
+  local hyperKeyFlags = {}
+  for _, key in ipairs(hyperKey) do
+    hyperKeyFlags[key] = true
+  end
+
+  -- Check if all required hyper keys are pressed.
+  for key, _ in pairs(hyperKeyFlags) do
+    if not flags[key] then
+      return false
+    end
+  end
+
+  -- Check if any non-hyper keys are pressed.
+  for key, isPressed in pairs(flags) do
+    if isPressed and not hyperKeyFlags[key] then
+      return false
+    end
+  end
+
+  return true
+end
+
 
 local function toggleEventHandler(event)
   local flags = event:getFlags()
 
-  if not flags:containExactly(hyperKey) then
+  if not isHyperKeyOnly(flags) then
     return
   end
 
   local currentTime = hs.timer.absoluteTime()
 
-
-  -- 如果是第一次按下或者两次按键的时间间隔大于设定的 interval，则重置时间
-  if lastPressedAltTime and (currentTime - lastPressedAltTime <= interval) then
+  -- If it's a double-press within the interval, toggle the state.
+  if (currentTime - lastPressedAltTime) <= interval then
     isEnabled = not isEnabled
 
     for _, hkObj in ipairs(bindings) do
@@ -75,9 +100,11 @@ local function toggleEventHandler(event)
     end
 
     alertId = hs.alert.show(string.format('Quickly Switch App is %s', msg))
+    lastPressedAltTime = 0 -- Reset timer to prevent triple-presses from toggling again.
+    return
   end
 
-  -- 无论如何，都要重置 lastPressedAltTime
+  -- This is the first press, so just record the time.
   lastPressedAltTime = currentTime
 end
 

@@ -28,8 +28,8 @@ alias -- -='cd -'
 
 alias kce='eval `keychain --eval id_rsa`'
 
-alias c='code'
-alias cc='code .'
+alias c='cursor'
+alias cc='cursor .'
 alias f='fork'
 alias o='open'
 alias oo='open .'
@@ -66,3 +66,5 @@ alias fq="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7
 function lk {
   cd "$(walk "$@")"
 }
+
+alias sw=swift

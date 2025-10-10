@@ -7,6 +7,8 @@ export LANG=en_US.UTF-8
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:~/.yarn/bin
+
+export PNPM_HOME=~/Library/pnpm
 export PATH="$PNPM_HOME:$PATH"
 
 export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
@@ -26,22 +28,16 @@ setopt prompt_subst
 # zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
 source ~/.zsh/plug.zsh
-source ~/.zsh/plugins/init.zsh
 source ~/.zsh/key-bindings.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/completion.zsh
 
-if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-  ##### WHAT YOU WANT TO DISABLE FOR WARP - BELOW
-  source ~/.zsh/lazyfabric-prompt.zsh
-  ##### WHAT YOU WANT TO DISABLE FOR WARP - ABOVE
-fi
+
+source ~/.zsh/lazyfabric-prompt.zsh
+
+[ -f ~/.zsh/secret.zsh ] && source ~/.zsh/secret.zsh
 
 [ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
 
