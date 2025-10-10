@@ -11,6 +11,8 @@ export PATH=$PATH:~/.yarn/bin
 export PNPM_HOME=~/Library/pnpm
 export PATH="$PNPM_HOME:$PATH"
 
+. "$HOME/.local/bin/env"
+
 export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules --preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 export FZF_ALT_C_OPTS="--walker-skip .git,node_modules --preview 'tree -C {}'"
 
@@ -33,7 +35,6 @@ source ~/.zsh/key-bindings.zsh
 source ~/.zsh/aliases.zsh
 source ~/.zsh/history.zsh
 source ~/.zsh/completion.zsh
-
 
 source ~/.zsh/lazyfabric-prompt.zsh
 
