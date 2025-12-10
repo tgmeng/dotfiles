@@ -3,7 +3,8 @@ local AutoSwitchInputSource = {};
 function AutoSwitchInputSource:new(config)
   local obj = {
     appWatcher = nil,
-    config = config
+    config = config,
+    logger = hs.logger.new('auto-switch-input-source', 'info')
   }
   setmetatable(obj, self)
   self.__index = self
@@ -30,6 +31,7 @@ function AutoSwitchInputSource:start()
   self:stop();
   self.appWatcher = hs.application.watcher.new(function(appName, eventType, appObject)
     if (eventType == hs.application.watcher.activated) then
+      -- self.logger:i(hs.keycodes.currentSourceID())
       self:tryToSwitchInputSourceByFrontMost()
     end
   end)

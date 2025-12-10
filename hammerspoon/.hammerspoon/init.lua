@@ -15,7 +15,8 @@ showAppBundleId:start()
 --[[
   AutoSwitchInputSource
 --]]
-local chinese = 'com.sogou.inputmethod.sogou.pinyin'
+local chinese = 'im.rime.inputmethod.Squirrel.Hans'
+-- local chinese = 'com.apple.inputmethod.SCIM.ITABC'
 local english = 'com.apple.keylayout.ABC'
 local autoSwitchInputSource = AutoSwitchInputSource:new(
   {

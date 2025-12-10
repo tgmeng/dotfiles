@@ -61,7 +61,7 @@ alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
 alias pbc="pbcopy"
 alias pbp="pbpaste"
 
-alias fq="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
+alias fq="export https_proxy=http://127.0.0.1:7897 http_proxy=http://127.0.0.1:7897 all_proxy=socks5://127.0.0.1:7897"
 
 function lk {
   cd "$(walk "$@")"
