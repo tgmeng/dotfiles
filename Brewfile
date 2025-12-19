@@ -87,33 +87,46 @@ cask "qlimagesize"
 cask "brooklyn"
 
 # Mas
-mas "iHash", id: 763902043
-mas "QQ", id: 451108668
-mas "XMind", id: 1327661892
-mas "Reeder", id: 880001334
-mas "Xcode", id: 497799835
-mas "Fantastical", id: 975937182
-mas "Key Codes", id: 414568915
-mas "滴答清单", id: 966085870
-mas "Pixelmator Pro", id: 1289583905
-mas "QQ音乐", id: 595615424
-mas "The Unarchiver", id: 425424353
-mas "WPS Office", id: 1443749478
-mas "SnippetsLab", id: 1006087419
-mas "Time Out", id: 402592703
-mas "Text Scanner", id: 1452523807
-mas "Xnip", id: 1221250572
-mas "QSpace", id: 1469774098
-mas "Manico", id: 724472954
-mas "网易邮箱大师", id: 1233593954
-mas "Xee³", id: 639764244
-mas "Expressions", id: 913158085
-mas "欧路词典", id: 434350458
-mas "Gapplin", id: 768053424
-mas "Boop", id: 1518425043
-mas "Pages 文稿", id: 409201541
-mas "Jayson", id: 1189824719
-mas "Numbers 表格", id: 409203825
-mas "Paste", id: 967805235
-mas "熊掌记", id: 1091189122
-mas "Keynote 讲演", id: 409183694
+
+mas "超级右键 专业版", id 1550403011
+mas "网易邮箱大师", id 1233593954
+mas "网易云音乐", id  944848654
+mas "Actions", id 1586435171
+mas "Amphetamine", id  937984704
+mas "Audio Jam", id 1588219090
+mas "Bob", id 1630034110
+mas "Boop", id 1518425043
+mas "Days Matter", id  494500492
+mas "Developer", id  640199958
+mas "Dropover", id 1355679052
+mas "Easy CSV Editor", id 1171346381
+mas "Expressions", id  913158085
+mas "Folder Preview", id 6698876601
+mas "Gapplin", id  768053424
+mas "Gifski", id 1351639930
+mas "Hex Fiend", id 1342896380
+mas "iHash", id  763902043
+mas "Key Codes", id  414568915
+mas "Keynote讲演", id  409183694
+mas "LocalSend", id 1661733229
+mas "MindNode Classic", id 1289197285
+mas "Numbers表格", id  409203825
+mas "Octotree", id 1457450145
+mas "OK JSON", id 1576121509
+mas "Pages文稿", id  409201541
+mas "Pandan", id 1569600264
+mas "Paste", id  967805235
+mas "Picview", id 6452016140
+mas "Pixelmator Pro", id 1289583905
+mas "Pixiu", id 1461452315
+mas "SnippetsLab", id 1006087419
+mas "Soulver 3", id 1508732804
+mas "SQLiteFlow", id 1378587993
+mas "Tab Space", id 1473726602
+mas "Tayasui Sketches", id 1178074963
+mas "TextSniper", id 1528890965
+mas "The Unarchiver", id  425424353
+mas "Things", id  904280696
+mas "Vimari", id 1480933944
+mas "Xcode", id  497799835
+mas "Xmind", id 1327661892

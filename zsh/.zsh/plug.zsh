@@ -14,5 +14,6 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "softmoth/zsh-vim-mode", from:"github"
 zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
 zplug "MichaelAquilina/zsh-you-should-use"
+zplug "$HOME/.zsh/plugs", from:local
 
 zplug load
