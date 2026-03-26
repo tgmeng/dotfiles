@@ -4,20 +4,21 @@
 
 typeset -gA lf_prompt_colors
 lf_prompt_colors=(
-  dir $fg[cyan]
-  git:icon $fg[blue]
-  git:border $fg[blue]
-  git:untracked $fg[white]
-  git:added $fg[green]
-  git:modified $fg[yellow]
-  git:renamed $fg[blue]
-  git:deleted $fg[red]
-  git:stashed $fg[yellow]
-  git:unmerged $fg[red]
-  node:border $fg[green]
-  success $fg[green]
-  error $fg[red]
-  jobs $fg[white]
+  dir "%F{#89b4fa}"            # blue
+  git:branch "%F{#cba6f7}"     # mauve
+  git:border "%F{#6c7086}"     # overlay0
+  git:untracked "%F{#7f849c}"  # overlay1
+  git:added "%F{#a6e3a1}"      # green
+  git:modified "%F{#f9e2af}"   # yellow
+  git:renamed "%F{#74c7ec}"    # sapphire
+  git:deleted "%F{#f38ba8}"    # red
+  git:stashed "%F{#6c7086}"    # overlay0
+  git:unmerged "%F{#eba0ac}"   # maroon
+  node:border "%F{#6c7086}"    # overlay0
+  node:version "%F{#a6e3a1}"   # green
+  success "%F{#a6e3a1}"        # green
+  error "%F{#f38ba8}"          # red
+  jobs "%F{#a6adc8}"           # subtext0
 )
 
 # ------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ typeset -g lf_git_prompt_prefix="%{$lf_prompt_colors[git:border]%}[%{$reset_colo
 typeset -g lf_git_prompt_suffix="%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
 
 lf_git_render_prompt() {
-  echo "${lf_git_prompt_prefix}$@${lf_git_prompt_suffix}"
+  echo "${lf_git_prompt_prefix}%{$lf_prompt_colors[git:branch]%}$@${lf_git_prompt_suffix}"
 }
 
 lf_git_status_async() {
@@ -37,14 +38,18 @@ lf_git_status_async() {
   ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
     ref=$(command git rev-parse --short HEAD 2>/dev/null) || return 0
 
+  local git_state
+  git_state=$(lf_git_status)
+  [[ -n $git_state ]] && git_state=" $git_state"
+
   typeset -A info 
   info[pwd]=$PWD
-  info[data]=$(lf_git_render_prompt "${ref#refs/heads/}$(lf_git_status)")
+  info[data]=$(lf_git_render_prompt "${ref#refs/heads/}${git_state}")
 
   print -r - ${(@kvq)info}
 }
 
-typeset -g lf_git_prompt_loading=$(lf_git_render_prompt "-")
+typeset -g lf_git_prompt_loading="%{$lf_prompt_colors[git:border]%}[%{$lf_prompt_colors[git:branch]%}…%{$lf_prompt_colors[git:border]%}]%{$reset_color%}"
 
 # Git status
 typeset -g lf_git_status_untracked="%{$lf_prompt_colors[git:untracked]%}?"
@@ -140,7 +145,7 @@ lf_git_status() {
 # Background jobs
 # ------------------------------------------------------------------------------
 
-typeset -g lf_jobs_symbol="%%"
+typeset -g lf_jobs_symbol="⚙"
 typeset -g lf_jobs_color="%{$lf_prompt_colors[jobs]%}"
 typeset -g lf_jobs_amount_threshold="${lf_jobs_amount_threshold=1}"
 
@@ -153,7 +158,7 @@ lf_jobs_get() {
   if [[ $jobs_amount -le $lf_jobs_amount_threshold ]]; then
     jobs_amount=''
   else
-    jobs_amount=" $jobs_amount"
+    jobs_amount=":$jobs_amount"
   fi
 
   echo "${lf_jobs_color}[${lf_jobs_symbol}${jobs_amount}]"
@@ -164,7 +169,7 @@ lf_jobs_get() {
 # ------------------------------------------------------------------------------
 
 lf_node_render_prompt() {
-  echo "%{$lf_prompt_colors[node:border]%}[node:%{$reset_color%}$@%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
+  echo "%{$lf_prompt_colors[node:border]%}[%{$lf_prompt_colors[node:version]%}node:$@%{$lf_prompt_colors[node:border]%}]%{$reset_color%}"
 }
 
 lf_node_get_version() {
@@ -244,7 +249,7 @@ lf_prompt_async_tasks() {
 # ------------------------------------------------------------------------------
 
 typeset -g lf_prompt_last=""
-typeset -g lf_prompt_symbol="%(?:%{$lf_prompt_colors[success]%}>%{$reset_color%}:%{$lf_prompt_colors[error]%}>%{$reset_color%})"
+typeset -g lf_prompt_symbol="%(?:%{$lf_prompt_colors[success]%}❯%{$reset_color%}:%{$lf_prompt_colors[error]%}❯%{$reset_color%})"
 typeset -g lf_prompt_git_status=""
 
 lf_prompt_precmd() {

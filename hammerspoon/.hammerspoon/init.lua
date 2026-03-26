@@ -11,7 +11,6 @@ local ShowAppBundleId = require './show-app-bundle-id'
 local showAppBundleId = ShowAppBundleId:new()
 showAppBundleId:start()
 
-
 --[[
   AutoSwitchInputSource
 --]]

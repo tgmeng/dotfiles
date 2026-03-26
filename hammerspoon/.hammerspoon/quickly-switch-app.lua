@@ -4,10 +4,13 @@
 local hyperKey = { 'alt' }
 local hotKeyToAppDict = {
   ['Q'] = 'com.google.Chrome',
-  ['W'] = 'com.googlecode.iterm2',
+  ['3'] = 'dev.zed.Zed',
+  -- ['W'] = 'com.googlecode.iterm2',
+  ['W'] = 'com.mitchellh.ghostty',
   ['E'] = 'com.todesktop.230313mzl4w4u92',
-  ['R'] = 'com.apple.iCal',
-  ['T'] = 'com.apple.Safari',
+  ['R'] = 'com.openai.codex',
+  -- ['T'] = 'com.apple.Safari',
+  ['T'] = 'com.apple.iCal',
   ['I'] = 'com.apple.ScreenContinuity',
   ['P'] = 'com.proxyman.NSProxy',
 
@@ -21,6 +24,7 @@ local hotKeyToAppDict = {
   ['Z'] = 'com.youzan.zanproxy',
   ['X'] = 'com.electron.lark',
   ['C'] = 'md.obsidian',
+  ['Tab'] = 'com.openai.chat',
   ['V'] = 'com.tencent.xinWeChat',
   ['N'] = 'com.apple.Notes',
   ['M'] = 'com.ideasoncanvas.mindnode.macos',

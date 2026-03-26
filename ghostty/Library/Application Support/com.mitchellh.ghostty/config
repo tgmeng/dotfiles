@@ -1,0 +1,34 @@
+theme = Catppuccin Mocha
+
+# Typography
+# Match Cursor editor typography as closely as Ghostty allows.
+font-family = "Monaspace Argon"
+font-family = Menlo
+font-size = 13
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = false
+
+# OpenType Features
+# Mirror Cursor's enabled OpenType features.
+font-feature = +calt
+font-feature = +liga
+font-feature = +ss01
+font-feature = +ss02
+font-feature = +ss03
+font-feature = +ss04
+font-feature = +ss05
+font-feature = +ss06
+font-feature = +ss07
+font-feature = +ss08
+font-feature = +ss09
+
+# Split Focus
+# Increase contrast between focused and unfocused splits.
+unfocused-split-opacity = 0.65
+unfocused-split-fill = #000000
+split-divider-color = #45475a
+
+# Alt/Meta word movement (zsh/readline): Option+F/B -> forward/backward-word
+macos-option-as-alt = true
