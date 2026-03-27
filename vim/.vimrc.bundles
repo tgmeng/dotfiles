@@ -10,61 +10,48 @@ let s:bundle_path = '~/' . s:dotvim . '/bundle'
 
 call plug#begin(s:bundle_path)
 
+" 基础默认配置
 Plug 'tpope/vim-sensible'
 
-Plug 'airblade/vim-gitgutter'
+" 导航与项目浏览
 Plug 'easymotion/vim-easymotion'
+Plug 'lambdalisue/vim-fern'
+Plug 'christoomey/vim-tmux-navigator'
+
+" 搜索与 Git
+Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-grepper'
+Plug 'tpope/vim-fugitive'
+
+" 编辑增强
 Plug 'editorconfig/editorconfig-vim'
 Plug 'godlygeek/tabular'
 Plug 'jiangmiao/auto-pairs'
-Plug 'jlanzarotta/bufexplorer'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
 Plug 'andymass/vim-matchup'
-Plug 'Yggdroot/indentLine'
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
-
-" Plug 'majutsushi/tagbar'
-" Plug 'ervandew/supertab'
-" Plug 'justinmk/vim-sneak'
-" Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-
-Plug 'mileszs/ack.vim'
-
-Plug 'preservim/nerdcommenter'
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-" Plug 'sjl/gundo.vim'
-
+Plug 'mg979/vim-visual-multi'
 Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
-
 Plug 'tommcdo/vim-exchange'
-
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 
-Plug 'vim-airline/vim-airline'
+" 界面与显示
+Plug 'Yggdroot/indentLine'
+Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
 
-" Syntax
+" 语法与代码片段
 Plug 'sheerun/vim-polyglot'
-
-" Snippets
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-" ColorSchemes
-Plug 'tomasr/molokai'
-
-" Font
-Plug 'ryanoasis/vim-devicons'
-
-Plug 'christoomey/vim-tmux-navigator'
+" 颜色主题
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 
 call plug#end()

@@ -25,6 +25,10 @@ if filereadable(s:vimrc_bundle)
     execute 'source ' . fnameescape(s:vimrc_bundle)
 endif
 
+" 禁用 netrw，避免打开目录时接管界面。
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
 " 如果存在 sensible.vim，则顺手加载一组更合理的默认值。
 runtime! plugin/sensible.vim
 
@@ -53,10 +57,6 @@ set sessionoptions+=slash
 set sessionoptions+=unix
 set sessionoptions-=help
 set sessionoptions-=buffers
-
-let g:session_persist_font = 0
-let g:session_persist_colors = 0
-let g:session_command_aliases = 1
 
 " 全局开启鼠标支持。
 set mouse=a
@@ -167,7 +167,10 @@ set wrap
 " 颜色与字体 {{{2
 """"""""""""""""""""""""""""""
 try
-    colorscheme molokai
+    if has('termguicolors')
+        set termguicolors
+    endif
+    colorscheme catppuccin_mocha
 catch
 endtry
 
@@ -378,50 +381,37 @@ xnoremap & :&&<CR>
 " 插件相关设置 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" vim-ack
-if executable('ag')
-    let g:ackprg = 'ag --nogroup --nocolor --column'
+" vim-grepper
+if executable('rg')
+    let g:grepper = { 'tools': ['rg', 'git', 'ag'] }
+    let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+elseif executable('ag')
+    let g:grepper = { 'tools': ['ag', 'git'] }
+else
+    let g:grepper = { 'tools': ['git'] }
 endif
 
-map <leader>g :Ack
+nnoremap <leader>g :Grepper<Space>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fb :Buffers<CR>
+if executable('rg')
+    nnoremap <leader>fr :Rg<Space>
+endif
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<leader><tab>"
 " `:UltiSnipsEdit` 使用垂直分屏打开。
 let g:UltiSnipsEditSplit="vertical"
 
-" NERDTree
-let NERDTreeShowHidden=1
+" Fern
+let g:fern#default_hidden = 1
 
-nnoremap <leader>nn :NERDTreeToggle<cr>
-nnoremap <leader>nb :NERDTreeFromBookmark 
-nnoremap <leader>nf :NERDTreeFind<cr>
-
-" NERDCommenter
-" 默认在注释分隔符后加空格。
-let g:NERDSpaceDelims = 1
-" 多行注释使用更紧凑的格式。
-let g:NERDCompactSexyComs = 1
-" 行注释分隔符左对齐，而不是跟随代码缩进。
-let g:NERDDefaultAlign = 'left'
-" 为特定语言启用备用注释分隔符。
-let g:NERDAltDelims_java = 1
-" 可以在这里自定义或覆盖默认注释格式。
-" let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" 允许对空行执行注释/反注释。
-let g:NERDCommentEmptyLines = 1
-" 反注释时自动清理行尾空白。
-let g:NERDTrimTrailingWhitespace = 1
+nnoremap <leader>nn :Fern . -drawer -toggle -width=35<CR>
+nnoremap <leader>nb :Fern ~ -drawer -toggle -width=35<CR>
+nnoremap <leader>nf :Fern . -drawer -toggle -reveal=% -width=35<CR>
 
 " Emmet
 let g:user_emmet_leader_key = '<C-E>'
-
-" vim-javascript
-let g:javascript_enable_domhtmlcss = 1
-let g:javascript_ignore_javaScriptdoc = 1
-
-" vim-jsx
-let g:jsx_ext_required = 0
 
 " Auto-pairs
 let g:AutoPairsMapSpace = 0
@@ -443,37 +433,19 @@ nmap [h <Plug>GitGutterPrevHunk
 "       \ 'ai' :0, " `around indent`，需要额外安装 vim-textobj-indent
 "       \ })
 
-" vim-session
-let g:session_autoload = 'no'
-let g:session_autosave = 'prompt'
-
-nnoremap <leader>so :OpenSession!<CR>
-nnoremap <leader>ss :SaveSession<CR>
-
-" LeaderF
-let g:Lf_ShortcutF = '<C-P>'
-let g:Lf_WindowPosition = 'popup'
-let g:Lf_PreviewInPopup = 1
-
-noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
-noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
-noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
-noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
-
-" noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
-" noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-" 按字面量搜索当前可视选区。
-" xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
-" noremap go :<C-U>Leaderf! rg --recall<CR>
-
-" 这些 gtags 命令前，应该先执行 `Leaderf gtags --update`。
-" let g:Lf_GtagsAutoGenerate = 0
-" let g:Lf_Gtagslabel = 'native-pygments'
-" noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
-" noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
-" noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
-" noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
-" noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+" lightline
+set laststatus=2
+set noshowmode
+let g:lightline = {
+      \ 'colorscheme': 'catppuccin_mocha',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -532,7 +504,7 @@ function! s:MkNonExDir(file, buf)
 endfunction
 
 " `:LogMessage` 命令。
-command! -nargs=+ -complete=command LogMessage call LogMessage(<q-args>)``
+command! -nargs=+ -complete=command LogMessage call LogMessage(<q-args>)
 " 把命令输出放到新的 Tab。
 function! LogMessage(cmd)
     redir => message
