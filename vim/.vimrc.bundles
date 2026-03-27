@@ -65,4 +65,6 @@ Plug 'tomasr/molokai'
 " Font
 Plug 'ryanoasis/vim-devicons'
 
+Plug 'christoomey/vim-tmux-navigator'
+
 call plug#end()

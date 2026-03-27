@@ -40,7 +40,7 @@ lf_git_status_async() {
 
   local git_state
   git_state=$(lf_git_status)
-  [[ -n $git_state ]] && git_state=" $git_state"
+  [[ -n $git_state ]] && git_state=":$git_state"
 
   typeset -A info 
   info[pwd]=$PWD

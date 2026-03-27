@@ -1,85 +1,79 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LAZYFABRIC VIMRC
-" Based On: 
-"       ambix/vimrc
+" 基于: ambix/vimrc
 "
-" Sections:
-"       Bundles
-"       General
-"       VIM user interface
-"           - Text, tab and indent related
-"           - Colors and Fonts
-"           - Status line
-"       Files, backups and undo
-"       Moving around, tabs, windows and buffers
-"       Visual mode related
-"       Editing mappings
-"       Plugin related settings
-"       Misc
-"       Helper functions
+" 主要区块:
+"   - 插件加载
+"   - 通用设置
+"   - Vim 界面
+"   - 文件、备份与撤销
+"   - 移动、Tab、窗口与 buffer
+"   - Visual 模式相关
+"   - 编辑映射
+"   - 插件相关设置
+"   - 杂项
+"   - 辅助函数
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Bundles {{{1
+" 插件加载 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:vimrc_bundle = expand('<sfile>:p:h') . '/.vimrc.bundles' 
+" 加载同目录下可选的插件列表配置。
+let s:vimrc_bundle = expand('<sfile>:p:h') . '/.vimrc.bundles'
 if filereadable(s:vimrc_bundle)
     execute 'source ' . fnameescape(s:vimrc_bundle)
 endif
 
-" sensible.vim
+" 如果存在 sensible.vim，则顺手加载一组更合理的默认值。
 runtime! plugin/sensible.vim
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General {{{1
+" 通用设置 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+" 使用逗号作为自定义映射的 Leader 键。
+let mapleader = ','
+let g:mapleader = ','
 
-" leader eq ',', then noremap \ to ,
+" 当 Leader 是逗号时，也让 "\" 等价于 ","。
 if mapleader ==? ','
     noremap \ ,
 endif
 
-" Fast saving
+" 快速保存与重新载入当前文件。
 nmap <leader>w :w!<cr>
-
-" Reload
 nmap <F5> :e!<cr>
 
-" Session
-" Path is relative to the session file
+" Session 行为。
+" 让 Session 文件里的路径更便于跨目录复用。
 " set sessionoptions-=curdir
 " set sessionoptions+=sesdir
-" Unix / & \n
 set sessionoptions+=slash
 set sessionoptions+=unix
 set sessionoptions-=help
-set sessionoptions-=buffers
 set sessionoptions-=buffers
 
 let g:session_persist_font = 0
 let g:session_persist_colors = 0
 let g:session_command_aliases = 1
 
+" 全局开启鼠标支持。
 set mouse=a
 
 if has("mac") || has("macunix")
     silent! set macmeta
 endif
 
-set shell=/usr/local/bin/zsh
+" 为 `:!` 等 shell 集成功能显式指定系统自带 zsh。
+set shell=/bin/zsh
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" VIM user interface {{{1
+" Vim 界面 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
+" 光标上下各保留一些可见上下文。
+set scrolloff=7
 
 set encoding=utf8
 set fileencodings=utf-8,chinese,latin-1
@@ -90,14 +84,14 @@ else
     set fileencoding=utf-8
 endif
 
-" Menu garbled characters 
+" 修复菜单乱码。
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
-" Console garbled characters
+" 修复终端消息乱码。
 language messages zh_CN.utf-8
 
-" Ignore compiled files
+" 文件名补全时忽略常见生成文件。
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
@@ -105,77 +99,72 @@ else
     set wildignore+=.git\*,.hg\*,.svn\*
 endif
 
-" Height of the command bar
+" 为消息和命令输出预留两行高度。
 set cmdheight=2
 
-" A buffer becomes hidden when it is abandoned
-set hid
+" 切换 buffer 时，保留已修改内容而不是强制关闭。
+set hidden
 
-" Configure backspace so it acts as it should act
+" 允许左右移动键和 h/l 跨行移动。
 set whichwrap+=<,>,h,l
 
-" Ignore case when searching
+" 搜索时默认忽略大小写；若模式里有大写则自动区分大小写。
 set ignorecase
-
-" When searching try to be smart about cases 
 set smartcase
 
-" Highlight search results
+" 高亮搜索结果。
 set hlsearch
 
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
+" 执行宏和脚本时减少重绘。
+set lazyredraw
 
-" For regular expressions turn magic on
+" 正则默认启用 magic 模式。
 set magic
 
-" Show matching brackets when text indicator is over them
-set showmatch 
-" How many tenths of a second to blink when matching brackets
-set mat=2
+" 短暂跳转到匹配括号。
+set showmatch
+set matchtime=2
 
-" No annoying sound on errors
+" 关闭提示铃声，并设置一个合适的按键等待时间。
 set noerrorbells
 set novisualbell
 set t_vb=
-set tm=500
+set timeoutlen=500
 
-" Add a bit extra margin to the left
+" 显示折叠列，并同时开启绝对/相对行号。
 set foldcolumn=1
-
-" set line number 
 set number relativenumber
 
-" Highlight current line
+" 高亮当前行。
 set cursorline
 " set cursorcolumn
 
-" Use the same symbols as TextMate for tabstops and EOLs
+" 用可见符号显示 Tab 和行尾。
 set listchars=tab:▸\ ,eol:¬
 
 """"""""""""""""""""""""""""""
-" Text, tab and indent related {{{2
+" 文本、缩进与换行 {{{2
 """"""""""""""""""""""""""""""
-" Use spaces instead of tabs
+" 用空格替代 Tab。
 set expandtab
 
-" Be smart when using tabs
+" 使用 Tab 时启用更智能的行为。
 " set smarttab
 
-" 1 tab == 4 spaces
+" 统一四个空格缩进。
 set shiftwidth=4
 set tabstop=4
 
-" Linebreak on 500 characters
-set lbr
-set tw=500
+" 优先采用较宽的文本宽度，并让长行按单词边界换行。
+set linebreak
+set textwidth=500
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+set autoindent
+set smartindent
+set wrap
 
 """"""""""""""""""""""""""""""
-" Colors and Fonts {{{2
+" 颜色与字体 {{{2
 """"""""""""""""""""""""""""""
 try
     colorscheme molokai
@@ -184,11 +173,10 @@ endtry
 
 set background=dark
 
-" Set extra options when running in GUI mode
+" GUI Vim / MacVim 的额外设置。
 if has("gui_running")
-    " Remove toolbar
+    " 去掉工具栏和菜单栏的冗余元素。
     set guioptions-=T
-    " Remove menu bar
     set guioptions-=m
     set guioptions-=e
     set t_Co=256
@@ -204,88 +192,91 @@ if has("gui_running")
     endif
 endif
 
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
+" 优先使用 Unix 换行，同时兼容 DOS 和旧版 Mac 文件。
+set fileformats=unix,dos,mac
 
 """"""""""""""""""""""""""""""
-" Status line {{{2
+" 状态栏 {{{2
 """"""""""""""""""""""""""""""
-" Format the status line below
+" 状态栏格式可在这里继续补充。
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Files, backups and undo {{{1
+" 文件、备份与撤销 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("vms")
-    " do not keep a backup file, use versions instead
+    " 在 VMS 上使用系统版本机制，不使用 Vim 备份文件。
     set nobackup
     set nowritebackup
     set noswapfile
 else
-    " keep a backup file
-    let s:vimtmp=$HOME.'/vimtmp'
+    " 把持久备份统一放到 ~/vimtmp。
+    " `backup` 会在保存后保留备份文件。
+    " `nowritebackup` 会关闭“写入过程中的临时备份”。
+    let s:vimtmp = expand('~/vimtmp')
 
-    if (!filewritable(s:vimtmp))
-        silent execute '!mkdir "'.s:vimtmp.'"'
+    if !isdirectory(s:vimtmp)
+        call mkdir(s:vimtmp, 'p', 0700)
     endif
 
-    set backup
-    set nowritebackup
-
-    let &backupdir=s:vimtmp.'//'
-    let &directory=s:vimtmp.'//'
+    if isdirectory(s:vimtmp) && filewritable(s:vimtmp) == 2
+        set backup
+        set nowritebackup
+        let &backupdir = s:vimtmp . '//'
+        let &directory = s:vimtmp . '//'
+    endif
 endif
 
 augroup SetFiletypeAs
     autocmd!
-    " .md to Markdown 
+" 为常见扩展名指定 filetype。
     autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-    " .ftl to HTML
     autocmd BufNewFile,BufReadPost *.ftl set filetype=html.ftl
 augroup END
 
 augroup Other
     autocmd!
+    " 保存文件前自动补齐不存在的父目录。
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Moving around, tabs, windows and buffers {{{1
+" 移动、Tab、窗口与 buffer {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
+" 在长行里移动时按屏幕换行后的视觉行处理。
 noremap j gj
 noremap k gk
 noremap gj j
 noremap gk k
 
-" Map <Space> to / (search)
+" 用空格触发 `/` 搜索。
 map <space> /
 
-" Disable highlight when <leader><cr> is pressed
+" 用 `<leader><space>` 清除搜索高亮。
 " map <silent> <leader><cr> :noh<cr>
 map <silent> <leader><space> :noh<cr>
 
-" Smart way to move between windows
+" 更方便地在窗口间移动。
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Maximize splits
+" 快速最大化或均分分屏。
 nnoremap <C-w>M <C-w>\|<C-w>_
 nnoremap <C-w>m <C-w>=
 
-" :q
+" 快速退出当前窗口。
 map <leader>q :q<CR>
 
-" Close the current buffer
+" 关闭当前 buffer。
 map <leader>bd :Bclose<cr>:q<cr>
 
-" Close all the buffers
+" 关闭所有 buffer。
 map <leader>ba :bufdo bd<cr>
 
-" Useful mappings for managing tabs
+" 常用 Tab 管理映射。
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
@@ -294,98 +285,97 @@ map <leader>tm :tabmove
 map <leader>th :execute "tabmove" tabpagenr() - 2 <CR>
 map <leader>tl :execute "tabmove" tabpagenr() + 1<CR>
 
-" Move between tabs
+" 在 Tab 之间切换。
 nnoremap <C-Tab> gt
 nnoremap <C-S-Tab> gT
 map <leader>l gt
 map <leader>h gT
 
-" Let 'tl' toggle between this and the last accessed tab
+" 记录上一个 Tab，方便快速来回切换。
 let g:lasttab = 1
 nmap <Leader>t<leader> :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
+" 以当前文件所在目录为起点新开一个 Tab。
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
-" Switch CWD to the directory of the open buffer
+" 把当前工作目录切到当前文件所在目录。
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" Specify the behavior when switching between buffers 
+" 指定 buffer 切换行为。
 try
     set switchbuf=useopen,usetab,newtab
     set stal=2
 catch
 endtry
 
-" Return to last edit position when opening files (You want this!)
+" 打开文件时回到上次编辑位置。
 " autocmd BufReadPost *
 "      \ if line("'\"") > 0 && line("'\"") <= line("$") |
 "      \   exe "normal! g`\"" |
 "      \ endif
-" Remember info about open buffers on close
+" 退出时记录打开过的 buffer 信息。
 " set viminfo^=%
 
 
 """"""""""""""""""""""""""""""
-" Visual mode related {{{1
+" Visual 模式相关 {{{1
 """"""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
+" 在 Visual 模式下用 `*` / `#` 搜索当前选区。
+" 思路来自 Michael Naumann。
 xnoremap * :<C-u>call <SID>VisualSelection('/')<CR>/<C-R>=@/<CR><CR>
 xnoremap # :<C-u>call <SID>VisualSelection('?')<CR>?<C-R>=@/<CR><CR>
 
-" copy and paste
+" Visual 模式下的复制与粘贴。
 vnoremap <leader>d "+d
 vnoremap <leader>y "+y
 vnoremap <leader>p "+p
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Editing mappings {{{1
+" 编辑映射 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remap VIM 0 to first non-blank character
+" 把 `0` 重映射为跳到行首第一个 non-blank 字符。
 map 0 ^
 
-" Redraw & clear highlight
+" 清除高亮并刷新屏幕。
 nnoremap <M-l> :nohl<CR><C-L>
 
-" Copy and paste
+" 普通模式下的复制与粘贴。
 nnoremap <leader>d "+d
 nnoremap <leader>y "+y
 nnoremap <leader>p "+]p
 nnoremap <leader>P "+[p
 
-" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+" 用 Alt+j / Alt+k 快速移动当前行或选区。
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has('win32')
-    " On windows start a explorer and select current file
+    " 在 Windows 中打开资源管理器并选中当前文件。
     nnoremap <F11> :<C-U>!start explorer /select,%:p<CR>
 endif
 
-" Insert mode, <C-W> & <C-U> undo
+" 让插入模式下的 `<C-W>` 拥有更合理的撤销边界。
 " inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 
-" %% expands current file's directory path
+" 在命令行模式下，`%%` 展开为当前文件所在目录。
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 map <leader>ew :edit %%
 map <leader>es :split %%
 map <leader>ev :vsplit %%
 map <leader>et :tabedit %%
 
-" & saves last flag
+" 重复上一次替换命令时保留上次的参数标记。
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin related settings {{{1
+" 插件相关设置 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " vim-ack
@@ -397,7 +387,7 @@ map <leader>g :Ack
 
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<leader><tab>"
-" If you want :UltiSnipsEdit to split your window.
+" `:UltiSnipsEdit` 使用垂直分屏打开。
 let g:UltiSnipsEditSplit="vertical"
 
 " NERDTree
@@ -408,19 +398,19 @@ nnoremap <leader>nb :NERDTreeFromBookmark
 nnoremap <leader>nf :NERDTreeFind<cr>
 
 " NERDCommenter
-" Add spaces after comment delimiters by default
+" 默认在注释分隔符后加空格。
 let g:NERDSpaceDelims = 1
-" Use compact syntax for prettified multi-line comments
+" 多行注释使用更紧凑的格式。
 let g:NERDCompactSexyComs = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
+" 行注释分隔符左对齐，而不是跟随代码缩进。
 let g:NERDDefaultAlign = 'left'
-" Set a language to use its alternate delimiters by default
+" 为特定语言启用备用注释分隔符。
 let g:NERDAltDelims_java = 1
-" Add your own custom formats or override the defaults
+" 可以在这里自定义或覆盖默认注释格式。
 " let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-" Allow commenting and inverting empty lines (useful when commenting a region)
+" 允许对空行执行注释/反注释。
 let g:NERDCommentEmptyLines = 1
-" Enable trimming of trailing whitespace when uncommenting
+" 反注释时自动清理行尾空白。
 let g:NERDTrimTrailingWhitespace = 1
 
 " Emmet
@@ -443,14 +433,14 @@ nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 
 " vim-expand-region
-" Extend the global default (NOTE: Remove comments in dictionary before sourcing)
+" 扩展默认文本对象（注意：启用前先删掉字典里的说明注释）
 " call expand_region#custom_text_objects({
-"       \ "\/\\n\\n\<CR>": 1, " Motions are supported as well. Here's a search motion that finds a blank line
-"       \ 'a]' :1, " Support nesting of 'around' brackets
-"       \ 'ab' :1, " Support nesting of 'around' parentheses
-"       \ 'aB' :1, " Support nesting of 'around' braces
-"       \ 'ii' :0, " 'inside indent'. Available through https://github.com/kana/vim-textobj-indent
-"       \ 'ai' :0, " 'around indent'. Available through https://github.com/kana/vim-textobj-indent
+"       \ "\/\\n\\n\<CR>": 1, " 也支持移动命令；这里的例子会搜索一个空行
+"       \ 'a]' :1, " 支持嵌套的方括号 around 文本对象
+"       \ 'ab' :1, " 支持嵌套的圆括号 around 文本对象
+"       \ 'aB' :1, " 支持嵌套的大括号 around 文本对象
+"       \ 'ii' :0, " `inside indent`，需要额外安装 vim-textobj-indent
+"       \ 'ai' :0, " `around indent`，需要额外安装 vim-textobj-indent
 "       \ })
 
 " vim-session
@@ -472,11 +462,11 @@ noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 " noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
 " noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
-" search visually selected text literally
+" 按字面量搜索当前可视选区。
 " xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
 " noremap go :<C-U>Leaderf! rg --recall<CR>
 
-" should use `Leaderf gtags --update` first
+" 这些 gtags 命令前，应该先执行 `Leaderf gtags --update`。
 " let g:Lf_GtagsAutoGenerate = 0
 " let g:Lf_Gtagslabel = 'native-pygments'
 " noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
@@ -487,15 +477,15 @@ noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Misc {{{1
+" 杂项 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Toggle paste mode on and off
+" 切换 paste 模式。
 map <leader>PP :setlocal paste!<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Helper functions {{{1
+" 辅助函数 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
@@ -510,7 +500,7 @@ function! s:VisualSelection(cmdtype)
   let @" = temp
 endfunction
 
-" Don't close window, when deleting a buffer
+" 删除 buffer 时尽量不要把当前窗口一起关掉。
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
     let l:currentBufNum = bufnr("%")
@@ -531,7 +521,7 @@ function! <SID>BufcloseCloseIt()
     endif
 endfunction
 
-" mkdirp if path not exist when saving file
+" 保存文件时，如果目录不存在就自动创建。
 function! s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
         let dir=fnamemodify(a:file, ':h')
@@ -541,9 +531,9 @@ function! s:MkNonExDir(file, buf)
     endif
 endfunction
 
-" :LogMessage
+" `:LogMessage` 命令。
 command! -nargs=+ -complete=command LogMessage call LogMessage(<q-args>)``
-" Put command result to a new tab
+" 把命令输出放到新的 Tab。
 function! LogMessage(cmd)
     redir => message
     silent execute a:cmd
@@ -551,7 +541,7 @@ function! LogMessage(cmd)
     if empty(message)
         echoerr "no output"
     else
-        " use "new" instead of "tabnew" below if you prefer split windows instead of tabs
+        " 如果更喜欢分屏，可以把下面的 `tabnew` 改成 `new`。
         tabnew
         setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
         silent put=message
