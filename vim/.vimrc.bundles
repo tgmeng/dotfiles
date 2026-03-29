@@ -16,7 +16,7 @@ Plug 'tpope/vim-sensible'
 " 导航与项目浏览
 Plug 'easymotion/vim-easymotion'
 Plug 'lambdalisue/vim-fern'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 
 " 搜索与 Git
 Plug 'airblade/vim-gitgutter'
