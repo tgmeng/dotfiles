@@ -11,7 +11,7 @@ zplug "plugins/docker-compose", from:oh-my-zsh
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "softmoth/zsh-vim-mode", from:"github"
+zplug "jeffreytse/zsh-vi-mode"
 zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
 zplug "MichaelAquilina/zsh-you-should-use"
 zplug "$HOME/.zsh/plugs", from:local
