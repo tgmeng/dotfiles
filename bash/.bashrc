@@ -64,7 +64,8 @@ alias l='ls -alh'
 
 alias rm="rm -i"
 
-[ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
 
 [ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
 

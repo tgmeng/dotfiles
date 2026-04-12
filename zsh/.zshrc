@@ -66,7 +66,11 @@ source ~/.zsh/lazyfabric-prompt.zsh
 
 [ -f ~/.git-custom-complete ] && source ~/.git-custom-complete
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# The plugin will auto execute this zvm_after_init function
+# @see https://github.com/jeffreytse/zsh-vi-mode?tab=readme-ov-file#execute-extra-commands
+function zvm_after_init() {
+    source <(fzf --zsh)
+}
 
 eval "$(zoxide init zsh --cmd j)"
 
