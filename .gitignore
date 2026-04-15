@@ -1,4 +1,6 @@
 .DS_Store
 vim/.vim/bundle
 vim/.vim/sessions
-zsh/.zsh/secret.zsh
+zsh/.config/zsh/local/secret.zsh
+zsh/.config/zsh/.zcompdump*
+zsh/.zcompdump*

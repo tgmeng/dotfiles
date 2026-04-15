@@ -1,22 +1,23 @@
-# https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/common-aliases/common-aliases.plugin.zsh
+# 基础别名参考常用别名集合，再叠加个人习惯。
+# 参考：https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/common-aliases/common-aliases.plugin.zsh
 
-# Safety first
+# 安全优先
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 
-# Colorize output, make ls human readable and classify...
+# 彩色输出，并让 `ls` 显示类型后缀。
 if [[ $(uname) == Darwin ]]; then
   alias dircolors='gdircolors'
   alias ls='eza --color=automatic -F'
 fi
 
-alias l='eza -lF'              #size, show type, human readable
-alias la='eza -laF'            #long list, show almost all, show type, human readable
-alias lr='eza -RF --sort date' #sorted by date, recursive, show type, human readable
-alias lt='eza -lF --sort date' #long list, sorted by date, show type, human readable
+alias l='eza -lF'              # 显示大小、类型，并使用人类可读格式
+alias la='eza -laF'            # 长列表，包含隐藏文件，显示类型和人类可读大小
+alias lr='eza -RF --sort date' # 递归列出并按时间排序
+alias lt='eza -lF --sort date' # 长列表并按时间排序
 
-# Colorize output and some exclusions
+# 彩色 grep，并排除常见的大目录。
 alias grep="grep --color=auto --exclude-dir={.git,.svn,node_modules}"
 
 alias -g ...='../..'
@@ -45,26 +46,28 @@ alias mke='make electron'
 alias mkr='make rebuild'
 alias mki='make install'
 alias mkwd='make web_dev'
+
+# 这两个别名有风险，但为了兼容既有习惯先保留。
 alias rma='rm -rf *'
 alias rmf='rm -rf'
 
-alias gbc="git branch | sed -n '/\* /s///p'"
+alias gbc="git branch | sed -n '/\\* /s///p'"
 alias gh="git reflog --format='%C(auto)%h %<|(20)%gd %D'"
 alias gch="git rev-parse HEAD"
 
-# postgres
+# PostgreSQL
 alias pg-start="pg_ctl -D /usr/local/var/postgres start"
 alias pg-stop="pg_ctl -D /usr/local/var/postgres stop"
 alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
 
-# MacOS
-alias pbc="pbcopy"
-alias pbp="pbpaste"
+# macOS 剪贴板
+alias pbc='pbcopy'
+alias pbp='pbpaste'
 
 alias fq="export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153"
 
-function lk {
+lk() {
   cd "$(walk "$@")"
 }
 
-alias sw=swift
+alias sw='swift'
