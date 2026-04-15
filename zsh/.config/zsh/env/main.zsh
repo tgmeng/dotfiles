@@ -13,6 +13,8 @@ export LDFLAGS="-L/opt/homebrew/opt/ruby/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/ruby/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/ruby/lib/pkgconfig"
 
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+
 typeset -gU path PATH
 
 path=(
@@ -33,3 +35,4 @@ path=(
 )
 
 export PATH
+
