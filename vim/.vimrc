@@ -139,6 +139,20 @@ set number relativenumber
 set cursorline
 " set cursorcolumn
 
+" 显式定义各模式的光标形状，避免在 tmux 里退回到终端默认光标。
+" normal / visual / command-line 使用块状；insert 使用竖线；replace 使用下划线。
+if exists('&guicursor')
+    set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+endif
+
+" 终端版 Vim 在部分终端 / tmux 组合下不会可靠使用 guicursor；
+" 显式设置 DECSCUSR 序列作为后备，确保普通模式为块状、插入模式为竖线。
+if !has('gui_running')
+    let &t_EI = "\e[2 q"
+    let &t_SI = "\e[6 q"
+    let &t_SR = "\e[4 q"
+endif
+
 " 用可见符号显示 Tab 和行尾。
 set listchars=tab:▸\ ,eol:¬
 
