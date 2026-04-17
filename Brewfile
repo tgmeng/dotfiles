@@ -1,132 +1,326 @@
-# Taps
-tap "homebrew/core"
+tap "espanso/espanso"
 tap "homebrew/bundle"
 tap "homebrew/services"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-
-brew "mas"
-
-# Brew
-## Shell
-brew "zsh"
+tap "laishulu/homebrew"
+tap "leoafarias/fvm"
+tap "ngrok/ngrok"
+brew "ack"
+brew "jpeg-xl"
+brew "aom"
+brew "python@3.10"
+brew "autojump"
 brew "bash"
-
-## GNU Tools
-brew "findutils"
+brew "bat"
+brew "glib"
+brew "cairo"
+brew "harfbuzz"
+brew "bazel"
+brew "boost"
+brew "clang-format"
+brew "cmake"
 brew "coreutils"
+brew "create-dmg"
+brew "diff-so-fancy"
+brew "difftastic"
+brew "dust"
+brew "folly"
+brew "fizz"
+brew "wangle"
+brew "fbthrift"
+brew "fb303"
+brew "edencommon"
+brew "erlang"
+brew "elixir"
+brew "eza"
+brew "fd"
+brew "p11-kit"
+brew "unbound"
+brew "gnutls"
+brew "libass"
+brew "librist"
+brew "pango"
+brew "srt"
+brew "tesseract"
+brew "ffmpeg"
+brew "findutils"
+brew "fzf"
 brew "gawk"
-brew "gnu-getopt"
+brew "gcc"
+brew "git"
+brew "git-delta"
+brew "git-extras"
+brew "git-lfs"
+brew "glab"
+brew "global"
 brew "gnu-indent"
 brew "gnu-sed"
 brew "gnu-tar"
-brew "gnutls"
-brew "global"
-
-## Base
-brew "git"
-brew "tree"
+brew "gnupg"
+brew "go"
+brew "pkgconf"
+brew "gobject-introspection"
+brew "gts"
+brew "librsvg"
+brew "graphviz"
 brew "grep"
-brew "tree"
-brew "tmux"
-
-## Extra Base
-brew "git-extras"
-brew "fd"
-brew "ack"
-brew "the_silver_searcher"
-brew "ripgrep"
-brew "rename"
-brew "tig"
-brew "stow"
-brew "fzf"
-brew "bat"
-brew "fd"
-brew "fzf"
+brew "guile"
+brew "highlight"
+brew "shared-mime-info"
+brew "libheif"
+brew "python@3.12"
+brew "libraw"
+brew "imagemagick"
 brew "jq"
-brew "tldr"
-brew "macvim"
-
-## Font
-brew "font-hack-nerd-font"
-brew "font-source-code-pro"
-
-# BrewCask
-cask "alfred"
-cask "google-chrome"
-cask "bettertouchtool"
-cask "hammerspoon"
-cask "mounty"
+brew "libxmlsec1"
+brew "m-cli"
+brew "mas"
+brew "mise"
+brew "mvfst"
+brew "neovim"
+brew "nghttp2"
+brew "noti"
+brew "oath-toolkit"
+brew "openjdk"
+brew "openjdk@11"
+brew "pacparser"
+brew "perl"
+brew "plantuml"
+brew "pnpm"
+brew "postgresql@14"
+brew "python-setuptools"
+brew "python@3.14"
+brew "python@3.9"
+brew "rename"
+brew "ripgrep"
+brew "rustup"
+brew "sd"
+brew "shfmt"
+brew "stow"
+brew "subversion"
+brew "swi-prolog"
+brew "swift-format"
+brew "tealdeer"
+brew "tesseract-lang"
+brew "the_silver_searcher"
+brew "tig"
+brew "tmux"
+brew "tree"
+brew "vim"
+brew "walk"
+brew "watchexec"
+brew "wget"
+brew "wxwidgets"
+brew "yarn"
+brew "zoxide"
+brew "zsh"
+brew "laishulu/homebrew/macism"
+brew "leoafarias/fvm/fvm"
 cask "appcleaner"
-
-## Dev
-cask "iterm2"
-cask "visual-studio-code"
-cask "typora"
-cask "macdown"
-cask "charles"
-cask "db-browser-for-sqlite"
+cask "audacity"
 cask "beyond-compare"
-cask "dash"
-cask "fork"
-cask "sublime-text"
-cask "sublime-merge"
-
-## Fun
-cask "movist-pro"
-
-## Quicklook
-cask "qlcolorcode"
-cask "qlmarkdown"
-cask "quicklook-json"
-cask "quicklook-csv"
-cask "qlstephen"
-cask "qlimagesize"
-
-## ScreenSaver
 cask "brooklyn"
-
-# Mas
-
-mas "超级右键 专业版", id 1550403011
-mas "网易邮箱大师", id 1233593954
-mas "网易云音乐", id  944848654
-mas "Actions", id 1586435171
-mas "Amphetamine", id  937984704
-mas "Audio Jam", id 1588219090
-mas "Bob", id 1630034110
-mas "Boop", id 1518425043
-mas "Days Matter", id  494500492
-mas "Developer", id  640199958
-mas "Dropover", id 1355679052
-mas "Easy CSV Editor", id 1171346381
-mas "Expressions", id  913158085
-mas "Folder Preview", id 6698876601
-mas "Gapplin", id  768053424
-mas "Gifski", id 1351639930
-mas "Hex Fiend", id 1342896380
-mas "iHash", id  763902043
-mas "Key Codes", id  414568915
-mas "Keynote讲演", id  409183694
-mas "LocalSend", id 1661733229
-mas "MindNode Classic", id 1289197285
-mas "Numbers表格", id  409203825
-mas "Octotree", id 1457450145
-mas "OK JSON", id 1576121509
-mas "Pages文稿", id  409201541
-mas "Pandan", id 1569600264
-mas "Paste", id  967805235
-mas "Picview", id 6452016140
-mas "Pixelmator Pro", id 1289583905
-mas "Pixiu", id 1461452315
-mas "SnippetsLab", id 1006087419
-mas "Soulver 3", id 1508732804
-mas "SQLiteFlow", id 1378587993
-mas "Tab Space", id 1473726602
-mas "Tayasui Sketches", id 1178074963
-mas "TextSniper", id 1528890965
-mas "The Unarchiver", id  425424353
-mas "Things", id  904280696
-mas "Vimari", id 1480933944
-mas "Xcode", id  497799835
-mas "Xmind", id 1327661892
+cask "codex"
+cask "espanso"
+cask "font-monaspace"
+cask "fork"
+cask "google-chrome"
+cask "gstreamer-runtime"
+cask "hammerspoon"
+cask "iterm2"
+cask "keycastr"
+cask "mounty"
+cask "movist-pro"
+cask "obsidian"
+cask "qlcolorcode"
+cask "qlimagesize"
+cask "qlmarkdown"
+cask "qlstephen"
+cask "quicklook-csv"
+cask "quicklook-json"
+cask "raycast"
+cask "sublime-text"
+cask "typora"
+cask "visual-studio-code"
+cask "warp"
+mas "Actions", id: 1586435171
+mas "Amphetamine", id: 937984704
+mas "Bob", id: 1630034110
+mas "Boop", id: 1518425043
+mas "Days Matter", id: 494500492
+mas "Developer", id: 640199958
+mas "Dropover", id: 1355679052
+mas "Easy CSV Editor", id: 1171346381
+mas "Expressions", id: 913158085
+mas "Folder Preview", id: 6698876601
+mas "Gapplin", id: 768053424
+mas "Gifski", id: 1351639930
+mas "Hex Fiend", id: 1342896380
+mas "iHash", id: 763902043
+mas "iHosts", id: 1102004240
+mas "Key Codes", id: 414568915
+mas "Keynote讲演", id: 409183694
+mas "LocalSend", id: 1661733229
+mas "Logic Pro", id: 1615087040
+mas "MindNode Classic", id: 1289197285
+mas "Numbers表格", id: 409203825
+mas "Octotree", id: 1457450145
+mas "OK JSON", id: 1576121509
+mas "Pages文稿", id: 409201541
+mas "Pandan", id: 1569600264
+mas "Paste", id: 967805235
+mas "Picview", id: 6452016140
+mas "Pixelmator Pro", id: 1289583905
+mas "Pixiu", id: 1461452315
+mas "SnippetsLab", id: 1006087419
+mas "Soulver 3", id: 1508732804
+mas "SQLiteFlow", id: 1378587993
+mas "Swift Playground", id: 1496833156
+mas "Tab Space", id: 1473726602
+mas "Tayasui Sketches", id: 1178074963
+mas "TextSniper", id: 1528890965
+mas "The Unarchiver", id: 425424353
+mas "Things", id: 904280696
+mas "Vimari", id: 1480933944
+mas "Xcode", id: 497799835
+mas "Xmind", id: 1327661892
+mas "白描", id: 1249901692
+mas "网易云音乐", id: 944848654
+mas "网易邮箱大师", id: 1233593954
+mas "超级右键 专业版", id: 1550403011
+vscode "aaron-bond.better-comments"
+vscode "akamud.vscode-javascript-snippet-pack"
+vscode "alefragnani.bookmarks"
+vscode "alefragnani.numbered-bookmarks"
+vscode "alefragnani.project-manager"
+vscode "andys8.jest-snippets"
+vscode "atishay-jain.all-autocomplete"
+vscode "azemoh.one-monokai"
+vscode "bierner.color-info"
+vscode "bladnman.auto-align"
+vscode "bradlc.vscode-tailwindcss"
+vscode "chakrounanas.turbo-console-log"
+vscode "chouzz.vscode-better-align"
+vscode "christian-kohler.npm-intellisense"
+vscode "christian-kohler.path-intellisense"
+vscode "clinyong.vscode-css-modules"
+vscode "cschlosser.doxdocgen"
+vscode "dbaeumer.vscode-eslint"
+vscode "docker.docker"
+vscode "documatic.documatic"
+vscode "donjayamanne.githistory"
+vscode "dotenv.dotenv-vscode"
+vscode "dplain.jest-test-language-support"
+vscode "eamodio.gitlens"
+vscode "editorconfig.editorconfig"
+vscode "esbenp.prettier-vscode"
+vscode "fittentech.fitten-code"
+vscode "formulahendry.auto-close-tag"
+vscode "formulahendry.auto-rename-tag"
+vscode "formulahendry.code-runner"
+vscode "foxundermoon.shell-format"
+vscode "gerrnperl.outline-map"
+vscode "github.codespaces"
+vscode "github.copilot-chat"
+vscode "github.github-vscode-theme"
+vscode "github.remotehub"
+vscode "github.vscode-github-actions"
+vscode "golang.go"
+vscode "gruntfuggly.auto-snippet"
+vscode "hideoo.toggler"
+vscode "ibm.output-colorizer"
+vscode "jakebecker.elixir-ls"
+vscode "janisdd.vscode-edit-csv"
+vscode "jebbs.plantuml"
+vscode "jeff-hykin.better-cpp-syntax"
+vscode "johnpapa.vscode-peacock"
+vscode "jonsmithers.open-in-vim"
+vscode "kamikillerto.vscode-colorize"
+vscode "leetcode.vscode-leetcode"
+vscode "llvm-vs-code-extensions.vscode-clangd"
+vscode "mathiasfrohlich.kotlin"
+vscode "mechatroner.rainbow-csv"
+vscode "meganrogge.template-string-converter"
+vscode "mrmlnc.vscode-scss"
+vscode "ms-azuretools.vscode-containers"
+vscode "ms-azuretools.vscode-docker"
+vscode "ms-ceintl.vscode-language-pack-zh-hans"
+vscode "ms-dotnettools.vscode-dotnet-runtime"
+vscode "ms-python.black-formatter"
+vscode "ms-python.debugpy"
+vscode "ms-python.isort"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
+vscode "ms-vscode.azure-repos"
+vscode "ms-vscode.cmake-tools"
+vscode "ms-vscode.cpp-devtools"
+vscode "ms-vscode.cpptools"
+vscode "ms-vscode.cpptools-extension-pack"
+vscode "ms-vscode.cpptools-themes"
+vscode "ms-vscode.hexeditor"
+vscode "ms-vscode.makefile-tools"
+vscode "ms-vscode.remote-repositories"
+vscode "nick-lvov-dev.typescript-explicit-types"
+vscode "ofhumanbondage.react-proptypes-intellisense"
+vscode "orta.vscode-jest"
+vscode "overtrue.miniapp-helper"
+vscode "percygrunwald.vscode-intellij-recent-files"
+vscode "peterschmalfeldt.explorer-exclude"
+vscode "pkief.material-icon-theme"
+vscode "pmneo.tsimporter"
+vscode "prisma.prisma"
+vscode "qiu8310.minapp-vscode"
+vscode "rebornix.prolog"
+vscode "redhat.java"
+vscode "redhat.vscode-commons"
+vscode "redhat.vscode-xml"
+vscode "rfirefly.file-bookmark"
+vscode "robole.file-bunny"
+vscode "rust-lang.rust-analyzer"
+vscode "sburg.vscode-javascript-booster"
+vscode "sdras.vue-vscode-snippets"
+vscode "sidneys1.gitconfig"
+vscode "simonsiefke.svg-preview"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "styled-components.vscode-styled-components"
+vscode "stylelint.vscode-stylelint"
+vscode "sumneko.lua"
+vscode "svelte.svelte-vscode"
+vscode "syler.sass-indented"
+vscode "tamasfe.even-better-toml"
+vscode "tauri-apps.tauri-vscode"
+vscode "tonka3000.raycast"
+vscode "twxs.cmake"
+vscode "typespec.typespec-vscode"
+vscode "unifiedjs.vscode-mdx"
+vscode "usernamehw.errorlens"
+vscode "vadimcn.vscode-lldb"
+vscode "visualstudioexptteam.intellicode-api-usage-examples"
+vscode "visualstudioexptteam.vscodeintellicode"
+vscode "vmware.vscode-boot-dev-pack"
+vscode "vmware.vscode-spring-boot"
+vscode "vscjava.migrate-java-to-azure"
+vscode "vscjava.vscode-gradle"
+vscode "vscjava.vscode-java-debug"
+vscode "vscjava.vscode-java-dependency"
+vscode "vscjava.vscode-java-pack"
+vscode "vscjava.vscode-java-test"
+vscode "vscjava.vscode-java-upgrade"
+vscode "vscjava.vscode-maven"
+vscode "vscjava.vscode-spring-boot-dashboard"
+vscode "vscjava.vscode-spring-initializr"
+vscode "vscodevim.vim"
+vscode "vue.volar"
+vscode "wakatime.vscode-wakatime"
+vscode "wallabyjs.console-ninja"
+vscode "wallabyjs.quokka-vscode"
+vscode "wmaurer.change-case"
+vscode "xyz.local-history"
+vscode "yoavbls.pretty-ts-errors"
+vscode "youzan-retail.youzan-retail-vscode-util"
+vscode "youzan.fx"
+vscode "yzhang.markdown-all-in-one"
+vscode "zyrong.node-modules"
+go "github.com/ramya-rao-a/go-outline"
+go "golang.org/x/tools/gopls"
+go "honnef.co/go/tools/cmd/staticcheck"
