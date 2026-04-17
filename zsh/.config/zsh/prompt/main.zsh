@@ -1,0 +1,6 @@
+source "$ZDOTDIR/prompt/colors.zsh"
+source "$ZDOTDIR/prompt/git.zsh"
+source "$ZDOTDIR/prompt/jobs.zsh"
+source "$ZDOTDIR/prompt/node.zsh"
+source "$ZDOTDIR/prompt/async.zsh"
+source "$ZDOTDIR/prompt/render.zsh"
