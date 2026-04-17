@@ -1,7 +1,6 @@
-# fnm 会在进入目录时按 `.node-version` / `.nvmrc` 自动切换 Node 版本。
-# recursive 策略允许从当前目录向上查找版本文件，兼容 monorepo。
-if command -v fnm >/dev/null 2>&1; then
-  eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
+# 集成 mise 管理环境
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
 fi
 
 # 保持 j 这个短命令，兼容之前的使用习惯。
