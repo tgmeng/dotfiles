@@ -1,12 +1,7 @@
 set nocompatible
 
-let s:dotvim = '.vim'
-
-if has('win32')
-    let s:dotvim = 'vimfiles'
-endif
-
-let s:bundle_path = '~/' . s:dotvim . '/bundle'
+let s:xdg_data_home = empty($XDG_DATA_HOME) ? expand('~/.local/share') : expand($XDG_DATA_HOME)
+let s:bundle_path = s:xdg_data_home . '/vim/bundle'
 
 call plug#begin(s:bundle_path)
 

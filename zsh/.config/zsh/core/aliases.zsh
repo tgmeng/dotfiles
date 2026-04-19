@@ -66,6 +66,9 @@ alias pg-restart="pg_ctl -D /usr/local/var/postgres restart"
 # macOS 剪贴板
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
+alias adb='HOME="$XDG_DATA_HOME"/android adb'
+alias mvn='mvn -gs $XDG_CONFIG_HOME/maven/settings.xml'
 
 alias fq="export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153"
 

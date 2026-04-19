@@ -1,6 +1,15 @@
 .DS_Store
+
 vim/.vim/bundle
 vim/.vim/sessions
+
 zsh/.config/zsh/local/secret.zsh
 zsh/.config/zsh/.zcompdump*
+zsh/.config/zsh/.zsh_sessions/
+zsh/.config/zsh/.zsh_history
 zsh/.zcompdump*
+
+git/.config/git/config-work
+
+tmux/.config/tmux/plugins/
+tmux/.config/tmux/resurrect/
