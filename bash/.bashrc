@@ -1,72 +1,11 @@
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+# 非登录交互 shell 不会经过 .bash_profile，所以也要在入口补一次 env 层。
+. "${XDG_CONFIG_HOME:-$HOME/.config}/bash/env/main.sh"
 
-export PATH=$PATH:$HOME/bin
+# 后续会加载 prompt、别名、补全等交互专属逻辑；非交互会话不应执行这些，以免拖慢脚本或让子进程继承意外行为。
+# $- 为当前 shell 的选项标志串，含字母 i 时表示 interactive。
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
 
-# Color definitions (taken from Color Bash Prompt HowTo).
-# Some colors might look different of some terminals.
-# For example, I see 'Bold Red' as 'orange' on my screen,
-# hence the 'Green' 'BRed' 'Red' sequence I often use in my prompt.
-
-# Normal Colors
-BLACK='\033[0;30m'  # Black
-RED='\033[0;31m'    # Red
-GREEN='\033[0;32m'  # Green
-YELLOW='\033[0;33m' # Yellow
-BLUE='\033[0;34m'   # Blue
-PURPLE='\033[0;35m' # Purple
-CYAN='\033[0;36m'   # Cyan
-WHITE='\033[0;37m'  # White
-
-# Bold
-BBLACK='\033[1;30m'  # Black
-BRED='\033[1;31m'    # Red
-BGREEN='\033[1;32m'  # Green
-BYELLOW='\033[1;33m' # Yellow
-BBLUE='\033[1;34m'   # Blue
-BPURPLE='\033[1;35m' # Purple
-BCYAN='\033[1;36m'   # Cyan
-BWHITE='\033[1;37m'  # White
-
-# Background
-ON_BLACK='\033[40m'  # Black
-ON_RED='\033[41m'    # Red
-ON_GREEN='\033[42m'  # Green
-ON_YELLOW='\033[43m' # Yellow
-ON_BLUE='\033[44m'   # Blue
-ON_PURPLE='\033[45m' # Purple
-ON_CYAN='\033[46m'   # Cyan
-ON_WHITE='\033[47m'  # White
-
-NC="\033[m" # Color Reset
-
-ALERT=${BWHITE}${ON_RED} # Bold White on red background
-
-# Hello Message
-echo -e "${BCYAN}This is BASH ${BRED}${BASH_VERSION%.*}${NC}"
-date
-
-user=$(whoami)
-
-if [ "${user}" == "root" ]; then
-  export PS1="\[${RED}\]\h \[${BLUE}\]\W\[${NC}\] > "
-else
-  export PS1="\[${GREEN}\]\u@\h \[${BLUE}\]\W\[${NC}\] > "
-fi
-
-# alias
-
-# nice ls formats
-alias ll='ls -lh'
-alias la='ls -a'
-alias lla='ls -alh'
-alias l='ls -alh'
-
-alias rm="rm -i"
-
-# Set up fzf key bindings and fuzzy completion
-eval "$(fzf --bash)"
-
-[ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
-
-. "$HOME/.local/bin/env"
+. "$XDG_CONFIG_HOME/bash/core/main.sh"

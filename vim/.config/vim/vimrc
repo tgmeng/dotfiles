@@ -20,7 +20,7 @@
 " 插件加载 {{{1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 加载同目录下可选的插件列表配置。
-let s:vimrc_bundle = expand('<sfile>:p:h') . '/.vimrc.bundles'
+let s:vimrc_bundle = expand('<sfile>:p:h') . '/vimrc.bundles'
 if filereadable(s:vimrc_bundle)
     execute 'source ' . fnameescape(s:vimrc_bundle)
 endif
@@ -227,20 +227,27 @@ if has("vms")
     set nowritebackup
     set noswapfile
 else
-    " 把持久备份统一放到 ~/vimtmp。
-    " `backup` 会在保存后保留备份文件。
-    " `nowritebackup` 会关闭“写入过程中的临时备份”。
-    let s:vimtmp = expand('~/vimtmp')
+    " 把交换文件和备份迁到 XDG state 目录。
+    let s:xdg_state_home = empty($XDG_STATE_HOME) ? expand('~/.local/state') : expand($XDG_STATE_HOME)
+    let s:xdg_data_home = empty($XDG_DATA_HOME) ? expand('~/.local/share') : expand($XDG_DATA_HOME)
+    let s:vim_state_dir = s:xdg_state_home . '/vim'
+    let s:vim_data_dir = s:xdg_data_home . '/vim'
+    let s:vim_swap_dir = s:vim_state_dir . '/swap'
+    let s:vim_backup_dir = s:vim_state_dir . '/backup'
 
-    if !isdirectory(s:vimtmp)
-        call mkdir(s:vimtmp, 'p', 0700)
-    endif
+    call mkdir(s:vim_swap_dir, 'p', 0700)
+    call mkdir(s:vim_backup_dir, 'p', 0700)
+    call mkdir(s:vim_data_dir, 'p', 0700)
 
-    if isdirectory(s:vimtmp) && filewritable(s:vimtmp) == 2
+    if filewritable(s:vim_swap_dir) == 2 && filewritable(s:vim_backup_dir) == 2
         set backup
         set nowritebackup
-        let &backupdir = s:vimtmp . '//'
-        let &directory = s:vimtmp . '//'
+        let &backupdir = s:vim_backup_dir . '//'
+        let &directory = s:vim_swap_dir . '//'
+    endif
+
+    if filewritable(s:vim_data_dir) == 2
+        let &viminfofile = s:vim_data_dir . '/viminfo'
     endif
 endif
 

@@ -25,6 +25,8 @@ path=(
   "$HOME/bin"
   "$HOME/.yarn/bin"
   "$PNPM_HOME"
+  "$GOPATH/bin"
+  "$CARGO_HOME/bin"
   $path
 )
 
@@ -34,7 +36,7 @@ path=(
 # 第二段再插入“需要覆盖默认版本”的工具链路径。
 # 这样 Ruby / Flutter 等命令会优先命中用户指定版本，而不是系统自带版本。
 path=(
-  "$HOME/fvm/default/bin"
+  "$FVM_CACHE_PATH/default/bin"
   "/opt/homebrew/opt/ruby/bin"
   "$GEM_HOME/bin"
   $path

@@ -4,7 +4,6 @@
 # `history` 直接显示带日期的记录，便于排查最近执行过什么。
 alias history='fc -il 1'
 
-HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=10000
 
