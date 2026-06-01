@@ -248,6 +248,31 @@
               "modifiers": ["left_control"]
             }
           ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button3",
+            "modifiers": {
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "pointing_button": "button1"
+            },
+            {
+              "pointing_button": "button1"
+            },
+            {
+              "hold_down_milliseconds": 120,
+              "key_code": "vk_none"
+            },
+            {
+              "key_code": "d",
+              "modifiers": ["left_control", "left_option"]
+            }
+          ]
         }
       ]
     }
