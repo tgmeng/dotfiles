@@ -2,7 +2,7 @@ theme = One Monokai
 
 # Typography
 # Match Cursor editor typography as closely as Ghostty allows.
-font-family = "Monaspace Argon"
+font-family = "Monaspace Argon NF"
 font-family = Menlo
 font-size = 13
 

@@ -1,5 +1,7 @@
 .DS_Store
 
+karabiner/.config/karabiner/automatic_backups/
+
 vim/.vim/bundle
 vim/.vim/sessions
 

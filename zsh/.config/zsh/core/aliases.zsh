@@ -36,13 +36,14 @@ alias o='open'
 alias oo='open .'
 alias y='yarn'
 alias mk='make'
-alias t='tig'
 alias p='pnpm'
 alias px='pnpx'
 alias n='npm'
 alias nx='npx'
-alias x='mise'
+alias m='mise'
 alias cx='codex'
+alias z="yazi"
+alias t="lazygit"
 
 alias mkd='make dev'
 alias mke='make electron'
