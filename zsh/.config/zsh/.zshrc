@@ -18,3 +18,6 @@ source "$ZDOTDIR/local/main.zsh"
 if [[ -n ${ZSH_PROFILE_ZPROF:-} ]]; then
   zprof
 fi
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"

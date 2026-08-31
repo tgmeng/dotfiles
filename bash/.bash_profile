@@ -4,3 +4,6 @@
 export BASH_ENV_LOADED_BY_PROFILE=1
 
 [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
