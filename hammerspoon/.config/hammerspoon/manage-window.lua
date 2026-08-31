@@ -2,139 +2,153 @@ local hotkey = require 'hs.hotkey'
 local window = require 'hs.window'
 local geometry = require 'hs.geometry'
 
--------------
---   API   --
--------------
-local function getGoodFocusedWindow(isNoFull)
-    local win = window.focusedWindow()
-    if not win or not win:isStandard() then
-        return
-    end
-    if isNoFull and win:isFullScreen() then
-        return
-    end
-    return win
+local ManageWindow = {}
+
+function ManageWindow:new(config)
+  config = config or {}
+
+  local obj = {
+    bindings = {},
+    snapbackStates = {},
+    config = {
+      resizeModifiers = config.resizeModifiers or {},
+      screenModifiers = config.screenModifiers or {},
+      resizeBindings = config.resizeBindings or {},
+      screenBindings = config.screenBindings or {},
+      animationDuration = config.animationDuration or 0
+    }
+  }
+
+  setmetatable(obj, self)
+  self.__index = self
+  return obj
 end
 
-local snapbackStates = {}
-local function snapback()
-    local win = getGoodFocusedWindow()
-    if not win then
-        return
-    end
+function ManageWindow:getGoodFocusedWindow(isNoFull)
+  local win = window.focusedWindow()
+  if not win or not win:isStandard() then
+    return nil
+  end
 
-    local id = win:id()
-    local state = win:frame()
-    local prevState = snapbackStates[id]
-    if prevState then
-        win:setFrame(prevState)
-    end
-    snapbackStates[id] = state
+  if isNoFull and win:isFullScreen() then
+    return nil
+  end
+
+  return win
 end
 
-local function setFrame(win, unit)
-    if not win then
-        return nil
-    end
+function ManageWindow:snapback()
+  local win = self:getGoodFocusedWindow()
+  if not win then
+    return
+  end
 
-    local id = win:id()
-    local state = win:frame()
-    snapbackStates[id] = state
-    return win:setFrame(unit)
+  local id = win:id()
+  local state = win:frame()
+  local prevState = self.snapbackStates[id]
+  if prevState then
+    win:setFrame(prevState)
+  end
+  self.snapbackStates[id] = state
 end
 
-local function splitResizeWindow(type)
-    local win = getGoodFocusedWindow(true)
-    if not win then
-        return
-    end
+function ManageWindow:setFrame(win, unit)
+  if not win then
+    return nil
+  end
 
-    local screen = win:screen()
-    local max = screen:frame()
-    local state = nil
-
-    if type == 'left' then
-        state = geometry.rect(max.x, max.y, max.w / 2, max.h)
-    elseif type == 'right' then
-        state = geometry.rect(max.x + (max.w / 2), max.y, max.w / 2, max.h)
-    elseif type == 'up' then
-        state = geometry.rect(max.x, max.y, max.w, max.h / 2)
-    elseif type == 'down' then
-        state = geometry.rect(max.x, max.y + (max.h / 2), max.w, max.h / 2)
-    elseif type == 'maximize' then
-        state = geometry.rect(max.x, max.y, max.w, max.h)
-    elseif type == 'center' then
-        local winState = win:frame()
-        local ww = max.w / 2
-        local wh = max.h / 2
-
-        state = geometry.rect(max.x + (max.w / 2) - (ww / 2), max.y + (max.h / 2) - (wh / 2), ww, wh)
-    else
-        return
-    end
-
-    setFrame(win, state)
+  local id = win:id()
+  self.snapbackStates[id] = win:frame()
+  return win:setFrame(unit)
 end
 
-local function moveWindowOneScreen(type)
-    local win = getGoodFocusedWindow(true)
-    if not win then
-        return
-    end
+function ManageWindow:splitResizeWindow(action)
+  local win = self:getGoodFocusedWindow(true)
+  if not win then
+    return
+  end
 
-    local screen = nil
-    if type == 'next' then
-        screen = win:screen():next()
-    elseif type == 'previous' then
-        screen = win:screen():previous()
-    else
-        return
-    end
+  local max = win:screen():frame()
+  local state = nil
 
-    win:moveToScreen(screen)
+  if action == 'left' then
+    state = geometry.rect(max.x, max.y, max.w / 2, max.h)
+  elseif action == 'right' then
+    state = geometry.rect(max.x + (max.w / 2), max.y, max.w / 2, max.h)
+  elseif action == 'up' then
+    state = geometry.rect(max.x, max.y, max.w, max.h / 2)
+  elseif action == 'down' then
+    state = geometry.rect(max.x, max.y + (max.h / 2), max.w, max.h / 2)
+  elseif action == 'maximize' then
+    state = geometry.rect(max.x, max.y, max.w, max.h)
+  elseif action == 'center' then
+    local ww = max.w / 2
+    local wh = max.h / 2
+
+    state = geometry.rect(
+      max.x + (max.w / 2) - (ww / 2),
+      max.y + (max.h / 2) - (wh / 2),
+      ww,
+      wh
+    )
+  else
+    return
+  end
+
+  self:setFrame(win, state)
 end
 
---------------
--- Bindings --
---------------
+function ManageWindow:moveWindowOneScreen(action)
+  local win = self:getGoodFocusedWindow(true)
+  if not win then
+    return
+  end
 
--- disable moving window animation
-window.animationDuration = 0
+  local screen = nil
+  if action == 'next' then
+    screen = win:screen():next()
+  elseif action == 'previous' then
+    screen = win:screen():previous()
+  else
+    return
+  end
 
-local hyperSize = {'cmd', 'ctrl', 'alt'}
-local hyperScreen = {'ctrl', 'alt'}
+  win:moveToScreen(screen)
+end
 
---- Split Screen
-hotkey.bind(hyperSize, 'H', function()
-    splitResizeWindow('left')
-end)
-hotkey.bind(hyperSize, 'L', function()
-    splitResizeWindow('right')
-end)
-hotkey.bind(hyperSize, 'K', function()
-    splitResizeWindow('up')
-end)
-hotkey.bind(hyperSize, 'J', function()
-    splitResizeWindow('down')
-end)
+function ManageWindow:bindHotkeys(modifiers, bindings, handler)
+  for key, action in pairs(bindings) do
+    local binding = hotkey.bind(modifiers, key, function()
+      handler(self, action)
+    end)
+    table.insert(self.bindings, binding)
+  end
+end
 
---- Resize window
-hotkey.bind(hyperSize, 'M', function()
-    splitResizeWindow('maximize')
-end)
-hotkey.bind(hyperSize, 'C', function()
-    splitResizeWindow('center')
-end)
+function ManageWindow:start()
+  self:stop()
 
---- Snapback
-hotkey.bind(hyperSize, '/', function()
-    snapback()
-end)
+  window.animationDuration = self.config.animationDuration
 
---- Move window between monitors
-hotkey.bind(hyperScreen, 'X', function()
-    moveWindowOneScreen('next')
-end)
-hotkey.bind(hyperScreen, 'Z', function()
-    moveWindowOneScreen('previous')
-end)
+  self:bindHotkeys(self.config.resizeModifiers, self.config.resizeBindings, function(instance, action)
+    if action == 'snapback' then
+      instance:snapback()
+      return
+    end
+
+    instance:splitResizeWindow(action)
+  end)
+
+  self:bindHotkeys(self.config.screenModifiers, self.config.screenBindings, function(instance, action)
+    instance:moveWindowOneScreen(action)
+  end)
+end
+
+function ManageWindow:stop()
+  for _, binding in ipairs(self.bindings) do
+    binding:delete()
+  end
+  self.bindings = {}
+end
+
+return ManageWindow

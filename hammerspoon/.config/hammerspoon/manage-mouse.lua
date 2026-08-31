@@ -1,111 +1,167 @@
 local hotkey = require 'hs.hotkey'
 local geometry = require 'hs.geometry'
-local drawing = require 'hs.drawing'
+local canvas = require 'hs.canvas'
 local mouse = require 'hs.mouse'
-local keycodes = require 'hs.keycodes'
 
--------------
---   API   --
--------------
+local ManageMouse = {}
 
-local highlightMouse
-local moveMouseOneScreen
+local rainbowColors = {
+  { red = 1, green = 0.2, blue = 0.2, alpha = 1 },
+  { red = 1, green = 0.55, blue = 0.1, alpha = 1 },
+  { red = 1, green = 0.85, blue = 0.15, alpha = 1 },
+  { red = 0.2, green = 0.8, blue = 0.3, alpha = 1 },
+  { red = 0.2, green = 0.55, blue = 1, alpha = 1 },
+  { red = 0.7, green = 0.3, blue = 1, alpha = 1 }
+}
 
-local mouseState = {}
-moveMouseOneScreen = function(type)
-    local screen = mouse.getCurrentScreen()
+function ManageMouse:new(config)
+  config = config or {}
 
-    local toScreen = nil
-    if type == 'next' then
-        toScreen = screen:next()
-    elseif type == 'previous' then
-        toScreen = screen:previous()
-    else
-        return
-    end
+  local obj = {
+    bindings = {},
+    mouseState = {},
+    mouseCircle = nil,
+    mouseCircleTimer = nil,
+    mouseCircleAnimationTimer = nil,
+    config = {
+      modifiers = config.modifiers or {},
+      bindings = config.bindings or {}
+    }
+  }
 
-    if toScreen:id() == screen:id() then
-        return
-    end
-
-    local rect = screen:fullFrame()
-    local toRect = toScreen:fullFrame()
-
-    local pos = mouse.getRelativePosition()
-    local toPos = nil
-
-    local toScreenId = toScreen:id()
-    if mouseState[toScreenId] then
-        toPos = mouseState[toScreenId]
-    else
-        local x = pos.x / rect.w * toRect.w
-        local y = pos.y / rect.h * toRect.h
-        toPos = geometry.point(x, y)
-    end
-
-    mouse.setRelativePosition(toPos, toScreen)
-    mouseState[screen:id()] = pos
-
-    highlightMouse()
+  setmetatable(obj, self)
+  self.__index = self
+  return obj
 end
 
--- Find my mouse pointer
-local mouseCircle = nil
-local mouseCircleTimer = nil
-highlightMouse = function()
-    if mouseCircle then
-        mouseCircle:delete()
-        mouseCircle = nil
-        if mouseCircleTimer then
-            mouseCircleTimer:stop()
-        end
-    end
-    mousepoint = hs.mouse.absolutePosition()
-    mouseCircle = hs.drawing.circle(hs.geometry.rect(mousepoint.x - 40, mousepoint.y - 40, 80, 80))
-    mouseCircle:setStrokeColor({
-        ["red"] = 1,
-        ["blue"] = 0,
-        ["green"] = 0,
-        ["alpha"] = 1
+function ManageMouse:clearMouseHighlight()
+  if self.mouseCircle then
+    self.mouseCircle:delete()
+    self.mouseCircle = nil
+  end
+
+  if self.mouseCircleAnimationTimer then
+    self.mouseCircleAnimationTimer:stop()
+    self.mouseCircleAnimationTimer = nil
+  end
+
+  if self.mouseCircleTimer then
+    self.mouseCircleTimer:stop()
+    self.mouseCircleTimer = nil
+  end
+end
+
+function ManageMouse:highlightMouse()
+  self:clearMouseHighlight()
+
+  local mousepoint = mouse.absolutePosition()
+  local radius = 40
+  local strokeWidth = 6
+  local canvasPadding = strokeWidth + 6
+  local canvasRadius = radius + canvasPadding
+  local diameter = canvasRadius * 2
+  local segmentOverlap = 2
+  local segmentSweep = (360 / #rainbowColors) + segmentOverlap
+  local frame = geometry.rect(
+    mousepoint.x - canvasRadius,
+    mousepoint.y - canvasRadius,
+    diameter,
+    diameter
+  )
+
+  self.mouseCircle = canvas.new(frame)
+  self.mouseCircle:level('overlay')
+  self.mouseCircle:behavior({ 'canJoinAllSpaces', 'stationary' })
+  self.mouseCircle:show()
+
+  for index, color in ipairs(rainbowColors) do
+    local startAngle = (index - 1) * (360 / #rainbowColors)
+    self.mouseCircle:appendElements({
+      type = 'arc',
+      action = 'stroke',
+      strokeColor = color,
+      fillColor = { alpha = 0 },
+      strokeWidth = strokeWidth,
+      strokeCapStyle = 'round',
+      center = { x = canvasRadius, y = canvasRadius },
+      radius = radius,
+      startAngle = startAngle,
+      endAngle = startAngle + segmentSweep,
+      arcRadii = false
     })
-    mouseCircle:setFill(false)
-    mouseCircle:setStrokeWidth(5)
-    mouseCircle:show()
-    mouseCircleTimer = hs.timer.doAfter(0.2, function()
-        mouseCircle:delete()
-        mouseCircle = nil
-    end)
+  end
+
+  local rotationAngle = 0
+  self.mouseCircleAnimationTimer = hs.timer.doEvery(0.016, function()
+    if not self.mouseCircle then
+      return
+    end
+
+    rotationAngle = (rotationAngle + 8) % 360
+    self.mouseCircle:transformation(
+      hs.canvas.matrix
+        .translate(canvasRadius, canvasRadius)
+        :rotate(rotationAngle)
+        :translate(-canvasRadius, -canvasRadius)
+    )
+  end)
+
+  self.mouseCircleTimer = hs.timer.doAfter(0.35, function()
+    self:clearMouseHighlight()
+  end)
 end
 
---------------
--- Bindings --
---------------
+function ManageMouse:moveMouseOneScreen(action)
+  local screen = mouse.getCurrentScreen()
+  local toScreen = nil
 
-local hyperMouse = {'alt'}
+  if action == 'next' then
+    toScreen = screen:next()
+  elseif action == 'previous' then
+    toScreen = screen:previous()
+  else
+    return
+  end
 
---- Move mouse between monitors
-local mouseBinds = {hotkey.bind(hyperMouse, '2', function()
-    moveMouseOneScreen('next')
-end), hotkey.bind(hyperMouse, '1', function()
-    moveMouseOneScreen('previous')
-end)}
+  if toScreen:id() == screen:id() then
+    return
+  end
 
--- local enabled = true
--- hotkey.bind(hyperMouse, keycodes.map['escape'], function()
---     enabled = not enabled
---     for _, hkObj in ipairs(mouseBinds) do
---         if enabled then
---             hkObj:enable()
---         else
---             hkObj:disable()
---         end
---     end
+  local rect = screen:fullFrame()
+  local toRect = toScreen:fullFrame()
+  local pos = mouse.getRelativePosition()
+  local toScreenId = toScreen:id()
+  local toPos = self.mouseState[toScreenId]
 
---     local msg = nil
---     if enabled then
---         msg = 'Move mouse enabled'
---     else
---         msg = 'Move mouse disabled'
---     end
---     hs.alert.show(msg)
--- end)
+  if not toPos then
+    local x = pos.x / rect.w * toRect.w
+    local y = pos.y / rect.h * toRect.h
+    toPos = geometry.point(x, y)
+  end
+
+  mouse.setRelativePosition(toPos, toScreen)
+  self.mouseState[screen:id()] = pos
+
+  self:highlightMouse()
+end
+
+function ManageMouse:start()
+  self:stop()
+
+  for key, action in pairs(self.config.bindings) do
+    local binding = hotkey.bind(self.config.modifiers, key, function()
+      self:moveMouseOneScreen(action)
+    end)
+    table.insert(self.bindings, binding)
+  end
+end
+
+function ManageMouse:stop()
+  for _, binding in ipairs(self.bindings) do
+    binding:delete()
+  end
+  self.bindings = {}
+  self:clearMouseHighlight()
+end
+
+return ManageMouse
