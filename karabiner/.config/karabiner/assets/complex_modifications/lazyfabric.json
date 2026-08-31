@@ -224,7 +224,80 @@
           "from": {
             "pointing_button": "button4",
             "modifiers": {
-              "optional": ["any"]
+              "mandatory": ["option"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "z",
+              "modifiers": ["left_control", "left_option"]
+            },
+            {
+              "hold_down_milliseconds": 80,
+              "key_code": "vk_none"
+            },
+            {
+              "key_code": "m",
+              "modifiers": ["left_command", "left_control", "left_option"]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button5",
+            "modifiers": {
+              "mandatory": ["option"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "x",
+              "modifiers": ["left_control", "left_option"]
+            },
+            {
+              "hold_down_milliseconds": 80,
+              "key_code": "vk_none"
+            },
+            {
+              "key_code": "m",
+              "modifiers": ["left_command", "left_control", "left_option"]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button4",
+            "modifiers": {
+              "mandatory": ["control"]
+            }
+          },
+          "to": [{ "from_event": true }]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button5",
+            "modifiers": {
+              "mandatory": ["control"]
+            }
+          },
+          "to": [{ "from_event": true }]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "pointing_button": "button4",
+            "modifiers": {
+              "optional": [
+                "left_shift",
+                "right_shift",
+                "left_command",
+                "right_command",
+                "left_option",
+                "right_option"
+              ]
             }
           },
           "to": [
@@ -239,7 +312,14 @@
           "from": {
             "pointing_button": "button5",
             "modifiers": {
-              "optional": ["any"]
+              "optional": [
+                "left_shift",
+                "right_shift",
+                "left_command",
+                "right_command",
+                "left_option",
+                "right_option"
+              ]
             }
           },
           "to": [
