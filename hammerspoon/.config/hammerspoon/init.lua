@@ -8,7 +8,7 @@ local Apps = {
   Zed = 'dev.zed.Zed',
   ITerm2 = 'com.googlecode.iterm2',
   Ghostty = 'com.mitchellh.ghostty',
-  ChatGPT = 'com.todesktop.230313mzl4w4u92',
+  Cursor = 'com.todesktop.230313mzl4w4u92',
   Codex = 'com.openai.codex',
   Safari = 'com.apple.Safari',
   Calendar = 'com.apple.iCal',
@@ -88,7 +88,7 @@ local quicklySwitchApp = QuicklySwitchApp:new(
       ['3'] = Apps.Zed,
       -- ['W'] = Apps.ITerm2,
       ['W'] = Apps.Ghostty,
-      ['E'] = Apps.ChatGPT,
+      ['E'] = Apps.VSCode,
       ['R'] = Apps.Codex,
       -- ['T'] = Apps.Safari,
       ['T'] = Apps.Calendar,
@@ -130,7 +130,7 @@ local autoSwitchInputSource = AutoSwitchInputSource:new(
 
     [Apps.VSCode] = english,
     [Apps.Zed] = english,
-    [Apps.ChatGPT] = english,
+    [Apps.Cursor] = english,
     [Apps.Codex] = chinese,
 
     [Apps.ITerm2] = english,

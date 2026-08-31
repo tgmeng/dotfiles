@@ -31,6 +31,8 @@ function QuicklySwitchApp:new(config)
     alertId = nil,
     -- 记录上一次“可参与双击判断”的 Option 点击时间；nil 表示当前没有待结算点击。
     pendingToggleTapAtNs = nil,
+    -- 当前这次 Option 按压是否仍然可以算作一次“单独点击”。
+    isToggleTapCandidate = false,
     toggleEventListener = nil,
     config = {
       hyperKey = hyperKey,
@@ -79,8 +81,9 @@ function QuicklySwitchApp:isToggleOptionEvent(event)
   return TOGGLE_OPTION_KEY_CODES[keyCode] == true
 end
 
-function QuicklySwitchApp:clearPendingToggleTap()
+function QuicklySwitchApp:cancelToggleTapSequence()
   self.pendingToggleTapAtNs = nil
+  self.isToggleTapCandidate = false
 end
 
 function QuicklySwitchApp:rememberToggleTap(tapAtNs)
@@ -134,7 +137,7 @@ end
 
 function QuicklySwitchApp:handleToggleKeyDown()
   -- `keyDown` 只负责让候选失效：Option 一旦参与组合键，这次按压就不再算独立点击。
-  self:clearPendingToggleTap()
+  self:cancelToggleTapSequence()
 end
 
 function QuicklySwitchApp:handleToggleFlagsChanged(event)
@@ -142,18 +145,25 @@ function QuicklySwitchApp:handleToggleFlagsChanged(event)
 
   if not self:isToggleOptionEvent(event) then
     -- 一旦出现别的修饰键事件，本轮双击判断直接作废，避免跨按键串台。
-    self:clearPendingToggleTap()
+    self:cancelToggleTapSequence()
     return
   end
 
   local flags = event:getFlags()
-  local hasOnlyHyperKeyFlags = self:hasOnlyHyperKeyFlags(flags)
-  if not hasOnlyHyperKeyFlags then
-    -- 松开 Option 键，直接作废本轮双击判断
+  if self:hasOnlyHyperKeyFlags(flags) then
+    -- 按下 Option 只进入候选状态；是否是独立 tap 要等松开时才能确认。
+    self.isToggleTapCandidate = true
     return
   end
 
   local tapAtNs = hs.timer.absoluteTime()
+  if not self.isToggleTapCandidate then
+    -- 松开前出现过普通键或其它修饰键，本轮不算独立 Option tap。
+    self:cancelToggleTapSequence()
+    return
+  end
+
+  self.isToggleTapCandidate = false
   if not self.pendingToggleTapAtNs then
     -- 第一次纯 Option 点击只记录时间，等待下一次点击来决定是否真的切换。
     self:rememberToggleTap(tapAtNs)
@@ -161,14 +171,14 @@ function QuicklySwitchApp:handleToggleFlagsChanged(event)
   end
 
   if not self:isToggleTapWithinInterval(tapAtNs) then
-    -- 松开 Option 键，但时间窗已过，直接作废本轮双击判断
+    -- 超过双击窗口：上一击失效，把本次松开作为新一轮首击。
     self:rememberToggleTap(tapAtNs)
     return
   end
 
   -- 两次有效点击都落在时间窗内，才切换整套绑定的启用状态。
   self:toggleBindings()
-  self:clearPendingToggleTap()
+  self:cancelToggleTapSequence()
 end
 
 function QuicklySwitchApp:start()
@@ -214,7 +224,7 @@ function QuicklySwitchApp:stop()
   self.bindings = {}
 
   self:closeAlert()
-  self:clearPendingToggleTap()
+  self:cancelToggleTapSequence()
 end
 
 return QuicklySwitchApp
