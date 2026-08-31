@@ -127,7 +127,91 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "modifiers": { "optional": ["any"] },
+                                    "modifiers": { "mandatory": ["option"] },
+                                    "pointing_button": "button4"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "z",
+                                        "modifiers": ["left_control", "left_option"]
+                                    },
+                                    {
+                                        "hold_down_milliseconds": 80,
+                                        "key_code": "vk_none"
+                                    },
+                                    {
+                                        "key_code": "m",
+                                        "modifiers": ["left_command", "left_control", "left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["option"] },
+                                    "pointing_button": "button5"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "x",
+                                        "modifiers": ["left_control", "left_option"]
+                                    },
+                                    {
+                                        "hold_down_milliseconds": 80,
+                                        "key_code": "vk_none"
+                                    },
+                                    {
+                                        "key_code": "m",
+                                        "modifiers": ["left_command", "left_control", "left_option"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["control"] },
+                                    "pointing_button": "button4"
+                                },
+                                "to": [{ "from_event": true }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["control"] },
+                                    "pointing_button": "button5"
+                                },
+                                "to": [{ "from_event": true }],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["command"] },
+                                    "pointing_button": "button4"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "mandatory": ["command"] },
+                                    "pointing_button": "button5"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": ["left_command", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "modifiers": { "optional": ["left_shift", "right_shift", "left_command", "right_command", "left_option", "right_option"] },
                                     "pointing_button": "button4"
                                 },
                                 "to": [
@@ -140,7 +224,7 @@
                             },
                             {
                                 "from": {
-                                    "modifiers": { "optional": ["any"] },
+                                    "modifiers": { "optional": ["left_shift", "right_shift", "left_command", "right_command", "left_option", "right_option"] },
                                     "pointing_button": "button5"
                                 },
                                 "to": [
@@ -217,6 +301,14 @@
                         "is_pointing_device": true,
                         "product_id": 12976,
                         "vendor_id": 10007
+                    },
+                    "ignore": false
+                },
+                {
+                    "identifiers": {
+                        "is_pointing_device": true,
+                        "product_id": 16780,
+                        "vendor_id": 14391
                     },
                     "ignore": false
                 }

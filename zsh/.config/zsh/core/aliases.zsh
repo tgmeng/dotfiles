@@ -31,6 +31,7 @@ alias kce='eval `keychain --eval id_rsa`'
 
 alias c='cursor'
 alias cc='cursor .'
+alias neovide='/Applications/Neovide.app/Contents/MacOS/neovide'
 alias f='fork'
 alias o='open'
 alias oo='open .'
@@ -44,6 +45,9 @@ alias m='mise'
 alias cx='codex'
 alias z="yazi"
 alias t="lazygit"
+alias tm="tmux"
+alias tmp="tmuxp"
+alias tmps="tmuxp-save"
 
 alias mkd='make dev'
 alias mke='make electron'
@@ -71,10 +75,12 @@ alias wget='wget --hsts-file=$XDG_DATA_HOME/wget-hsts'
 alias adb='HOME="$XDG_DATA_HOME"/android adb'
 alias mvn='mvn -gs $XDG_CONFIG_HOME/maven/settings.xml'
 
+alias sw='swift'
+
 alias fq="export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152;export all_proxy=socks5://127.0.0.1:6153"
+
+alias export_zproxy='export https_proxy=http://127.0.0.1:8001;export http_proxy=http://127.0.0.1:8001'
 
 lk() {
   cd "$(walk "$@")"
 }
-
-alias sw='swift'
