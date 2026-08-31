@@ -1,15 +1,15 @@
+-- Alt + 配置键用来切应用。单独快速点两次左或右 Option，则启用或停用这些快捷键。
 local QuicklySwitchApp = {}
 QuicklySwitchApp.__index = QuicklySwitchApp
 
+-- 左右 Option 的 keyCode 不同，但它们共用同一套双击状态。
 local TOGGLE_OPTION_KEY_CODES = {
   [hs.keycodes.map.alt] = true,
   [hs.keycodes.map.rightalt] = true
 }
 
-local NANOSECONDS_PER_SECOND = 1e9
-
 local function buildFlagLookup(keys)
-  -- Hammerspoon 的 flags 是 `{ alt = true }` 这类表，先把配置转成同结构，后面判断更直接。
+  -- getFlags() 返回 `{ alt = true }` 这种表。配置先转成同样的结构，后面就不用反复遍历数组。
   local flags = {}
   for _, key in ipairs(keys) do
     flags[key] = true
@@ -22,16 +22,15 @@ function QuicklySwitchApp:new(config)
   local hyperKey = config.hyperKey or {}
   local toggleIntervalSeconds = config.toggleIntervalSeconds or 0.2
 
-  -- 每个实例维护两类状态：
-  -- 1. alt + key 的应用切换绑定
-  -- 2. 单独双击 Option 时的开关检测状态
+  -- bindings 是应用快捷键，几个 toggle 字段只服务于 Option 双击。
+  -- 它们都放在实例上，start() 和 stop() 才能一起清理。
   local instance = {
     bindings = {},
     isEnabled = true,
     alertId = nil,
-    -- 记录上一次“可参与双击判断”的 Option 点击时间；nil 表示当前没有待结算点击。
-    pendingToggleTapAtNs = nil,
-    -- 当前这次 Option 按压是否仍然可以算作一次“单独点击”。
+    -- 只有一次完整的 Option 点击结束后才会写入。nil 表示没有等待第二击。
+    pendingToggleTapAtSeconds = nil,
+    -- Option 按下后先设为 true。期间出现普通键或其它修饰键，这次点击就作废。
     isToggleTapCandidate = false,
     toggleEventListener = nil,
     config = {
@@ -60,7 +59,7 @@ function QuicklySwitchApp:switchApp(targetBundleId)
 end
 
 function QuicklySwitchApp:hasOnlyHyperKeyFlags(flags)
-  -- 只有在“所有 hyperKey 都按下，且没有其它修饰键”时才算成立。
+  -- 双击只认单独按下的 hyperKey，cmd、shift 等修饰键混进来都不算。
   for key in pairs(self.config.hyperKeyFlags) do
     if not flags[key] then
       return false
@@ -82,22 +81,23 @@ function QuicklySwitchApp:isToggleOptionEvent(event)
 end
 
 function QuicklySwitchApp:cancelToggleTapSequence()
-  self.pendingToggleTapAtNs = nil
+  self.pendingToggleTapAtSeconds = nil
   self.isToggleTapCandidate = false
 end
 
-function QuicklySwitchApp:rememberToggleTap(tapAtNs)
-  self.pendingToggleTapAtNs = tapAtNs
+function QuicklySwitchApp:rememberToggleTap(tapAtSeconds)
+  self.pendingToggleTapAtSeconds = tapAtSeconds
 end
 
-function QuicklySwitchApp:isToggleTapWithinInterval(tapAtNs)
-  if not self.pendingToggleTapAtNs then
+function QuicklySwitchApp:isToggleTapWithinInterval(tapAtSeconds)
+  if not self.pendingToggleTapAtSeconds then
     return false
   end
 
-  -- `absoluteTime()` 返回纳秒时间戳，这里统一换算后再比较，避免把时间窗单位散落在调用点。
-  local toggleIntervalNs = self.config.toggleIntervalSeconds * NANOSECONDS_PER_SECOND
-  return (tapAtNs - self.pendingToggleTapAtNs) <= toggleIntervalNs
+  local elapsedSeconds = tapAtSeconds - self.pendingToggleTapAtSeconds
+  -- 这里故意不用 absoluteTime()。它在系统睡眠时会暂停，可能把睡前和唤醒后的点击拼成双击。
+  -- 系统时钟回拨时 elapsedSeconds 会是负数。这种情况直接按超时处理，避免误触发。
+  return elapsedSeconds >= 0 and elapsedSeconds <= self.config.toggleIntervalSeconds
 end
 
 function QuicklySwitchApp:setBindingsEnabled(enabled)
@@ -136,12 +136,12 @@ function QuicklySwitchApp:toggleBindings()
 end
 
 function QuicklySwitchApp:handleToggleKeyDown()
-  -- `keyDown` 只负责让候选失效：Option 一旦参与组合键，这次按压就不再算独立点击。
+  -- 普通键按下后，Option 就是在参与组合键。清掉首击，避免 Alt + key 被后面的单击接成双击。
   self:cancelToggleTapSequence()
 end
 
 function QuicklySwitchApp:handleToggleFlagsChanged(event)
-  -- `flagsChanged` 负责整个 Option 点击生命周期：记录按下，结算松开。
+  -- 修饰键没有单独的 keyDown 和 keyUp，按下与松开都会进 flagsChanged。
 
   if not self:isToggleOptionEvent(event) then
     -- 一旦出现别的修饰键事件，本轮双击判断直接作废，避免跨按键串台。
@@ -151,12 +151,13 @@ function QuicklySwitchApp:handleToggleFlagsChanged(event)
 
   local flags = event:getFlags()
   if self:hasOnlyHyperKeyFlags(flags) then
-    -- 按下 Option 只进入候选状态；是否是独立 tap 要等松开时才能确认。
+    -- Option 还在 flags 里，说明当前是按下状态。先做标记，真正的一击要等松开时才算。
     self.isToggleTapCandidate = true
     return
   end
 
-  local tapAtNs = hs.timer.absoluteTime()
+  -- 候选按下结束后才会用到这个时间。即使系统重复送来 Option-down，也不会多记一击。
+  local tapAtSeconds = hs.timer.secondsSinceEpoch()
   if not self.isToggleTapCandidate then
     -- 松开前出现过普通键或其它修饰键，本轮不算独立 Option tap。
     self:cancelToggleTapSequence()
@@ -164,15 +165,15 @@ function QuicklySwitchApp:handleToggleFlagsChanged(event)
   end
 
   self.isToggleTapCandidate = false
-  if not self.pendingToggleTapAtNs then
+  if not self.pendingToggleTapAtSeconds then
     -- 第一次纯 Option 点击只记录时间，等待下一次点击来决定是否真的切换。
-    self:rememberToggleTap(tapAtNs)
+    self:rememberToggleTap(tapAtSeconds)
     return
   end
 
-  if not self:isToggleTapWithinInterval(tapAtNs) then
+  if not self:isToggleTapWithinInterval(tapAtSeconds) then
     -- 超过双击窗口：上一击失效，把本次松开作为新一轮首击。
-    self:rememberToggleTap(tapAtNs)
+    self:rememberToggleTap(tapAtSeconds)
     return
   end
 
@@ -182,7 +183,7 @@ function QuicklySwitchApp:handleToggleFlagsChanged(event)
 end
 
 function QuicklySwitchApp:start()
-  -- 允许重复调用 `start()`：先清理旧 binding 和旧监听器，再按当前配置重建。
+  -- start() 可能被手动重复调用。先收掉旧监听器和 binding，避免同一按键触发多次。
   self:stop()
 
   for key, bundleId in pairs(self.config.hotKeyToAppDict) do
@@ -200,7 +201,7 @@ function QuicklySwitchApp:start()
   self.toggleEventListener = hs.eventtap.new(
     { hs.eventtap.event.types.flagsChanged, hs.eventtap.event.types.keyDown },
     function(event)
-      -- `flagsChanged` 负责追踪独立 Option 点击；`keyDown` 只负责在组合键出现时让候选失效。
+      -- 普通键按下时取消双击，修饰键的按下和松开都交给 flagsChanged。
       if event:getType() == hs.eventtap.event.types.keyDown then
         self:handleToggleKeyDown()
       else
